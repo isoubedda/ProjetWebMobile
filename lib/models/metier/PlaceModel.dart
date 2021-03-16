@@ -13,7 +13,7 @@ class PlaceModel extends ChangeNotifier {
   String label;
   String description;
   LatLng coords;
-  Tags tags;
+  Tag tags;
 
 
   PlaceModel({this.id, this.ownerId, this.ownerUrl, this.label,

@@ -13,6 +13,9 @@ import 'package:share/share.dart';
 final String PATH =  "assets/images";
 
 class ShareWidget extends StatelessWidget {
+  final model;
+
+  ShareWidget(this.model);
 
   GpxKml gpxKml = new GpxKml();
   List<String> nameExports = [ "Waze", "KML", "GPX", "GeoJSon", "Envoyer"];
@@ -28,7 +31,7 @@ class ShareWidget extends StatelessWidget {
   PlaceModel a1 = PlaceModel(id: "id1",
       description: "description1",
       label: "label1 ",
-      coords: LatLng(1.0, 2.0));
+      coords: LatLng(47.5951518, -122.3316393));
   PlaceModel a2 = PlaceModel(id: "id1",
       description: "description1",
       label: "label2 ",
@@ -70,12 +73,27 @@ class ShareWidget extends StatelessWidget {
                 Text("Maps"),
               ],
             ),),
-          Column(
-            children: [
-              Image.asset("$PATH/waze.png", height: 50,),
-              Text("Waze"),
-            ],
-          ), InkWell(
+
+           InkWell(
+            onTap: () {
+              final RenderBox box = context.findRenderObject();
+              var f = gpxKml.listplacekmlConvert([a1, a2, a3]);
+              List<String> l = [];
+              f.then((value) {
+                print("valeur de value : $value");
+                l.add(value);
+                print(l.toString());
+                Share.shareFiles(l, subject: "test"); //
+                print("ok");
+              });
+            },
+            child: Column(
+              children: [
+                Image.asset("$PATH/KML.png", height: 50,),
+                Text("KML"),
+              ],
+            )
+          ),InkWell(
               onTap: () {
                 final RenderBox box = context.findRenderObject();
                 var f = gpxKml.listplacekmlConvert([a1, a2, a3]);
@@ -90,20 +108,29 @@ class ShareWidget extends StatelessWidget {
               },
               child: Column(
                 children: [
-                  Image.asset("$PATH/KML.png", height: 50,),
-                  Text("KML"),
+                  Image.asset("$PATH/GPX.png", height: 50,),
+                  Text("GPX"),
                 ],
               )
-          ), Column(
-            children: [
-              Image.asset("$PATH/GPX.png", height: 50,),
-              Text("GPX"),
-            ],
-          ), Column(
-            children: [
-              Image.asset("$PATH/geojson.png", height: 50,),
-              Text("GeoJson"),
-            ],
+          ),InkWell(
+            onTap: () {
+              final RenderBox box = context.findRenderObject();
+              var f = gpxKml.listplacekmlConvert([a1, a2, a3]);
+              List<String> l = [];
+              f.then((value) {
+                print("valeur de value : $value");
+                l.add(value);
+                print(l.toString());
+                Share.shareFiles(l, subject: "test"); //
+                print("ok");
+              });
+            },
+            child: Column(
+              children: [
+                Image.asset("$PATH/geojson.png", height: 50,),
+                Text("GeoJson"),
+              ],
+            )
           ),
         ],
       ),
@@ -133,18 +160,18 @@ class ShareWidget extends StatelessWidget {
   }
 
   _launchURL() async {
-    var coords = a1.coords;
+    var coords = model.coords;
     var lat = coords.latitude.toString();
     var long = coords.longitude.toString();
     var queryP = {
                 'api': '1',
                 'query': '$lat,$long'
               };
-              final uri = Uri.parse('https://google.com/maps/search/').replace(queryParameters: queryP);
+              final uri = Uri.parse('https://www.google.com/maps/search/').replace(queryParameters: queryP).toString().replaceFirst("%2C", ",");
 
-              print(uri);
-    if (await canLaunch("https://google.com/maps/search/?api=1&query=1.0,2.0")) {
-      await launch("https://google.com/maps/search/?api=1&query=1.0,2.0");
+              print(uri.toString());
+    if (await canLaunch("https://www.google.com/maps/search/?api=1&query=47.5951518,-122.3316393")) {
+      await launch(uri);
     } else {
       throw 'Could not launch $uri';
     }

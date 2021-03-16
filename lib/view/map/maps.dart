@@ -3,6 +3,8 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/generic_view/circularProgress/circularBar.dart';
 import 'package:flutter_app_fac/models/fonctionnal/MapControllerCustom.dart';
+import 'package:flutter_app_fac/models/metier/PlaceList.dart';
+import 'package:flutter_app_fac/models/metier/TagModel.dart';
 
 import 'package:flutter_app_fac/services/location/get_location.dart';
 import 'package:flutter_app_fac/view/map/heroAnimation/heroAnimation.dart';
@@ -109,7 +111,7 @@ class MapViewState extends State<MapView> {
         ),
 
 
-        markers: markersList,
+        markers: Provider.of<PlaceList>(context,listen: true).getPlacesByCollection(context, Provider.of<Tag>(context,listen: true)),
 
 
         polygonOptions: PolygonOptions(
@@ -161,6 +163,7 @@ class MapViewState extends State<MapView> {
 
       ));
     });
+
   }
 }
 

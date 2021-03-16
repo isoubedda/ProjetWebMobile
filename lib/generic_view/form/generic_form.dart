@@ -9,18 +9,20 @@ class GenericForm extends StatelessWidget {
   final TextInputType textInputType;
   final String hindText;
   final obscureText;
+  final border;
+  int maxlines = 1;
 
 
-  const GenericForm({
+   GenericForm({
     Key key,
     @required this.controller,
     @required this.keyForm
-    , this.errorMessage, this.validate, this.icon, this.textInputType, this.hindText, this.obscureText}) : super(key: key);
+    , this.errorMessage, this.validate, this.icon, this.textInputType, this.hindText, this.obscureText, this.border, this.maxlines}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return  TextFormField(
-      maxLines: 1,
+      maxLines: maxlines,
 
       keyboardType: textInputType,
       controller: controller,
@@ -28,7 +30,7 @@ class GenericForm extends StatelessWidget {
 
 
       decoration: new InputDecoration(
-        border: OutlineInputBorder(),
+        border: border,
 
         focusColor: Colors.red,
         labelText: hindText,

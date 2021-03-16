@@ -1,12 +1,16 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
+import 'package:flutter_app_fac/view/places/add_place_view.dart';
 import 'package:flutter_app_fac/view/share/share_widget.dart';
 import 'package:geojson/geojson.dart';
 import 'package:gpx/gpx.dart';
 import 'package:latlong/latlong.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
+
+import '../../routes.dart';
 
 
 
@@ -38,12 +42,16 @@ class ShowBottomSheet extends StatelessWidget {
           ),
           InkWell(
             splashColor: Colors.grey,
-            onTap: (){var s = showModalBottomSheet(context: context, builder: (context) => ShareWidget());},
+            onTap: (){var s = showModalBottomSheet(context: context, builder: (context) => ShareWidget(new PlaceModel(coords: coords)));},
             child: Icon(Icons.share),
           ),
           InkWell(
             splashColor: Colors.grey,
-            onTap: (){share(context);},
+            onTap: (){
+
+              Navigator.popAndPushNamed(context, Routes.addplace, arguments: coords);
+
+              },
             child: Icon(Icons.add),
           ),
 

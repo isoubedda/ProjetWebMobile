@@ -8,6 +8,7 @@ class Routes {
   static const String connexion = "/connexion";
   static const String rootpage = "/rootpage";
   static const String maps = "/maps";
+  static const String addplace = "/addplace";
   static const String exemple = "/exemple";
   static const String register = "/register";
   static const String location = "/location";

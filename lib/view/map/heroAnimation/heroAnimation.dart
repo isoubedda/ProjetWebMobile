@@ -35,7 +35,7 @@ class HeroAnimation extends StatelessWidget {
                           color: Colors.lightBlueAccent,
                           padding: const EdgeInsets.all(16.0),
                           alignment: Alignment.topLeft,
-                          child: PlaceView()
+                          child: null
                         ),
                       );
                     }
