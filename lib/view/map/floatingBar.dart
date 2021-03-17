@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/SearchModel.dart';
 import 'package:flutter_app_fac/models/fonctionnal/MapControllerCustom.dart';
 import 'package:flutter_app_fac/models/place.dart';
+import 'package:flutter_app_fac/view/map/showBottomSheet.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
@@ -149,6 +150,7 @@ class FloatingSearchBarWidgetState extends State<FloatingSearchBarWidget>{
 
 
               }
+              showModalBottomSheet(context: context, builder: (context) => ShowBottomSheet(coords: place.latLong, place: place,));
 
 
 

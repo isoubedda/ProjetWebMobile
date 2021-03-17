@@ -48,7 +48,7 @@ class PlaceList extends ChangeNotifier {
               point : place.coords,
               height: 300,
               builder: (context) => IconButton(icon: Icon(Icons.location_on), onPressed: (){
-                Navigator.push(context,MaterialPageRoute(builder: (context) => PlaceView(place.label, place.description)) );
+                Navigator.push(context,MaterialPageRoute(builder: (context) => PlaceView(place)) );
               },)
 
             ));

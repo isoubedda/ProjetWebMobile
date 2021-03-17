@@ -77,7 +77,7 @@ class ViewMarkers extends ChangeNotifier {
         point : place["place"].coords,
         height: 300,
         builder: (context) => IconButton(icon: Icon(Icons.location_on,size: 30,color: place["color"],), onPressed: (){
-          Navigator.push(context,MaterialPageRoute(builder: (context) => PlaceView(place["place"].label, place["place"].description)) );
+          Navigator.push(context,MaterialPageRoute(builder: (context) => PlaceView(place["place"])));
         },)
 
     ));

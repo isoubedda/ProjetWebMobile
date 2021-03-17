@@ -1,3 +1,7 @@
-class Links {
 
+
+class Links {
+  String href;
+
+  Links.fromJson(document) {}
 }

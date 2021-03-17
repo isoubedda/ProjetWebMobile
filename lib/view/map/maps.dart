@@ -47,22 +47,30 @@ class DeleteTagMarkerViewState extends State<DeleteTagMarkerView> {
         .of<ViewMarkers>(context, listen: true)
         .tags;
     return Container(
-        margin: EdgeInsets.only(top: 70),
-        height: 20,
+      height: tags.length/6 * 70 + 20,
+        margin: EdgeInsets.only(top: 90),
+
         child: GridView.count(
-            scrollDirection: Axis.horizontal,
-            crossAxisCount: 5,
-            children :List.generate(tags.length, (index) =>  Container(
-                width: 70,
+            childAspectRatio: 1.8,
+            padding: EdgeInsets.all(0),
+            crossAxisCount: 6,
+            children :List.generate(tags.length  , (index) =>  Container(
+                width: 30,
+                margin: EdgeInsets.all(3),
+                height: 30,
                 decoration: BoxDecoration(
 
                   color: Colors.white70,
-                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                  
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+
                 ),
 
                 child: InkWell(
-                  child: Text(tags[index].name),
+                  onTap: () {
+                    Provider
+                        .of<ViewMarkers>(context, listen: false).removeTag(context, tags[index]);
+                  },
+                  child: Center(child : Row(mainAxisAlignment : MainAxisAlignment.spaceEvenly, children: [RichText(overflow : TextOverflow.ellipsis,text: TextSpan(style : TextStyle(color: Colors.black), text: tags[index].name)),Icon(Icons.close, size: 10,) ],)),
                 ),
               )
             )

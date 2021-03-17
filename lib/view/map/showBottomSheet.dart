@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
+import 'package:flutter_app_fac/models/place.dart';
 import 'package:flutter_app_fac/view/places/add_place_view.dart';
 import 'package:flutter_app_fac/view/share/share_widget.dart';
 import 'package:geojson/geojson.dart';
@@ -17,43 +18,53 @@ import '../../routes.dart';
 String g = "{\"type\": \"Feature\",\"geometry\": {\"type\": \"Point\",\"coordinates\": [125.6, 10.1]},\"properties\": { \"name\": \"Dinagat Islands\"}";
 class ShowBottomSheet extends StatelessWidget {
   LatLng coords;
+  Place place;
 
 
-  ShowBottomSheet({this.coords});
+  ShowBottomSheet({this.place,this.coords});
 
   @override
   Widget build(BuildContext context) {
     print("$coords");
 
     return Container(
+      padding: EdgeInsets.all(10),
       height: 80,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
 
           Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
+//            s
             children: [
-              Text(this.coords.latitude.toString() + ", " + this.coords.longitude.toString()),
-              Text("adresse"),
+              Text(this.coords.latitude.toStringAsPrecision(12) + ", " + this.coords.longitude.toStringAsPrecision(12)),
+              Text(place== null ? "" : place.level2Address),
             ],
 
           ),
-          InkWell(
-            splashColor: Colors.grey,
-            onTap: (){var s = showModalBottomSheet(context: context, builder: (context) => ShareWidget(new PlaceModel(coords: coords)));},
-            child: Icon(Icons.share),
-          ),
-          InkWell(
-            splashColor: Colors.grey,
-            onTap: (){
+          Container(
 
-              Navigator.popAndPushNamed(context, Routes.addplace, arguments: coords);
+            width: 100,
+            child: Row(children: [
 
-              },
-            child: Icon(Icons.add),
-          ),
+              InkWell(
+                splashColor: Colors.grey,
+                onTap: (){var s = showModalBottomSheet(context: context, builder: (context) => ShareWidget(new PlaceModel(coords: coords)));},
+                child: Icon(Icons.share),
+              ),
+              InkWell(
+                splashColor: Colors.grey,
+                onTap: (){
+
+                  Navigator.popAndPushNamed(context, Routes.addplace, arguments: new PlaceModel(label :  place.name, description: "description", coords: coords));
+
+                },
+                child: Icon(Icons.add),
+              ),
+            ],
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            ) ,)
 
         ],
       ),

@@ -37,7 +37,7 @@ class AddPlaceViewState extends State<AddPlaceView> {
   final descriptionController = TextEditingController();
   final latController = TextEditingController();
   final longController = TextEditingController();
-   LatLng args;
+  PlaceModel placeModel;
 
   @override
   void initState() {
@@ -46,13 +46,13 @@ class AddPlaceViewState extends State<AddPlaceView> {
 
   @override
   Widget build(BuildContext context) {
-    args = ModalRoute.of(context).settings.arguments;
-    latController.text = widget.coords == null ? args.latitude.toString() : "0.0000";
-    longController.text = widget.coords == null ? args.longitude.toString() : "0.0000";
-    LabelController.text = "paris";
+    placeModel = ModalRoute.of(context).settings.arguments;
+    latController.text = placeModel != null ? placeModel.coords.latitude.toString() : "0.0000";
+    longController.text = placeModel != null ? placeModel.coords.longitude.toString() : "0.0000";
+    LabelController.text = placeModel != null ? placeModel.label : "Label";
     descriptionController.text = "description";
 
-    print(args.toString() + "    5555555555555");
+//    print(args.toString() + "    5555555555555");
     return Scaffold(
       appBar: AppBar(),
 

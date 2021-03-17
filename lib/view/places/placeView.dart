@@ -3,13 +3,14 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fac/models/metier/marker/marker.dart';
 import 'package:flutter_app_fac/view/map/heroAnimation/heroAnimation.dart';
+import 'package:provider/provider.dart';
 
 class PlaceView extends StatelessWidget {
-  final label;
-  final description;
+  final place;
 
-  PlaceView(this.label,this.description);
+  PlaceView(this.place);
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +20,8 @@ class PlaceView extends StatelessWidget {
         slivers: [
 
           buildSilverAppBar(),
-          SliverToBoxAdapter(child: Container(height : 200 ,child: TagWidget())),
-          SliverToBoxAdapter(child: Container(padding: EdgeInsets.all(10),child: Text(description),),),
+          SliverToBoxAdapter(child: Container(color : Colors.white,height : 80 ,child: TagWidget(place.tags))),
+          SliverToBoxAdapter(child: Container(padding: EdgeInsets.all(10),child: Text(place.description),),),
 
 
         ],
@@ -85,7 +86,7 @@ class PlaceView extends StatelessWidget {
             padding: EdgeInsets.all(0.0),
             color: Colors.white.withOpacity(0.5),
             child: Text(
-              "titre",
+              "place.label",
               style: TextStyle(
                 color: Colors.black,
               ),
@@ -141,13 +142,16 @@ class IconButtonColorChangeOnPressedState extends State<IconButtonColorChangeOnP
 
 class TagWidget extends StatefulWidget {
   @override
+  final tags;
+
+  TagWidget(this.tags);
+
   State<StatefulWidget> createState() {
     return TagWidgetState();
   }
 }
 
 class TagWidgetState extends State<TagWidget> {
-  var list = ["tag1", "tag3" ,"tag2" ,"tag4" ,"tag5" ,"tag6" ];
   @override
   Widget build(BuildContext context) {
     return buildHorizontalList();
@@ -155,14 +159,32 @@ class TagWidgetState extends State<TagWidget> {
 
 
   Widget buildHorizontalList () {
-    return ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: list.length,
-        itemBuilder: (context, index){
-          return Container(
-            width: 100,
-            child: Text(list[index]),
-          );
-    });
+    return GridView.count(
+        childAspectRatio: 1.8,
+        padding: EdgeInsets.all(0),
+        crossAxisCount: 6,
+        children :List.generate(widget.tags.length  , (index) =>  Container(
+          width: 30,
+          margin: EdgeInsets.all(3),
+          height: 30,
+          decoration: BoxDecoration(
+
+            color: Colors.white70,
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+
+          ),
+
+          child: InkWell(
+            onTap: () {
+             setState(() {
+               widget.tags.remove(widget.tags[index]);
+             });
+            },
+            child: Center(child : Row(mainAxisAlignment : MainAxisAlignment.spaceEvenly, children: [RichText(overflow : TextOverflow.ellipsis,text: TextSpan(style : TextStyle(color: Colors.black), text: widget.tags[index].name)),Icon(Icons.close, size: 10,) ],)),
+          ),
+        )
+        )
+
+    );
   }
 }
