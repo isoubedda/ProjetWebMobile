@@ -109,7 +109,7 @@ class AddPlaceViewState extends State<AddPlaceView> {
       Provider.of<PlaceList>(context,listen: false).add(
           new PlaceModel(
             label: LabelController.text,
-            tags : Provider.of<Tag>(context, listen : false),
+            tags : [Provider.of<Tag>(context, listen : false)],
             description: descriptionController.text,
             coords: new LatLng(double.parse(latController.text),double.parse(longController.text)),
 

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/TagModel.dart';
+import 'package:flutter_app_fac/models/metier/simu.dart';
 import 'package:provider/provider.dart';
 
 class TagList extends ChangeNotifier {
@@ -10,8 +11,14 @@ class TagList extends ChangeNotifier {
 //  TagList(this.context);
 
   TagList(this.context){
-    tags.add(Provider.of<Tag>(context, listen: false));
-    tags.add(Tag("Favoris"));
+    var simu = Provider.of<Simu>(context,listen: false);
+    tags.add(simu.tagAll);
+    tags.add(simu.tagFav);
+    tags.add(simu.tagFrance);
+    tags.add(simu.tagMonde);
+    tags.add(simu.tagNord);
+    tags.add(simu.tagSud);
+
   }
 
   List<Tag> get tags => _tags;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/fonctionnal/MapControllerCustom.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/collectionModel.dart';
+import 'package:flutter_app_fac/models/metier/marker/marker.dart';
 import 'package:flutter_app_fac/routes.dart';
 import 'package:flutter_app_fac/services/location/get_location.dart';
 import 'package:flutter_app_fac/view/Register/LoginRegisterWidgetASUPPRIMER.dart';
@@ -16,6 +17,7 @@ import 'package:provider/provider.dart';
 import 'models/counter.dart';
 import 'models/metier/TagList.dart';
 import 'models/metier/TagModel.dart';
+import 'models/metier/simu.dart';
 import 'view/map/maps.dart';
 
 void main() {
@@ -35,7 +37,8 @@ class MyApp extends StatelessWidget {
           create: (_) => locationService.getLocation(),
         ),
         ChangeNotifierProvider<Counter>(create: (context) => Counter()),
-        ChangeNotifierProvider<Tag>(create: (context) => Tag("All")),
+        ChangeNotifierProvider<Simu>(create: (context) => new Simu()),
+        ChangeNotifierProvider<ViewMarkers>(create: (context) => new ViewMarkers(context)),
         Provider<MapController>(create: (context) => new MapController()),
         ChangeNotifierProvider<MapControllerCustom>(create: (context) => MapControllerCustom() ),
         ChangeNotifierProvider<PlaceList>(create: (context) => PlaceList(context) ),

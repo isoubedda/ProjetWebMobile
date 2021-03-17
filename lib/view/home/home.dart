@@ -3,8 +3,11 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/fonctionnal/selectItem.dart';
+import 'package:flutter_app_fac/models/metier/marker/marker.dart';
+import 'package:flutter_app_fac/models/metier/simu.dart';
 import 'package:flutter_app_fac/services/location/get_location.dart';
 import 'package:flutter_app_fac/view/Register/loginRegisterView.dart';
+import 'package:flutter_app_fac/view/collection_page/collectionPage.dart';
 import 'package:flutter_app_fac/view/map/floatingBar.dart';
 import 'package:flutter_app_fac/view/map/maps.dart';
 import 'package:flutter_app_fac/view/settings/settingsPage.dart';
@@ -21,7 +24,7 @@ class Home extends StatefulWidget {
 
 class HomeState extends State<Home> {
 
-  MapView mapView;
+  MapPage mapView;
   List<Widget> listWidgets;
 
   int selectedItem = 2;
@@ -29,15 +32,17 @@ class HomeState extends State<Home> {
   @override
   void initState() {
 
-    mapView = MapView();
+    mapView = MapPage();
+
     listWidgets = [Center(
         child :Container(
           margin: EdgeInsets.only(left: 15.0, right: 15.0),
           child:LoginRegisterWidget(),),
-    ),Container(color: Colors.transparent),Visibility(child: Container(color: Colors.transparent,),visible: false,), Container(color: Colors.transparent),SettingsPage()];
+    ),Container(color: Colors.transparent),Visibility(child: Container(color: Colors.transparent,),visible: false,), CollectionPage(),SettingsPage()];
   }
   @override
   Widget build(BuildContext context) {
+    Simu simu = new Simu();
 
     return Scaffold(
       bottomNavigationBar: ConvexAppBar(

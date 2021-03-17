@@ -56,7 +56,7 @@ class RegisterState extends State<Register> {
             ShadoxBoxCustom(
               shadowColor: Colors.grey,
               backgroundColors: Colors.white,
-              child: new GenericForm(controller: pwdController, keyForm: keyForm1,errorMessage: "Mot de passe invalide" , hindText: "mot de passe ",icon:Icon(Icons.lock), textInputType: TextInputType.visiblePassword, validate: FormValidator.validatePassword,obscureText: true,),
+              child: new GenericForm(controller: pwdController, keyForm: keyForm1,errorMessage: "Mot de passe invalide" , hindText: "mot de passe ",icon:Icon(Icons.lock), textInputType: TextInputType.visiblePassword, validate: FormValidator.validatePassword,maxlines : 0,obscureText: true,),
 
             ),
             SimpleFlatButton(text: "Inscription",onPressed: submit,)

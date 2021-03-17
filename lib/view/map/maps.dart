@@ -1,10 +1,13 @@
 
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_app_fac/generic_view/circularProgress/circularBar.dart';
 import 'package:flutter_app_fac/models/fonctionnal/MapControllerCustom.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/TagModel.dart';
+import 'package:flutter_app_fac/models/metier/marker/marker.dart';
+import 'package:flutter_app_fac/models/metier/simu.dart';
 
 import 'package:flutter_app_fac/services/location/get_location.dart';
 import 'package:flutter_app_fac/view/map/heroAnimation/heroAnimation.dart';
@@ -15,6 +18,59 @@ import 'package:latlong/latlong.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
 
+
+
+class MapPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        MapView(),
+        DeleteTagMarkerView()
+      ],
+    );
+  }
+
+}
+
+class DeleteTagMarkerView extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return DeleteTagMarkerViewState();
+  }
+}
+
+class DeleteTagMarkerViewState extends State<DeleteTagMarkerView> {
+  @override
+  Widget build(BuildContext context) {
+    List<Tag> tags = Provider
+        .of<ViewMarkers>(context, listen: true)
+        .tags;
+    return Container(
+        margin: EdgeInsets.only(top: 70),
+        height: 20,
+        child: GridView.count(
+            scrollDirection: Axis.horizontal,
+            crossAxisCount: 5,
+            children :List.generate(tags.length, (index) =>  Container(
+                width: 70,
+                decoration: BoxDecoration(
+
+                  color: Colors.white70,
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                  
+                ),
+
+                child: InkWell(
+                  child: Text(tags[index].name),
+                ),
+              )
+            )
+
+    )
+  );
+  }
+}
 
 class MapView extends StatefulWidget {
   @override
@@ -28,6 +84,7 @@ class MapViewState extends State<MapView> {
   final popupController = PopupController();
   LocationData locationData;
   List<Marker> markers = [];
+//  ViewMarkers _markers = new ViewMarkers();
 
 
 
@@ -41,7 +98,7 @@ class MapViewState extends State<MapView> {
 
   @override
   Widget build(BuildContext context) {
-
+//    Provider.of<ViewMarkers>(context,listen : false).toMarker(context);
 
 
     locationData = Provider.of<LocationData>(context, listen: true);
@@ -111,7 +168,7 @@ class MapViewState extends State<MapView> {
         ),
 
 
-        markers: Provider.of<PlaceList>(context,listen: true).getPlacesByCollection(context, Provider.of<Tag>(context,listen: true)),
+        markers: Provider.of<ViewMarkers>(context,listen: true).toMarker(context),
 
 
         polygonOptions: PolygonOptions(
