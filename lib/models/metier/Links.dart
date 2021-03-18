@@ -3,5 +3,9 @@
 class Links {
   String href;
 
-  Links.fromJson(document) {}
+  Links(this.href);
+
+  Links.fromJson(Map<String, dynamic> document) :
+        href = document['href'];
+
 }

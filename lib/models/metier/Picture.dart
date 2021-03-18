@@ -4,4 +4,8 @@ class Picture {
 
  Picture({this.id, this.url});
 
+ Picture.fromJson(Map<String, dynamic> document) :
+        id = document['id'],
+        url = document['url'];
+
 }
