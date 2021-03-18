@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 
-import 'ImageModel.dart';
+import 'Picture.dart';
 import 'Links.dart';
 import 'TagModel.dart';
 
@@ -15,8 +15,10 @@ class PlaceModel extends ChangeNotifier {
   String label;
   String description;
   LatLng coords;
-  ImageModel image ;
+  // le picture et image ont deux route différente /picture et /images ?? j'ai fait le module de picture
+  Picture image;
   List<Tag> tags;
+  // normalement les links c'est une liste ??
   Links links;
 
 
@@ -32,11 +34,15 @@ class PlaceModel extends ChangeNotifier {
     links : Links.fromJson(document["links"]);
   }
 
-
-  toJson() {
-    return 'PlaceModel{label: $label, description: $description, coords: $coords}';
-  }
-
+// ici j'ai ajouter les tags puisque dans le PATCH et POST des spec on a un champ tags dans le bady json
+// il manque dans les spec la picture utiliser dans le patch et non post
+  Map<String, dynamic> toJson() =>
+    {
+      'label': label,
+      'description': description,
+      'tags': tags,
+      'coordinates': coords,
+    };
 
 }
 
