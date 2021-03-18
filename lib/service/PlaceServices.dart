@@ -36,7 +36,7 @@ class PlaceServices {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
-    body: place.toJson()
+    body: jsonEncode(place)
   );
     if(response.statusCode == 200 ) {
       Iterable l = json.decode(response.body);
