@@ -57,7 +57,7 @@ class ShowBottomSheet extends StatelessWidget {
                 splashColor: Colors.grey,
                 onTap: (){
 
-                  Navigator.popAndPushNamed(context, Routes.addplace, arguments: new PlaceModel(label :  place.name, description: "description", coords: coords));
+                  Navigator.popAndPushNamed(context, Routes.addplace, arguments: new PlaceModel(label :  place.name, description: "description", coords: coords,tags: []));
 
                 },
                 child: Icon(Icons.add),

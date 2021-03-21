@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fac/generic_view/DialogWidget.dart';
 import 'package:flutter_app_fac/generic_view/form/SimpleFlatButton.dart';
 import 'package:flutter_app_fac/generic_view/form/shadow_box.dart';
 import 'package:flutter_app_fac/generic_view/form/generic_form.dart';
@@ -12,11 +13,26 @@ import 'package:flutter_app_fac/models/metier/TagList.dart';
 import 'package:flutter_app_fac/models/metier/TagModel.dart';
 import 'package:flutter_app_fac/models/place.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
+import 'package:flutter_app_fac/view/places/placeView.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong/latlong.dart';
 import 'package:provider/provider.dart';
 //List<Tag> list = [new Tag("all"), new Tag("favoris"), new Tag("general")];
 
+
+class AddPlaceViewProvider extends StatelessWidget {
+
+
+  @override
+  Widget build(BuildContext context) {
+    var placeModel = ModalRoute.of(context).settings.arguments;
+    print(placeModel.toString());
+    if (placeModel !=  null)
+      return ChangeNotifierProvider<PlaceModel>.value(value: placeModel,child:  AddPlaceView(), );
+    else
+      return ChangeNotifierProvider(create: (context) => new PlaceModel(),child: AddPlaceView(),);
+  }
+}
 
 class AddPlaceView extends StatefulWidget{
   final LatLng coords;
@@ -46,11 +62,13 @@ class AddPlaceViewState extends State<AddPlaceView> {
 
   @override
   Widget build(BuildContext context) {
-    placeModel = ModalRoute.of(context).settings.arguments;
+    placeModel = Provider.of<PlaceModel>(context,listen: false);
+    print("placemodel *** : $placeModel");
     latController.text = placeModel != null ? placeModel.coords.latitude.toString() : "0.0000";
     longController.text = placeModel != null ? placeModel.coords.longitude.toString() : "0.0000";
     LabelController.text = placeModel != null ? placeModel.label : "Label";
     descriptionController.text = "description";
+
 
 //    print(args.toString() + "    5555555555555");
     return Scaffold(
@@ -77,8 +95,9 @@ class AddPlaceViewState extends State<AddPlaceView> {
                   Container(width : 150,child: GenericForm(controller: latController, keyForm: keyForm,errorMessage: "no empty" , hindText: "Latitude ",icon:Icon(Icons.lock), textInputType: TextInputType.number, validate: FormValidator.isNotEmpty,obscureText: false, maxlines: 1,border:  OutlineInputBorder(),),),
                   Container(width : 150,child: GenericForm(controller: longController, keyForm: keyForm,errorMessage: "no empty" , hindText: "Longitude",icon:Icon(Icons.lock), textInputType: TextInputType.number, validate: FormValidator.isNotEmpty,obscureText: false, maxlines: 1,border:  OutlineInputBorder(),),),
               ],),
-              Container(height: 30,),
-              AddTagWidget(list : Provider.of<TagList>(context, listen: false).tags),
+              Container(height: 100, child :  TagWidget(Provider.of<PlaceModel>(context,listen: true).tags),),
+
+               Container(child: TestPage(Provider.of<PlaceModel>(context,listen: true)), height: 150,),
 
 
 
@@ -177,11 +196,14 @@ class AddTagWidget extends StatefulWidget {
 
 
 class AddTagWidgetState extends State<AddTagWidget> {
-
+  TextEditingController _textController = TextEditingController();
+  List<Tag> initialList;
+  List<Tag> filteredList = [];
   @override
   Widget build(BuildContext context) {
     print("list : " + widget.list.toString());
     return DropdownButton(
+
         hint: Text(widget.selected.toString()),
         onChanged: (val) {setState(() {
           widget.selected = val;
