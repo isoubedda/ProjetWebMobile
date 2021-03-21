@@ -28,11 +28,25 @@ class PlaceModel extends ChangeNotifier {
   }
 
   PlaceModel({this.id, this.ownerId, this.ownerUrl, this.label,
-      this.description, this.coords, this.tags, this.image});
+      this.description, this.coords,this.image ,this.tags, this.links});
 
-  PlaceModel.fromJson(document) {
-    links : Links.fromJson(document["links"]);
+  factory PlaceModel.fromJson(Map<String, dynamic> document) {
+    var list = document['tags'] as List;
+    List<Tag> tagList = list.map((i) => Tag.fromJson(i)).toList();
+    
+    return PlaceModel(
+    id: document['id'],
+    ownerId: document['owner'],
+    ownerUrl: document['owner_url'],
+    label: document['label'],
+    description: document['description'],
+    coords: document['coordinates'],
+    image: Picture.fromJson(document['picture']),
+    tags: tagList,
+    links: Links.fromJson(document["links"])
+    );
   }
+    
 
 // ici j'ai ajouter les tags puisque dans le PATCH et POST des spec on a un champ tags dans le bady json
 // il manque dans les spec la picture utiliser dans le patch et non post

@@ -17,5 +17,9 @@ class Tag extends ChangeNotifier{
   String toString() {
     return 'Tag{_name: $_name}';
   }
+
+  Tag.fromJson(Map<String, dynamic> document) :
+        _name = document['label'];
+
 }
 
