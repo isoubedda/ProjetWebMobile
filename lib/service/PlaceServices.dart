@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:http/http.dart';
@@ -32,7 +33,7 @@ class PlaceServices {
   }
 
   Future<List<PlaceModel>> postPlace (PlaceModel place) async {
-    Response response = await http.post(entryPoint.urlPlace,
+    Response response = await http.post(EntryPoint.urlPlace,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

@@ -1,5 +1,7 @@
-import 'dart:html';
 
-class EntryPoint {
-  String urlPlace = "quelquechose/places";
+
+ class EntryPoint {
+  static String url = "http:/0.0.0.0/";
+  static String urlPlace = url+"places";
+  static String urlUser = url+"users";
 }
