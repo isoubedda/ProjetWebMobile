@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
                 break;
               case Routes.addplace :
                 print("la add placce");
-                return AddPlaceView();
+                return AddPlaceViewProvider();
                 break;
 
               // case Routes.location :

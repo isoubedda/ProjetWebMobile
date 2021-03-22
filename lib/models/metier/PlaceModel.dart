@@ -17,7 +17,7 @@ class PlaceModel extends ChangeNotifier {
   LatLng coords;
   // le picture et image ont deux route différente /picture et /images ?? j'ai fait le module de picture
   Picture image;
-  List<Tag> tags;
+  List<Tag> tags = [];
   // normalement les links c'est une liste ??
   Links links;
 
@@ -57,6 +57,12 @@ class PlaceModel extends ChangeNotifier {
       'tags': tags,
       'coordinates': coords,
     };
+
+
+  void addTag (tag) {
+    tags.add(tag);
+    notifyListeners();
+  }
 
 }
 
