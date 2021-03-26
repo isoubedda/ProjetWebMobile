@@ -5,6 +5,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_app_fac/generic_view/circularProgress/circularBar.dart';
 import 'package:flutter_app_fac/models/fonctionnal/MapControllerCustom.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
+import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/metier/TagModel.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
 import 'package:flutter_app_fac/models/metier/simu.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_app_fac/models/metier/simu.dart';
 import 'package:flutter_app_fac/services/location/get_location.dart';
 import 'package:flutter_app_fac/view/map/heroAnimation/heroAnimation.dart';
 import 'package:flutter_app_fac/view/map/showBottomSheet.dart';
+import 'package:flutter_app_fac/view/places/placeView.dart';
+import 'package:flutter_app_fac/view/tag/tag_grid_view.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong/latlong.dart';
@@ -23,63 +26,23 @@ import 'package:provider/provider.dart';
 class MapPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    List<Tag> tags = Provider
+        .of<PlaceList>(context, listen: true)
+        .tags;
     return Stack(
       children: [
         MapView(),
-        DeleteTagMarkerView()
+        Container(
+          height: tags.length/6 * 70 + 20,
+          margin: EdgeInsets.only(top: 90),
+
+          child: TagWidget( Provider.of<PlaceList>(context, listen: true).tags,Provider.of<PlaceList>(context, listen: true).removeTag),
+        )
       ],
     );
   }
 
 }
-
-class DeleteTagMarkerView extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return DeleteTagMarkerViewState();
-  }
-}
-
-class DeleteTagMarkerViewState extends State<DeleteTagMarkerView> {
-  @override
-  Widget build(BuildContext context) {
-    List<Tag> tags = Provider
-        .of<ViewMarkers>(context, listen: true)
-        .tags;
-    return Container(
-      height: tags.length/6 * 70 + 20,
-        margin: EdgeInsets.only(top: 90),
-
-        child: GridView.count(
-            childAspectRatio: 1.8,
-            padding: EdgeInsets.all(0),
-            crossAxisCount: 6,
-            children :List.generate(tags.length  , (index) =>  Container(
-                width: 30,
-                margin: EdgeInsets.all(3),
-                height: 30,
-                decoration: BoxDecoration(
-
-                  color: Colors.white70,
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-
-                ),
-
-                child: InkWell(
-                  onTap: () {
-                    Provider
-                        .of<ViewMarkers>(context, listen: false).removeTag(context, tags[index]);
-                  },
-                  child: Center(child : Row(mainAxisAlignment : MainAxisAlignment.spaceEvenly, children: [RichText(overflow : TextOverflow.ellipsis,text: TextSpan(style : TextStyle(color: Colors.black), text: tags[index].name)),Icon(Icons.close, size: 10,) ],)),
-                ),
-              )
-            )
-
-    )
-  );
-  }
-}
-
 class MapView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -176,7 +139,7 @@ class MapViewState extends State<MapView> {
         ),
 
 
-        markers: Provider.of<ViewMarkers>(context,listen: true).toMarker(context),
+        markers: buildMarkerList(Provider.of<PlaceList>(context,listen: true).getPlacesWithColor()),
 
 
         polygonOptions: PolygonOptions(
@@ -204,6 +167,25 @@ class MapViewState extends State<MapView> {
 
       ],
     );
+  }
+
+  List<Marker>buildMarkerList(places) {
+    print("***********************************************************");
+    print(places.toString());
+    print("***********************************************************");
+    List<Marker> markers = [];
+    for (var place in places) {
+      markers.add(Marker(
+          point : place["place"].coords,
+          height: 300,
+          builder: (context) => IconButton(color : place["color"],icon: Icon(Icons.location_on,size: 30,), onPressed: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context) => PlaceView(place["place"])));
+          },)
+
+      ));
+    }
+    return markers;
+
   }
 
   _handleTap(LatLng point)  {

@@ -155,6 +155,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.0"
+  file_picker:
+    dependency: "direct main"
+    description:
+      name: file_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.7"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -250,8 +257,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.10.0"
+  geojson_vi:
+    dependency: "direct main"
+    description:
+      name: geojson_vi
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   geopoint:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: geopoint
       url: "https://pub.dartlang.org"
@@ -673,6 +687,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
+  uni_links:
+    dependency: "direct main"
+    description:
+      name: uni_links
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0"
   unicode:
     dependency: transitive
     description:

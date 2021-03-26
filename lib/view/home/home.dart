@@ -11,6 +11,7 @@ import 'package:flutter_app_fac/view/collection_page/collectionPage.dart';
 import 'package:flutter_app_fac/view/map/floatingBar.dart';
 import 'package:flutter_app_fac/view/map/maps.dart';
 import 'package:flutter_app_fac/view/settings/settingsPage.dart';
+import 'package:flutter_app_fac/view/share/import_widget.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:provider/provider.dart';
 
@@ -34,11 +35,18 @@ class HomeState extends State<Home> {
 
     mapView = MapPage();
 
-    listWidgets = [Center(
+    listWidgets =
+    [
+      Center(
         child :Container(
           margin: EdgeInsets.only(left: 15.0, right: 15.0),
           child:LoginRegisterWidget(),),
-    ),Container(color: Colors.transparent),Visibility(child: Container(color: Colors.transparent,),visible: false,), CollectionPage(),SettingsPage()];
+    ),Center(child :Container(
+         margin: EdgeInsets.only(left: 15.0, right: 15.0 ),
+         child:ImportWidget(),),),
+      Visibility(child: Container(color: Colors.transparent,),visible: false,),
+      CollectionPage(),
+      SettingsPage()];
   }
   @override
   Widget build(BuildContext context) {

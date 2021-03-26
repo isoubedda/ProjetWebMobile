@@ -50,14 +50,14 @@ class ShowBottomSheet extends StatelessWidget {
 
               InkWell(
                 splashColor: Colors.grey,
-                onTap: (){var s = showModalBottomSheet(context: context, builder: (context) => ShareWidget(new PlaceModel(coords: coords)));},
+                onTap: (){var s = showModalBottomSheet(context: context, builder: (context) => ShareWidget(new PlaceModel(coords: coords), false));},
                 child: Icon(Icons.share),
               ),
               InkWell(
                 splashColor: Colors.grey,
                 onTap: (){
 
-                  Navigator.popAndPushNamed(context, Routes.addplace, arguments: new PlaceModel(label :  place.name, description: "description", coords: coords,tags: []));
+                  Navigator.popAndPushNamed(context, Routes.addplace, arguments: new PlaceModel(label : place == null ? "" : place.name , description: "description", coords: coords,tags: []));
 
                 },
                 child: Icon(Icons.add),

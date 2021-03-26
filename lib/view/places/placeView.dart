@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
 import 'package:flutter_app_fac/view/map/heroAnimation/heroAnimation.dart';
+import 'package:flutter_app_fac/view/tag/tag_grid_view.dart';
 import 'package:provider/provider.dart';
 
 class PlaceView extends StatelessWidget {
@@ -20,7 +21,7 @@ class PlaceView extends StatelessWidget {
         slivers: [
 
           buildSilverAppBar(),
-          SliverToBoxAdapter(child: Container(color : Colors.white,height : 80 ,child: TagWidget(place.tags))),
+          SliverToBoxAdapter(child: Container(color : Colors.white,height : 80 ,child: TagWidget(place.tags, place.tags.remove))),
           SliverToBoxAdapter(child: Container(padding: EdgeInsets.all(10),child: Text(place.description),),),
 
 
@@ -47,9 +48,9 @@ class PlaceView extends StatelessWidget {
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.symmetric(horizontal: 5.0),
                 decoration: BoxDecoration(
-                    color: Colors.amber
+
                 ),
-                child: HeroAnimation()
+                child: Image.file(place.image.file,fit: BoxFit.cover,)
             );
           },
         );
@@ -86,7 +87,7 @@ class PlaceView extends StatelessWidget {
             padding: EdgeInsets.all(0.0),
             color: Colors.white.withOpacity(0.5),
             child: Text(
-              "place.label",
+              place.label,
               style: TextStyle(
                 color: Colors.black,
               ),
@@ -139,53 +140,3 @@ class IconButtonColorChangeOnPressedState extends State<IconButtonColorChangeOnP
   }
 }
 
-
-class TagWidget extends StatefulWidget {
-  @override
-  final tags;
-
-  TagWidget(this.tags);
-
-  State<StatefulWidget> createState() {
-    return TagWidgetState();
-  }
-}
-
-class TagWidgetState extends State<TagWidget> {
-  @override
-  Widget build(BuildContext context) {
-    return buildHorizontalList();
-  }
-
-
-  Widget buildHorizontalList () {
-    print("wigded tag : " + widget.tags.toString());
-    return GridView.count(
-        childAspectRatio: 1.8,
-        padding: EdgeInsets.all(0),
-        crossAxisCount: 6,
-        children :List.generate(widget.tags.length  , (index) =>  Container(
-          width: 30,
-          margin: EdgeInsets.all(3),
-          height: 30,
-          decoration: BoxDecoration(
-
-            color: Colors.white70,
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-
-          ),
-
-          child: InkWell(
-            onTap: () {
-             setState(() {
-               widget.tags.remove(widget.tags[index]);
-             });
-            },
-            child: Center(child : Row(mainAxisAlignment : MainAxisAlignment.spaceEvenly, children: [RichText(overflow : TextOverflow.ellipsis,text: TextSpan(style : TextStyle(color: Colors.black), text: widget.tags[index].name)),Icon(Icons.close, size: 10,) ],)),
-          ),
-        )
-        )
-
-    );
-  }
-}

@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:latlong/latlong.dart';
 
+import 'ImageModel.dart';
 import 'Picture.dart';
 import 'Links.dart';
 import 'TagModel.dart';
@@ -16,7 +17,7 @@ class PlaceModel extends ChangeNotifier {
   String description;
   LatLng coords;
   // le picture et image ont deux route différente /picture et /images ?? j'ai fait le module de picture
-  Picture image;
+  ImageModel image;
   List<Tag> tags = [];
   // normalement les links c'est une liste ??
   Links links;
@@ -41,7 +42,7 @@ class PlaceModel extends ChangeNotifier {
     label: document['label'],
     description: document['description'],
     coords: document['coordinates'],
-    image: Picture.fromJson(document['picture']),
+//    image: Picture.fromJson(document['picture']),
     tags: tagList,
     links: Links.fromJson(document["links"])
     );
@@ -63,6 +64,8 @@ class PlaceModel extends ChangeNotifier {
     tags.add(tag);
     notifyListeners();
   }
+
+
 
 }
 

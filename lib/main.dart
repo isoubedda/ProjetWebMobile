@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<Counter>(create: (context) => Counter()),
         ChangeNotifierProvider<Simu>(create: (context) => new Simu()),
-        ChangeNotifierProvider<ViewMarkers>(create: (context) => new ViewMarkers(context)),
+//        ChangeNotifierProvider<ViewMarkers>(create: (context) => new ViewMarkers(context)),
         Provider<MapController>(create: (context) => new MapController()),
         ChangeNotifierProvider<MapControllerCustom>(create: (context) => MapControllerCustom() ),
         ChangeNotifierProvider<PlaceList>(create: (context) => PlaceList(context) ),
