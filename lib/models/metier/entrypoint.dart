@@ -4,4 +4,5 @@
   static String url = "http:/0.0.0.0/";
   static String urlPlace = url+"places";
   static String urlUser = url+"users";
+  static String urlImage = url+"images";
 }

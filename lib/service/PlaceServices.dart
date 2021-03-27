@@ -18,7 +18,7 @@ class PlaceServices {
       Iterable l = json.decode(response.body);
       return l.map((e) => PlaceModel.fromJson(e)).toList();
     }else {
-      throw new Exception('Faile to load places');
+      throw new Exception('Faile to get All places');
     }
   }
 
@@ -28,7 +28,7 @@ class PlaceServices {
     if(response.statusCode == 204 ) {
       print("Ok the place was remove");
     }else {
-      throw new Exception('Faile to load places');
+      throw new Exception('Faile to remove places');
     }
   }
 
@@ -52,7 +52,6 @@ class PlaceServices {
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
-// manque la picture dans toJson
     body: place.toJson()
   );
     if(response.statusCode == 200 ) {
