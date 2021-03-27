@@ -6,6 +6,9 @@ import 'dart:io';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/place.dart';
 import 'package:flutter_app_fac/services/share/fileService.dart';
+import 'package:geojson_vi/geojson_vi.dart';
+
+import 'package:geopoint/geopoint.dart';
 import 'package:gpx/gpx.dart';
 import 'package:latlong/latlong.dart';
 
@@ -80,6 +83,28 @@ class  GpxKml {
       file.writeFile(gpxString, name);
 
     }
+    return "$path/$name";
+
+
+  }
+
+  Future <String> ConvertToJson(List<PlaceModel> list) async {
+    String name = "exportGeoJSON.geojson";
+    final path = await file.localPath();
+    final featureCollection = GeoJSONFeatureCollection([]);
+
+    GeoSerie geoSerie = new GeoSerie();
+    geoSerie.geoPoints = [];
+
+    list.forEach((element) {
+     final geoPoint = GeoPoint(latitude: element.coords.latitude, longitude: element.coords.longitude, name: element.label,slug: "hello");
+     final feature = new GeoJSONFeature(GeoJSONPoint([element.coords.longitude, element.coords.latitude]),properties: geoPoint.toMap(), title: element.tags.toString());
+     featureCollection.features.add(feature);
+
+    });
+    file.writeFile(featureCollection.toJSON(), name);
+
+//    file.writeFile(geoSerie.toMap().toString(), name);
     return "$path/$name";
 
 

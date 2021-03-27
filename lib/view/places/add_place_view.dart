@@ -7,6 +7,8 @@ import 'package:flutter_app_fac/generic_view/DialogWidget.dart';
 import 'package:flutter_app_fac/generic_view/form/SimpleFlatButton.dart';
 import 'package:flutter_app_fac/generic_view/form/shadow_box.dart';
 import 'package:flutter_app_fac/generic_view/form/generic_form.dart';
+import 'package:flutter_app_fac/models/metier/ImageModel.dart';
+import 'package:flutter_app_fac/models/metier/Picture.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/metier/TagList.dart';
@@ -14,6 +16,8 @@ import 'package:flutter_app_fac/models/metier/TagModel.dart';
 import 'package:flutter_app_fac/models/place.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
 import 'package:flutter_app_fac/view/places/placeView.dart';
+import 'package:flutter_app_fac/view/tag/tag_grid_view.dart';
+import 'package:flutter_app_fac/view/tag/tag_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong/latlong.dart';
 import 'package:provider/provider.dart';
@@ -48,7 +52,7 @@ class AddPlaceView extends StatefulWidget{
 class AddPlaceViewState extends State<AddPlaceView> {
 
   final  keyForm = new GlobalKey<FormState>();
-
+  File image;
   final LabelController = TextEditingController();
   final descriptionController = TextEditingController();
   final latController = TextEditingController();
@@ -57,11 +61,6 @@ class AddPlaceViewState extends State<AddPlaceView> {
 
   @override
   void initState() {
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
     placeModel = Provider.of<PlaceModel>(context,listen: false);
     print("placemodel *** : $placeModel");
     latController.text = placeModel != null ? placeModel.coords.latitude.toString() : "0.0000";
@@ -69,6 +68,11 @@ class AddPlaceViewState extends State<AddPlaceView> {
     LabelController.text = placeModel != null ? placeModel.label : "Label";
     descriptionController.text = "description";
 
+
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
 //    print(args.toString() + "    5555555555555");
     return Scaffold(
@@ -83,7 +87,7 @@ class AddPlaceViewState extends State<AddPlaceView> {
 
 //            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MenuImageView(),
+              MenuImageView(image: image,),
               GenericForm( controller: LabelController, keyForm: keyForm,errorMessage: "no empty" , hindText: "name",icon:Icon(Icons.person_outline), textInputType: TextInputType.text, validate: FormValidator.isNotEmpty,obscureText: false,border: OutlineInputBorder(),),
               Container(height: 30,),
               GenericForm(controller: descriptionController, keyForm: keyForm,errorMessage: "no empty" , hindText: "decription ",icon:Icon(Icons.lock), textInputType: TextInputType.text, validate: FormValidator.isNotEmpty,obscureText: false, maxlines: 6,border:  OutlineInputBorder(),),
@@ -95,7 +99,7 @@ class AddPlaceViewState extends State<AddPlaceView> {
                   Container(width : 150,child: GenericForm(controller: latController, keyForm: keyForm,errorMessage: "no empty" , hindText: "Latitude ",icon:Icon(Icons.lock), textInputType: TextInputType.number, validate: FormValidator.isNotEmpty,obscureText: false, maxlines: 1,border:  OutlineInputBorder(),),),
                   Container(width : 150,child: GenericForm(controller: longController, keyForm: keyForm,errorMessage: "no empty" , hindText: "Longitude",icon:Icon(Icons.lock), textInputType: TextInputType.number, validate: FormValidator.isNotEmpty,obscureText: false, maxlines: 1,border:  OutlineInputBorder(),),),
               ],),
-              Container(height: 100, child :  TagWidget(Provider.of<PlaceModel>(context,listen: true).tags),),
+              Container(height: 100, child :  TagWidget(Provider.of<PlaceModel>(context,listen: true).tags, Provider.of<PlaceModel>(context,listen: true).tags.remove),),
 
                Container(child: TestPage(Provider.of<PlaceModel>(context,listen: true)), height: 150,),
 
@@ -128,9 +132,10 @@ class AddPlaceViewState extends State<AddPlaceView> {
       Provider.of<PlaceList>(context,listen: false).add(
           new PlaceModel(
             label: LabelController.text,
-            tags : [Provider.of<Tag>(context, listen : false)],
+            tags :Provider.of<PlaceModel>(context, listen : false).tags,
             description: descriptionController.text,
             coords: new LatLng(double.parse(latController.text),double.parse(longController.text)),
+            image: Provider.of<PlaceModel>(context, listen : false).image
 
           ));
       Navigator.pop(context);
@@ -154,7 +159,7 @@ class MenuImageView extends StatefulWidget {
 
 class MenuImageViewState extends State<MenuImageView> {
   final picker = ImagePicker();
-  File _image;
+
   Size size = MediaQueryData().size;
   @override
   Widget build(BuildContext context) {
@@ -163,9 +168,9 @@ class MenuImageViewState extends State<MenuImageView> {
 
       child: Column(
         children: [
-          _image == null ?
+          Provider.of<PlaceModel>(context, listen : true).image == null ?
           Container() :
-          Image.file(_image,height: 400 ,fit: BoxFit.fitWidth,),
+          Image.file(Provider.of<PlaceModel>(context, listen : true).image.file,height: 400 ,fit: BoxFit.fitWidth,),
           IconButton(icon: Icon(Icons.add_a_photo), onPressed: getImage),
         ],
       ),
@@ -176,46 +181,46 @@ class MenuImageViewState extends State<MenuImageView> {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
-      _image = File(pickedFile.path);
+      Provider.of<PlaceModel>(context, listen : false).image = new ImageModel(File(pickedFile.path));
     });
   }
 }
-
-class AddTagWidget extends StatefulWidget {
-  List<Tag> list;
-  var selected;
-
-  AddTagWidget({this.list}){selected = this.list.first;}
-  @override
-  State<StatefulWidget> createState() {
-
-    return AddTagWidgetState();
-  }
-  }
-
-
-
-class AddTagWidgetState extends State<AddTagWidget> {
-  TextEditingController _textController = TextEditingController();
-  List<Tag> initialList;
-  List<Tag> filteredList = [];
-  @override
-  Widget build(BuildContext context) {
-    print("list : " + widget.list.toString());
-    return DropdownButton(
-
-        hint: Text(widget.selected.toString()),
-        onChanged: (val) {setState(() {
-          widget.selected = val;
-        });},
-        items: widget.list.map((e) {
-          print(e.toString());
-          return DropdownMenuItem(
-              value: e,
-              child: Text(e.toString())
-          );
-        }).toList()
-      );
-  }
-
-}
+//
+//class AddTagWidget extends StatefulWidget {
+//  List<Tag> list;
+//  var selected;
+//
+//  AddTagWidget({this.list}){selected = this.list.first;}
+//  @override
+//  State<StatefulWidget> createState() {
+//
+//    return AddTagWidgetState();
+//  }
+//  }
+//
+//
+//
+//class AddTagWidgetState extends State<AddTagWidget> {
+//  TextEditingController _textController = TextEditingController();
+//  List<Tag> initialList;
+//  List<Tag> filteredList = [];
+//  @override
+//  Widget build(BuildContext context) {
+//    print("list : " + widget.list.toString());
+//    return DropdownButton(
+//
+//        hint: Text(widget.selected.toString()),
+//        onChanged: (val) {setState(() {
+//          widget.selected = val;
+//        });},
+//        items: widget.list.map((e) {
+//          print(e.toString());
+//          return DropdownMenuItem(
+//              value: e,
+//              child: Text(e.toString())
+//          );
+//        }).toList()
+//      );
+//  }
+//
+//}

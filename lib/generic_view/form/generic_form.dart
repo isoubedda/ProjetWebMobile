@@ -22,6 +22,7 @@ class GenericForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  TextFormField(
+
       maxLines: maxlines,
 
       keyboardType: textInputType,

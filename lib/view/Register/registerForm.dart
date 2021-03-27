@@ -33,7 +33,8 @@ class RegisterState extends State<Register> {
     return  Form(
         key: keyForm1,
         child: Container(
-          padding: EdgeInsets.only(left: 7, right: 7),
+          padding: EdgeInsets.only(left: 7, right: 7, top: 25, bottom: 25),
+//          padding: EdgeInsets.only(left: 7, right: 7),
           height: 300,
           child:Column(
 
@@ -46,17 +47,32 @@ class RegisterState extends State<Register> {
               child: new GenericForm( controller: pseudoController, keyForm: keyForm1,errorMessage: "Pseudo invalide" , hindText: "pseudo",icon:Icon(Icons.person_outline), textInputType: TextInputType.text, validate: FormValidator.isNotEmpty,obscureText: false,),
 
             ),
+
+
+
+
             ShadoxBoxCustom(
               shadowColor: Colors.grey,
               backgroundColors: Colors.white,
-              child: new GenericForm( controller: emailController, keyForm: keyForm1,errorMessage: "Email invalide" , hindText: "email",icon:Icon(Icons.email), textInputType: TextInputType.emailAddress, validate: FormValidator.validateEmail,obscureText: false,),
+              child: TextFormField(
 
 
-            ),
-            ShadoxBoxCustom(
-              shadowColor: Colors.grey,
-              backgroundColors: Colors.white,
-              child: new GenericForm(controller: pwdController, keyForm: keyForm1,errorMessage: "Mot de passe invalide" , hindText: "mot de passe ",icon:Icon(Icons.lock), textInputType: TextInputType.visiblePassword, validate: FormValidator.validatePassword,maxlines : 0,obscureText: true,),
+                keyboardType: TextInputType.text,
+                controller: pwdController,
+                obscureText: true,
+
+
+                decoration: new InputDecoration(
+                  focusColor: Colors.red,
+                  labelText: "Mot de passe",
+                  labelStyle: TextStyle(
+                      color: Colors.black
+                  ),
+                  alignLabelWithHint: true,
+                ),
+                validator : (value) => FormValidator.isNotEmpty(value)  == false ?  "erreur password" : null,
+                onSaved: (value) => pwdController.text = value.trim(),
+              )
 
             ),
             SimpleFlatButton(text: "Inscription",onPressed: submit,)

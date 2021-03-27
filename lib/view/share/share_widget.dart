@@ -13,9 +13,10 @@ import 'package:share/share.dart';
 final String PATH =  "assets/images";
 
 class ShareWidget extends StatelessWidget {
-  final model;
+  var data;
+  var isList = false;
 
-  ShareWidget(this.model);
+  ShareWidget(this.data, this.isList);
 
   GpxKml gpxKml = new GpxKml();
   List<String> nameExports = [ "Waze", "KML", "GPX", "GeoJSon", "Envoyer"];
@@ -61,7 +62,7 @@ class ShareWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          InkWell(
+          !isList ? InkWell(
             onTap: _launchURL,
 //            onTap: () {
 //
@@ -72,14 +73,19 @@ class ShareWidget extends StatelessWidget {
                 Image.asset("$PATH/maps.png", height: 50,),
                 Text("Maps"),
               ],
-            ),),
+            ),) : Visibility(child: Container(), visible: false,),
 
            InkWell(
             onTap: () {
+              var gpxData;
               final RenderBox box = context.findRenderObject();
-              var f = gpxKml.listplacekmlConvert([a1, a2, a3]);
+              if (this.isList) {
+                 gpxData = gpxKml.listplacekmlConvert(data);
+              }else {
+                gpxData = gpxKml.placeGpxConvert(data);
+              }
               List<String> l = [];
-              f.then((value) {
+              gpxData.then((value) {
                 print("valeur de value : $value");
                 l.add(value);
                 print(l.toString());
@@ -115,12 +121,12 @@ class ShareWidget extends StatelessWidget {
           ),InkWell(
             onTap: () {
               final RenderBox box = context.findRenderObject();
-              var f = gpxKml.listplacekmlConvert([a1, a2, a3]);
+              var f = gpxKml.ConvertToJson(data);
               List<String> l = [];
               f.then((value) {
                 print("valeur de value : $value");
                 l.add(value);
-                print(l.toString());
+                print("lalalal ! " + l.toString());
                 Share.shareFiles(l, subject: "test"); //
                 print("ok");
               });
@@ -160,7 +166,7 @@ class ShareWidget extends StatelessWidget {
   }
 
   _launchURL() async {
-    var coords = model.coords;
+    var coords = isList ? null : data.coords;
     var lat = coords.latitude.toString();
     var long = coords.longitude.toString();
     var queryP = {

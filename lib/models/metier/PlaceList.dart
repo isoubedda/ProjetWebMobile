@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/metier/simu.dart';
+import 'package:flutter_app_fac/res/generate_random_color.dart';
 import 'package:flutter_app_fac/view/map/heroAnimation/heroAnimation.dart';
 import 'package:flutter_app_fac/view/places/placeView.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -12,6 +13,9 @@ import 'TagModel.dart';
 
 class PlaceList extends ChangeNotifier {
   List<PlaceModel> _places = [];
+  List<Tag> _tags = [];
+  List<Color> _colors;
+  RandomColor randomColor = new RandomColor();
 
 
 
@@ -37,27 +41,57 @@ class PlaceList extends ChangeNotifier {
     notifyListeners();
   }
 
+  addTag(Tag tag) {
+    _tags.add(tag);
+    notifyListeners();
+  }
+  void removeTag(value) {
+    _tags.remove(value);
+    notifyListeners();
+  }
 
-  List<Marker> getPlacesByCollection (context, tags) {
-    List<Marker> list  = [];
 
-    for (var place in _places) {
-      if (true){
-        list.add(
-            Marker(
-              point : place.coords,
-              height: 300,
-              builder: (context) => IconButton(icon: Icon(Icons.location_on), onPressed: (){
-                Navigator.push(context,MaterialPageRoute(builder: (context) => PlaceView(place)) );
-              },)
 
-            ));
+  List<Tag> getTags () {
+    List<Tag> tags = [];
+    for (PlaceModel place in _places){
+      for (Tag tag in place.tags) {
+        if(tags.contains(Tag)){
+          tags.add(tag);
+        }
       }
     }
+    return tags;
+  }
 
-    return list;
+  getPlaces() {
+    List<PlaceModel> places = [];
+    for (Tag tag in _tags) {
+      for(PlaceModel place in _places) {
+        if(place.tags.contains(tag) && !places.contains(tag)){
+          places.add(place);
+        }
+      }
+    }
+    return places;
 
   }
+  getPlacesWithColor() {
+    List places = [];
+    int i = 0;
+    for (Tag tag in _tags) {
+      for(PlaceModel place in _places) {
+        if(place.tags.contains(tag) && !places.contains(tag)){
+          places.add({"place": place, "color" : randomColor.colors[i]});
+        }
+      }
+      i++;
+    }
+    return places;
+
+  }
+
+
 
   List<PlaceModel> get places => _places;
 
@@ -69,4 +103,8 @@ class PlaceList extends ChangeNotifier {
   set places(List<PlaceModel> value) {
     _places = value;
   }
+
+  List<Tag> get tags => _tags;
+
+  List<Color> get colors => _colors;
 }

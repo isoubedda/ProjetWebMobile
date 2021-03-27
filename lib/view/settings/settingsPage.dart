@@ -17,6 +17,7 @@ class SettingsPage extends StatefulWidget {
         padding: EdgeInsets.only(top: 25),
         margin: EdgeInsets.all(10),
         height: 400,
+        width: 300,
         decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(),
@@ -25,7 +26,7 @@ class SettingsPage extends StatefulWidget {
         child: Column(
         children: [
           buildOnOffLocation(),
-          ChoicePerfLocation(),
+//          ChoicePerfLocation(),
       ],
     ),
     ));
