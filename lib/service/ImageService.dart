@@ -31,7 +31,7 @@ class ImageService {
     }
   }
 
-  Future<List<ImageModel>> postImage (File file, ImageModel image) async {
+  Future<ImageModel> postImage (File file, ImageModel image) async {
     Response response = await http.post(EntryPoint.urlImage,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -39,7 +39,6 @@ class ImageService {
       body: jsonEncode(image)
     );
     if(response.statusCode == 200 ) {
-      Iterable l = json.decode(response.body);
   
       var res = http.MultipartRequest('POST',Uri.parse(EntryPoint.urlImage),);
 
@@ -58,7 +57,7 @@ class ImageService {
       res.headers.addAll(headers);
       var result = await res.send();
       if (result.statusCode == 200) {
-        return l.map((e) => ImageModel.fromJson(e)).toList();
+        return ImageModel.fromJson(json.decode(response.body));
       }else {
       throw new Exception('Faile to load the image file');
       }  
@@ -67,7 +66,7 @@ class ImageService {
     }
   }
 
-  Future<List<ImageModel>> patchPlace (File file,ImageModel image) async {
+  Future<ImageModel> patchImage (File file,ImageModel image) async {
     Response response = await http.patch(image.links.href,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
@@ -75,8 +74,6 @@ class ImageService {
       body: jsonEncode(image)
     );
     if(response.statusCode == 200 ) {
-      Iterable l = json.decode(response.body);
-  
       var res = http.MultipartRequest('PATCH',Uri.parse(EntryPoint.urlImage+"/"+image.id),);
 
       Map<String,String> headers={
@@ -94,7 +91,7 @@ class ImageService {
       res.headers.addAll(headers);
       var result = await res.send();
       if (result.statusCode == 200) {
-        return l.map((e) => ImageModel.fromJson(e)).toList();
+        return ImageModel.fromJson(json.decode(response.body));
       }else {
       throw new Exception('Faile to patch the image file');
       }  

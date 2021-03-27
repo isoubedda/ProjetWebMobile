@@ -32,7 +32,7 @@ class PlaceServices {
     }
   }
 
-  Future<List<PlaceModel>> postPlace (PlaceModel place) async {
+  Future<PlaceModel> postPlace (PlaceModel place) async {
     Response response = await http.post(EntryPoint.urlPlace,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -40,14 +40,15 @@ class PlaceServices {
     body: jsonEncode(place)
   );
     if(response.statusCode == 200 ) {
-      Iterable l = json.decode(response.body);
-      return l.map((e) => PlaceModel.fromJson(e)).toList();
+      //Iterable l = json.decode(response.body);
+      //return l.map((e) => PlaceModel.fromJson(e)).toList();
+      return PlaceModel.fromJson(json.decode(response.body));
     }else {
       throw new Exception('Faile to load the place');
     }
   }
 
-  Future<List<PlaceModel>> patchPlace (PlaceModel place) async {
+  Future<PlaceModel> patchPlace (PlaceModel place) async {
     Response response = await http.patch(entryPoint.urlPlace,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
@@ -55,8 +56,9 @@ class PlaceServices {
     body: place.toJson()
   );
     if(response.statusCode == 200 ) {
-      Iterable l = json.decode(response.body);
-      return l.map((e) => PlaceModel.fromJson(e)).toList();
+      //Iterable l = json.decode(response.body);
+      //return l.map((e) => PlaceModel.fromJson(e)).toList();
+      return PlaceModel.fromJson(json.decode(response.body));
     }else {
       throw new Exception('Faile to load the place');
     }
