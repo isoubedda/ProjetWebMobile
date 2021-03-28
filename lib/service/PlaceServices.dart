@@ -6,22 +6,47 @@ import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:http/http.dart';
+import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:hive/hive.dart';
 
 class PlaceServices {
   final entryPoint;
+  Box<PlaceModel> placeBox;
 
   PlaceServices(this.entryPoint);
 
   Future<List<PlaceModel>> getAll () async {
-    Response response = await http.get(entryPoint.urlPlace);
-    if(response.statusCode == 200 ) {
-      Iterable l = json.decode(response.body);
-      return l.map((e) => PlaceModel.fromJson(e)).toList();
-    }else {
-      throw new Exception('Faile to get All places');
+    await Hive.openBox<PlaceModel>("place");
+    
+    try{
+      Response response = await http.get(entryPoint.urlPlace);
+      if(response.statusCode == 200 ) {
+        placeBox.clear();
+        Iterable l = json.decode(response.body);
+        l.map((e) => putDataPlaceToHave(PlaceModel.fromJson(e)));
+        //return l.map((e) => PlaceModel.fromJson(e)).toList();
+        return placeBox.values;
+      }else {
+        print("Faile to getAll places");
+        if(placeBox.values.isNotEmpty){
+          return placeBox.values; 
+        }
+      }
+    }catch(SocketException){
+        print("Non internet");
+        if(placeBox.values.isNotEmpty){
+          return placeBox.values; 
+        }
     }
+
   }
 
+  Future putDataPlaceToHave(PlaceModel place) async {
+    //inser new data
+    placeBox.add(place);
+
+  }
 
   Future<void> removePlace(PlaceModel place) async {
     Response response = await http.delete(place.links.href);

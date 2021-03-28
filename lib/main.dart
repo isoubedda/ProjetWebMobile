@@ -13,14 +13,22 @@ import 'package:flutter_app_fac/view/places/add_place_view.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
+import 'package:hive/hive.dart';
 
 import 'models/counter.dart';
 import 'models/metier/TagList.dart';
+import 'models/metier/PlaceModel.dart';
 import 'models/metier/TagModel.dart';
 import 'models/metier/simu.dart';
 import 'view/map/maps.dart';
 
-void main() {
+void main() async{
+  //Initialization for Have DataBase
+  final appDir = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(appDir.path);
+  Hive.registerAdapter<PlaceModel>(PlaceModelAdapter());
+
   runApp(MyApp());
 }
 

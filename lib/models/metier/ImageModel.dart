@@ -4,13 +4,22 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'Links.dart';
+import 'package:hive/hive.dart';
 
+part 'ImageModel.g.dart';
+
+@HiveType(typeId: 2)
 class ImageModel extends ChangeNotifier {
   
+  @HiveField(0)
   String id;
+  @HiveField(1)
   String placeUrl;
+  @HiveField(2)
   String creationDate;
+  @HiveField(3)
   String lastUpdate;
+  @HiveField(4)
   Links links;
   File file;
   

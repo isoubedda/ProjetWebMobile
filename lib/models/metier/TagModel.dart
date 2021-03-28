@@ -1,15 +1,23 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
+part 'TagModel.g.dart';
+
+@HiveType(typeId: 1)
 class Tag extends ChangeNotifier{
   String _name;
   String _id;
   String _tagUrl;
 
-  Tag(this._name);
+  
 
-  Tag.forServices(this._name, this._id, this._tagUrl);
+  Tag({String name, String id, String tagUrl}) {
+    this._name = name;
+    this._id = id;
+    this._tagUrl = tagUrl;
+  }
 
   String get name => _name;
 
