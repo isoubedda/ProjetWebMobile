@@ -18,10 +18,11 @@ class PlaceServices extends ChangeNotifier{
   PlaceServices(this.entryPoint);
 
   Future<List<PlaceModel>> getAll () async {
-    await Hive.openBox<PlaceModel>("place");
-    
+    placeBox = await Hive.openBox<PlaceModel>("place");
+    Response response;
     try{
-      Response response = await http.get(entryPoint.urlPlace);
+      response = await http.get(entryPoint.urlPlace);
+      print(response.statusCode);
       if(response.statusCode == 200 ) {
         placeBox.clear();
         Iterable l = json.decode(response.body);
@@ -36,6 +37,7 @@ class PlaceServices extends ChangeNotifier{
       }
     }catch(SocketException){
         print("Non internet");
+        print(response.statusCode);
         if(placeBox.values.isNotEmpty){
           return placeBox.values; 
         }

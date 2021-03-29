@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
 
               case Routes.rootpage :
                 print("la");
-                return TestService();
+                return RootPage();
                 break;
               case Routes.maps :
                 print("la");
@@ -90,7 +90,7 @@ class MyApp extends StatelessWidget {
                 break;
               case Routes.exemple :
                 print("la");
-                return Exemple();
+                return TestService();
                 break;
               case Routes.register :
                 print("la");

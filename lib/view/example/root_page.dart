@@ -41,7 +41,7 @@ class RootPage extends StatelessWidget {
   }
 
   void toExemple (context) {
-    Navigator.pushNamed(context, Routes.rootpage);
+    Navigator.pushNamed(context, Routes.exemple);
   }
 
   void toRegister (context) {
