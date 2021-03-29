@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
@@ -10,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
 
-class PlaceServices {
+class PlaceServices extends ChangeNotifier{
   final entryPoint;
   Box<PlaceModel> placeBox;
 

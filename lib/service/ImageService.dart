@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_fac/models/metier/ImageModel.dart';
 import 'package:http/http.dart';
 
-class ImageService {
+class ImageService extends ChangeNotifier {
   final entryPoint;
 
   ImageService(this.entryPoint);

@@ -21,7 +21,7 @@ class RootPage extends StatelessWidget {
             toMap(context)
           },),
           SimpleIconButton(icon: Icons.home, onPressed: () => {
-            MyApp1()
+            toExemple(context)
           },),
           SimpleIconButton(icon: Icons.location_city, onPressed: () => {
             toLocation(context)
@@ -41,7 +41,7 @@ class RootPage extends StatelessWidget {
   }
 
   void toExemple (context) {
-    Navigator.pushNamed(context, Routes.exemple);
+    Navigator.pushNamed(context, Routes.rootpage);
   }
 
   void toRegister (context) {
