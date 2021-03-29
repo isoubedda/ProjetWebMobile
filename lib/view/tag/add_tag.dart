@@ -10,8 +10,11 @@ import 'package:flutter_app_fac/generic_view/form/generic_form.dart';
 import 'package:flutter_app_fac/generic_view/form/shadow_box.dart';
 import 'package:flutter_app_fac/models/fonctionnal/TestLoginAnimation.dart';
 import 'package:flutter_app_fac/models/fonctionnal/selectItem.dart';
+import 'package:flutter_app_fac/models/metier/PlaceList.dart';
+import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/services/login/loginService.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
+import 'package:flutter_app_fac/view/tag/tag_widget.dart';
 import 'package:provider/provider.dart';
 
 class AddTagWidget extends StatefulWidget {
@@ -43,6 +46,7 @@ class AddTagWidgetState extends State<AddTagWidget> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+
             ShadoxBoxCustom(
               shadowColor: Colors.grey,
               backgroundColors: Colors.white,

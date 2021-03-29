@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/fonctionnal/MapControllerCustom.dart';
+import 'package:flutter_app_fac/models/fonctionnal/select_tag.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/collectionModel.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
@@ -25,6 +26,7 @@ import 'view/map/maps.dart';
 
 void main() async{
   //Initialization for Have DataBase
+  WidgetsFlutterBinding.ensureInitialized();
   final appDir = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDir.path);
   Hive.registerAdapter<PlaceModel>(PlaceModelAdapter());
@@ -46,7 +48,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider<Counter>(create: (context) => Counter()),
         ChangeNotifierProvider<Simu>(create: (context) => new Simu()),
-//        ChangeNotifierProvider<ViewMarkers>(create: (context) => new ViewMarkers(context)),
+        ChangeNotifierProvider<SelectTag>(create: (context) => new SelectTag()),
         Provider<MapController>(create: (context) => new MapController()),
         ChangeNotifierProvider<MapControllerCustom>(create: (context) => MapControllerCustom() ),
         ChangeNotifierProvider<PlaceList>(create: (context) => PlaceList(context) ),

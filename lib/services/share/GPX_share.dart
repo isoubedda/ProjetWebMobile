@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/place.dart';
 import 'package:flutter_app_fac/services/share/fileService.dart';
+import 'package:geojson/geojson.dart';
 import 'package:geojson_vi/geojson_vi.dart';
 
 import 'package:geopoint/geopoint.dart';
@@ -98,9 +99,8 @@ class  GpxKml {
 
     list.forEach((element) {
      final geoPoint = GeoPoint(latitude: element.coords.latitude, longitude: element.coords.longitude, name: element.label,slug: "hello");
-     final feature = new GeoJSONFeature(GeoJSONPoint([element.coords.longitude, element.coords.latitude]),properties: geoPoint.toMap(), title: element.tags.toString());
+     final feature = new GeoJSONFeature(GeoJSONPoint([element.coords.longitude, element.coords.latitude]),properties:  geoPoint.toMap(), title: element.tags.toString());
      featureCollection.features.add(feature);
-
     });
     file.writeFile(featureCollection.toJSON(), name);
 
@@ -112,9 +112,48 @@ class  GpxKml {
 
 
 
+  Future <List<PlaceModel>>  fromGPx (String path, PlaceModel place) async {
+    final List<PlaceModel> places = [];
+    final f =  File(path);
 
+    print("bug");
+    String r = await f.readAsStringSync();
+    print(r);
+    var xmlgpx = GpxReader().fromString(r);
+    xmlgpx.wpts.forEach((element) {
+      places.add(new PlaceModel(
+        coords: new LatLng(element.lat, element.lon),
+        description: element.desc,
+        label :element.name,
+        tags: place.tags
+      )); }
 
+      );
+  }
+
+  Future <List<PlaceModel>>  fromGeojson (String path, PlaceModel place) async {
+    final List<PlaceModel> places = [];
+    final f =  File(path);
+
+    print("bug");
+    String r = await f.readAsStringSync();
+    final features = await featuresFromGeoJson(r);
+    print(features.collection.toString());
+    print(GeoJsonFeatureType.point);
+    for (var feature in features.collection) {
+      
+      if (feature.type == GeoJsonFeatureType.point) {
+        places.add(new PlaceModel(
+          label: feature.properties[""],
+        ));
+
+      }
     }
+  }
+
+
+
+}
 
 
 

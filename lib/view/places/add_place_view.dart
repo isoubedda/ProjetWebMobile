@@ -11,18 +11,12 @@ import 'package:flutter_app_fac/models/metier/ImageModel.dart';
 import 'package:flutter_app_fac/models/metier/Picture.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
-import 'package:flutter_app_fac/models/metier/TagList.dart';
-import 'package:flutter_app_fac/models/metier/TagModel.dart';
-import 'package:flutter_app_fac/models/place.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
-import 'package:flutter_app_fac/view/places/placeView.dart';
 import 'package:flutter_app_fac/view/tag/tag_grid_view.dart';
 import 'package:flutter_app_fac/view/tag/tag_widget.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong/latlong.dart';
 import 'package:provider/provider.dart';
-//List<Tag> list = [new Tag("all"), new Tag("favoris"), new Tag("general")];
-
 
 class AddPlaceViewProvider extends StatelessWidget {
 
@@ -101,7 +95,7 @@ class AddPlaceViewState extends State<AddPlaceView> {
               ],),
               Container(height: 100, child :  TagWidget(Provider.of<PlaceModel>(context,listen: true).tags, Provider.of<PlaceModel>(context,listen: true).tags.remove),),
 
-               Container(child: TestPage(Provider.of<PlaceModel>(context,listen: true)), height: 150,),
+               Container(child: SelectOrCreateTagWidget(Provider.of<PlaceModel>(context,listen: true)), height: 150,),
 
 
 
@@ -181,46 +175,7 @@ class MenuImageViewState extends State<MenuImageView> {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
     setState(() {
-      Provider.of<PlaceModel>(context, listen : false).image = new ImageModel(File(pickedFile.path));
+      Provider.of<PlaceModel>(context, listen : false).image = new ImageModel(file :File(pickedFile.path));
     });
   }
 }
-//
-//class AddTagWidget extends StatefulWidget {
-//  List<Tag> list;
-//  var selected;
-//
-//  AddTagWidget({this.list}){selected = this.list.first;}
-//  @override
-//  State<StatefulWidget> createState() {
-//
-//    return AddTagWidgetState();
-//  }
-//  }
-//
-//
-//
-//class AddTagWidgetState extends State<AddTagWidget> {
-//  TextEditingController _textController = TextEditingController();
-//  List<Tag> initialList;
-//  List<Tag> filteredList = [];
-//  @override
-//  Widget build(BuildContext context) {
-//    print("list : " + widget.list.toString());
-//    return DropdownButton(
-//
-//        hint: Text(widget.selected.toString()),
-//        onChanged: (val) {setState(() {
-//          widget.selected = val;
-//        });},
-//        items: widget.list.map((e) {
-//          print(e.toString());
-//          return DropdownMenuItem(
-//              value: e,
-//              child: Text(e.toString())
-//          );
-//        }).toList()
-//      );
-//  }
-//
-//}

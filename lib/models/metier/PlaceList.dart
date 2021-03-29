@@ -41,6 +41,13 @@ class PlaceList extends ChangeNotifier {
     notifyListeners();
   }
 
+  void addAllPlaces (List places){
+    places.forEach((element) {
+      _places.add(element);
+    });
+    notifyListeners();
+  }
+
   addTag(Tag tag) {
     _tags.add(tag);
     notifyListeners();
@@ -62,6 +69,18 @@ class PlaceList extends ChangeNotifier {
       }
     }
     return tags;
+  }
+
+  Tag createOrReturnTag (String tagName) {
+    var list = this.getTags();
+    list.forEach((element) {
+      if(element.name.toLowerCase() == tagName.toLowerCase()) {
+        return element;
+      }
+      return null;
+    });
+
+
   }
 
   getPlaces() {

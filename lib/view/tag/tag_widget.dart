@@ -3,15 +3,15 @@ import 'package:flutter_app_fac/models/metier/TagList.dart';
 import 'package:flutter_app_fac/models/metier/TagModel.dart';
 import 'package:provider/provider.dart';
 
-class TestPage extends StatefulWidget {
+class SelectOrCreateTagWidget extends StatefulWidget {
   var model;
 
-  TestPage(this.model);
+  SelectOrCreateTagWidget(this.model,);
 
   @override
-  _TestPageState createState() => _TestPageState();
+  _SelectOrCreateTagWidgetState createState() => _SelectOrCreateTagWidgetState();
 }
-class _TestPageState extends State<TestPage> {
+class _SelectOrCreateTagWidgetState extends State<SelectOrCreateTagWidget> {
   final  keyForm = new GlobalKey<FormState>();
   TextEditingController _textController = TextEditingController();
   List<Tag> initialList;
@@ -34,7 +34,7 @@ class _TestPageState extends State<TestPage> {
             Row(
               children: [
                 Container(
-                  width: mediaQuery.size.height * 0.4,
+                  width: mediaQuery.size.height * 0.35,
                   child: TextField(
                     controller: _textController,
                     onChanged: (text) {
@@ -93,7 +93,7 @@ class _TestPageState extends State<TestPage> {
 
   void submit () {
     if(saveAndValidate()){
-      var tag = new Tag(_textController.text);
+      var tag = new Tag(name : _textController.text);
       Provider.of<TagList>(context, listen: false).tags.add(tag);
       widget.model.addTag(tag);
       _textController.clear();
