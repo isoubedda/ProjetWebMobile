@@ -22,6 +22,8 @@ class PlaceServices extends ChangeNotifier{
     placeBox = await Hive.openBox<PlaceModel>("place");
     Response response;
     print(entryPoint.urlPlace);
+    response = await http.get(entryPoint.urlPlace);
+    print(response.statusCode);
     try{
       response = await http.get(entryPoint.urlPlace);
       print(response.statusCode);
