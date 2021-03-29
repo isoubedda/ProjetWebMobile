@@ -93,7 +93,7 @@ class _SelectOrCreateTagWidgetState extends State<SelectOrCreateTagWidget> {
 
   void submit () {
     if(saveAndValidate()){
-      var tag = new Tag(_textController.text);
+      var tag = new Tag(name : _textController.text);
       Provider.of<TagList>(context, listen: false).tags.add(tag);
       widget.model.addTag(tag);
       _textController.clear();

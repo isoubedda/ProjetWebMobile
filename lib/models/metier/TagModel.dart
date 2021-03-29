@@ -13,7 +13,7 @@ class Tag extends ChangeNotifier{
 
   
 
-  Tag({String name, String id, String tagUrl}) {
+  Tag( {String name, String id, String tagUrl}) {
     this._name = name;
     this._id = id;
     this._tagUrl = tagUrl;
