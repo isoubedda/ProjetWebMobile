@@ -1,13 +1,19 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/fonctionnal/MapControllerCustom.dart';
 import 'package:flutter_app_fac/models/fonctionnal/select_tag.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/collectionModel.dart';
+import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
 import 'package:flutter_app_fac/routes.dart';
+import 'package:flutter_app_fac/service/ImageService.dart';
+import 'package:flutter_app_fac/service/PlaceServices.dart';
 import 'package:flutter_app_fac/services/location/get_location.dart';
 import 'package:flutter_app_fac/view/Register/LoginRegisterWidgetASUPPRIMER.dart';
 import 'package:flutter_app_fac/view/example/exaemple.dart';
+import 'package:flutter_app_fac/view/example/test_service.dart';
 import 'package:flutter_app_fac/view/example/root_page.dart';
 import 'package:flutter_app_fac/view/home/home_provider.dart';
 import 'package:flutter_app_fac/view/places/add_place_view.dart';
@@ -39,6 +45,7 @@ class MyApp extends StatelessWidget {
   ListenLocationService locationService = new ListenLocationService();
 
   // This widget is the root of your application.
+  EntryPoint entryPoint = new EntryPoint();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -49,6 +56,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<Counter>(create: (context) => Counter()),
         ChangeNotifierProvider<Simu>(create: (context) => new Simu()),
         ChangeNotifierProvider<SelectTag>(create: (context) => new SelectTag()),
+        ChangeNotifierProvider<ImageService>(create: (context) => new ImageService(entryPoint)),
+        ChangeNotifierProvider<PlaceServices>(create: (context) => new PlaceServices(entryPoint)),
         Provider<MapController>(create: (context) => new MapController()),
         ChangeNotifierProvider<MapControllerCustom>(create: (context) => MapControllerCustom() ),
         ChangeNotifierProvider<PlaceList>(create: (context) => PlaceList(context) ),
@@ -81,7 +90,7 @@ class MyApp extends StatelessWidget {
                 break;
               case Routes.exemple :
                 print("la");
-                return Exemple();
+                return TestService();
                 break;
               case Routes.register :
                 print("la");

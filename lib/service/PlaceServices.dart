@@ -1,8 +1,10 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
@@ -11,8 +13,8 @@ import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
 
-class PlaceServices {
-  final entryPoint;
+class PlaceServices extends ChangeNotifier{
+  final EntryPoint entryPoint;
   Box<PlaceModel> placeBox;
 
   PlaceServices(this.entryPoint);
@@ -20,8 +22,13 @@ class PlaceServices {
   Future<List<PlaceModel>> getAll () async {
     placeBox = await Hive.openBox<PlaceModel>("place");
     
+    Response response;
+    print(entryPoint.urlPlace);
+    response = await http.get(entryPoint.urlPlace);
+    print(response.statusCode);
     try{
-      Response response = await http.get(entryPoint.urlPlace);
+      response = await http.get(entryPoint.urlPlace);
+      print(response.statusCode);
       if(response.statusCode == 200 ) {
         Iterable l = json.decode(response.body);
         if(!IterableEquality().equals(l,placeBox.values)){
@@ -64,7 +71,7 @@ class PlaceServices {
   }
 
   Future<PlaceModel> postPlace (PlaceModel place) async {
-    Response response = await http.post(EntryPoint.urlPlace,
+    Response response = await http.post(entryPoint.urlPlace,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
