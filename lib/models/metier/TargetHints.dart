@@ -1,3 +1,9 @@
+
+import 'package:hive/hive.dart';
+
+part 'TargetHints.g.dart';
+
+@HiveType(typeId: 4)
 class TargetHints {
   List<String> _allow;
 

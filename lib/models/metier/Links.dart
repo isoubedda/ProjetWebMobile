@@ -1,11 +1,19 @@
 
 
 import 'TargetHints.dart';
+import 'package:hive/hive.dart';
 
+part 'Links.g.dart';
+
+@HiveType(typeId: 3)
 class Links {
+  @HiveField(0)
   String _rel;
+  @HiveField(1)
   String _href;
+  @HiveField(2)
   String _targetMediaType;
+  @HiveField(3)
   TargetHints _targetHints;
   
   Links(this._rel, this._href, this._targetMediaType , this._targetHints);
