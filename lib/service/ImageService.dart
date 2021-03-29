@@ -33,7 +33,7 @@ class ImageService extends ChangeNotifier {
   }
 
   Future<ImageModel> postImage (File file, ImageModel image) async {
-    Response response = await http.post(EntryPoint.urlImage,
+    Response response = await http.post(entryPoint.urlImage,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -41,7 +41,7 @@ class ImageService extends ChangeNotifier {
     );
     if(response.statusCode == 200 ) {
   
-      var res = http.MultipartRequest('POST',Uri.parse(EntryPoint.urlImage),);
+      var res = http.MultipartRequest('POST',Uri.parse(entryPoint.urlImage),);
 
       Map<String,String> headers={
       'Content-Type': "multipart/form-data",
@@ -75,7 +75,7 @@ class ImageService extends ChangeNotifier {
       body: jsonEncode(image)
     );
     if(response.statusCode == 200 ) {
-      var res = http.MultipartRequest('PATCH',Uri.parse(EntryPoint.urlImage+"/"+image.id),);
+      var res = http.MultipartRequest('PATCH',Uri.parse(entryPoint.urlImage+"/"+image.id),);
 
       Map<String,String> headers={
       'Content-Type': "multipart/form-data",

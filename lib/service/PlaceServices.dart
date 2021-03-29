@@ -1,6 +1,7 @@
 
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
@@ -12,7 +13,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
 
 class PlaceServices extends ChangeNotifier{
-  final entryPoint;
+  final EntryPoint entryPoint;
   Box<PlaceModel> placeBox;
 
   PlaceServices(this.entryPoint);
@@ -20,6 +21,7 @@ class PlaceServices extends ChangeNotifier{
   Future<List<PlaceModel>> getAll () async {
     placeBox = await Hive.openBox<PlaceModel>("place");
     Response response;
+    print(entryPoint.urlPlace);
     try{
       response = await http.get(entryPoint.urlPlace);
       print(response.statusCode);
@@ -37,7 +39,6 @@ class PlaceServices extends ChangeNotifier{
       }
     }catch(SocketException){
         print("Non internet");
-        print(response.statusCode);
         if(placeBox.values.isNotEmpty){
           return placeBox.values; 
         }
@@ -61,7 +62,7 @@ class PlaceServices extends ChangeNotifier{
   }
 
   Future<PlaceModel> postPlace (PlaceModel place) async {
-    Response response = await http.post(EntryPoint.urlPlace,
+    Response response = await http.post(entryPoint.urlPlace,
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
