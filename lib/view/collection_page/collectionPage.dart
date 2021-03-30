@@ -9,6 +9,7 @@ import 'package:flutter_app_fac/models/metier/TagList.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
 import 'package:flutter_app_fac/view/share/share_widget.dart';
 import 'package:flutter_app_fac/view/tag/add_tag.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'dart:math' as math;
@@ -40,6 +41,7 @@ class CollectionPageState extends State<CollectionPage>{
             IconButton(icon: Icon(Icons.map), onPressed: (){
               Provider.of<SelectItem>(context,listen: false).appBarKey.currentState.animateTo(2);
               Provider.of<SelectItem>(context,listen: false).indexSelected = 2;
+              Provider.of<MapController>(context, listen: false).move(Provider.of<PlaceList>(context,listen: false).places.last.coords, 8);
             }),
             IconButton(icon: Icon(Icons.share), onPressed: (){
               print(Provider.of<PlaceList>(context,listen : false).getPlaces().toString());
@@ -62,7 +64,7 @@ class CollectionPageState extends State<CollectionPage>{
     print(indexSelected);
     return InkWell(
       onLongPress: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => AddTagWidget(tag)) );
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddTagWidget(tag,callback,Provider.of<PlaceList>(context,listen : false).removeTag)) );
       },
       onTap: (){
         indexSelected[index] = !indexSelected[index];
@@ -87,6 +89,12 @@ class CollectionPageState extends State<CollectionPage>{
       )
       ,
     );
+  }
+
+  void callback () {
+    setState(() {
+
+    });
   }
 
 

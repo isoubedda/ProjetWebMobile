@@ -5,8 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
 import 'package:flutter_app_fac/view/map/heroAnimation/heroAnimation.dart';
+import 'package:flutter_app_fac/view/share/share_widget.dart';
 import 'package:flutter_app_fac/view/tag/tag_grid_view.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
+
+import '../../routes.dart';
+import 'add_place_view.dart';
 
 class PlaceView extends StatelessWidget {
   final place;
@@ -20,8 +25,8 @@ class PlaceView extends StatelessWidget {
       body : CustomScrollView(
         slivers: [
 
-          buildSilverAppBar(),
-          SliverToBoxAdapter(child: Container(color : Colors.white,height : 80 ,child: TagWidget(place.tags, place.tags.remove))),
+          buildSilverAppBar(context),
+          SliverToBoxAdapter(child: Container(color : Colors.white,height : 80 ,child: TagWidget(place.tags, null))),
           SliverToBoxAdapter(child: Container(padding: EdgeInsets.all(10),child: Text(place.description),),),
 
 
@@ -50,7 +55,7 @@ class PlaceView extends StatelessWidget {
                 decoration: BoxDecoration(
 
                 ),
-                child: Image.file(place.image.file,fit: BoxFit.cover,)
+                child: place.image!= null ? Image.file(place.image.file,fit: BoxFit.cover,): Image.asset("assets/images/testImage.jpeg")
             );
           },
         );
@@ -58,7 +63,7 @@ class PlaceView extends StatelessWidget {
     ),);
   }
 
-  Widget buildSilverAppBar() {
+  Widget buildSilverAppBar(context) {
     return SliverAppBar(
       iconTheme: IconThemeData(
         color: Colors.black,
@@ -70,14 +75,26 @@ class PlaceView extends StatelessWidget {
       expandedHeight: 160.0,
 
       actions: [
-        IconButtonColorChangeOnPressed(),
+        // IconButtonColorChangeOnPressed(),
+
         InkWell(
-            onTap: (){},
+          onTap: (){
+            Navigator.pushNamed(context, Routes.addplace, arguments: place );
+          },
+          splashColor: Colors.white,
+          child:  Icon(
+
+              Icons.handyman),
+        ),
+        Container(width: 10,),
+        InkWell(
+            onTap: (){showModalBottomSheet(context: context, builder: (context) => ShareWidget(place, false));},
             splashColor: Colors.white,
             child:  Icon(
-                
+
                   Icons.share),
             ),
+        Container(width: 20,),
           
 
       ],

@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart' as cu;
 import 'package:flutter_app_fac/generic_view/form/generic_form.dart';
 import 'package:flutter_app_fac/generic_view/form/shadow_box.dart';
+import 'package:flutter_app_fac/models/fonctionnal/selectItem.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';
+import 'package:flutter_app_fac/services/login/loginService.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
 import 'package:flutter_app_fac/view/Register/LoginForm.dart';
 import 'package:flutter_app_fac/view/Register/registerForm.dart';
 
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:provider/provider.dart';
 
 
 class LoginRegisterWidget extends StatefulWidget {
@@ -44,7 +47,7 @@ class LoginRegisterWidgetState extends State<LoginRegisterWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("nouveau"),
+              Text("Connexion"),
               cu.CupertinoSwitch(
                   activeColor: Colors.blue,
                   trackColor: Colors.blue,
@@ -54,7 +57,7 @@ class LoginRegisterWidgetState extends State<LoginRegisterWidget> {
                       onFirstPage = state;
                     });
                   }),
-              Text("inscription")
+              Text("Inscription")
             ],
           ),
           Expanded(
@@ -109,11 +112,22 @@ class UpdateUserViewState extends State<UpdateUserView>{
   Widget build(BuildContext context) {
     cu.MediaQueryData mediaQuery = MediaQuery.of(context);
     return Container(
-      color: Colors.white,
-      child: ListView(
+      height: 400,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(),
+          borderRadius: BorderRadius.circular(10)
+      ),
+
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           formUsernameUpdate(mediaQuery),
           formPasswordUpdate(mediaQuery),
+          TextButton(onPressed: () {Provider.of<LoginService>(context,listen: false).isConnected =false; Provider.of<SelectItem>(context,listen: false).indexSelected = 2;
+          Provider.of<SelectItem>(context,listen: false).appBarKey.currentState.animateTo(2); setState(() {
+
+          });}, child: Text("Déconnexion"))
         ],
       ),
     );

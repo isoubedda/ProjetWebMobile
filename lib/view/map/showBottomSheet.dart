@@ -25,6 +25,7 @@ class ShowBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
     print("$coords");
 
     return Container(
@@ -39,7 +40,7 @@ class ShowBottomSheet extends StatelessWidget {
 //            s
             children: [
               Text(this.coords.latitude.toStringAsPrecision(12) + ", " + this.coords.longitude.toStringAsPrecision(12)),
-              Text(place== null ? "" : place.level2Address),
+              Container(width : mediaQuery.size.width * 0.65,child: Text(place== null ? "" : place.level2Address, overflow: TextOverflow.ellipsis,),)
             ],
 
           ),

@@ -123,15 +123,25 @@ class AddPlaceViewState extends State<AddPlaceView> {
 
   void submit () {
     if(saveAndValidate()){
-      Provider.of<PlaceList>(context,listen: false).add(
-          new PlaceModel(
-            label: LabelController.text,
-            tags :Provider.of<PlaceModel>(context, listen : false).tags,
-            description: descriptionController.text,
-            coords: new LatLng(double.parse(latController.text),double.parse(longController.text)),
-            image: Provider.of<PlaceModel>(context, listen : false).image
+      if(Provider.of<PlaceList>(context,listen: false).places.contains(placeModel)){
+        print("mise à jour");
+        placeModel.coords = new LatLng(double.parse(latController.text),double.parse(longController.text));
+        placeModel.label = LabelController.text;
+        placeModel.description = descriptionController.text;
+      }
+      else  {
+        Provider.of<PlaceList>(context,listen: false).add(
+            new PlaceModel(
+                label: LabelController.text,
+                tags :Provider.of<PlaceModel>(context, listen : false).tags,
+                description: descriptionController.text,
+                coords: new LatLng(double.parse(latController.text),double.parse(longController.text)),
+                image: Provider.of<PlaceModel>(context, listen : false).image
 
-          ));
+            ));
+      }
+
+      Navigator.pop(context);
       Navigator.pop(context);
 
 

@@ -32,6 +32,7 @@ class _SelectOrCreateTagWidgetState extends State<SelectOrCreateTagWidget> {
         child: Column(
           children: <Widget>[
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
                   width: mediaQuery.size.height * 0.35,

@@ -8,6 +8,7 @@ import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/collectionModel.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
+import 'package:flutter_app_fac/models/metier/marker/temporary_marker.dart';
 import 'package:flutter_app_fac/routes.dart';
 import 'package:flutter_app_fac/service/EntryPointService.dart';
 import 'package:flutter_app_fac/service/ImageService.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider<ImageService>(create: (context) => new ImageService(entryPoint)),
             ChangeNotifierProvider<PlaceServices>(create: (context) => new PlaceServices(entryPoint)),
             ChangeNotifierProvider<LoginService>(create: (context) => new LoginService(entryPoint)),
+            ChangeNotifierProvider<TemporaryMarker>(create: (context) => new TemporaryMarker()),
             Provider<MapController>(create: (context) => new MapController()),
             ChangeNotifierProvider<MapControllerCustom>(create: (context) => MapControllerCustom() ),
             ChangeNotifierProvider<PlaceList>(create: (context) => PlaceList(context) ),

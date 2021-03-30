@@ -61,15 +61,22 @@ class HomeState extends State<Home> {
           child:UpdateUserView(new UserModel("bob", "alice")),),
       );
     }
+    else {
+      listWidgets[0] =Center(
+        child :Container(
+          margin: EdgeInsets.only(left: 15.0, right: 15.0),
+          child:LoginRegisterWidget(),),
+      );
+    }
     return Scaffold(
       bottomNavigationBar: ConvexAppBar(
         key:  Provider.of<SelectItem>(context,listen: false).appBarKey,
         items: [
-        TabItem(icon: Icons.person, title: 'Profile'),
-        TabItem(icon: Icons.add, title: 'Add'),
-        TabItem(icon: Icons.map, title: 'Map'),
-        TabItem(icon: Icons.bookmark, title: 'Collection'),
-        TabItem(icon: Icons.settings, title: 'Settings'),
+        TabItem(icon: Icons.person, title: 'Profil'),
+        TabItem(icon: Icons.add, title: 'Importer'),
+        TabItem(icon: Icons.map, title: 'Carte'),
+        TabItem(icon: Icons.bookmark, title: 'Collections'),
+        TabItem(icon: Icons.settings, title: 'Options'),
       ],
         initialActiveIndex: 2,
     

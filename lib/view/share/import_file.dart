@@ -5,6 +5,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fac/models/fonctionnal/selectItem.dart';
 import 'package:flutter_app_fac/models/fonctionnal/select_tag.dart';
 
 
@@ -33,25 +34,38 @@ class ImportFileState extends State<ImportFile> {
 
         margin: EdgeInsets.only(top: 20, left: 10, right: 10),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(height : 60,child: TagWidget(Provider.of<SelectTag>(context,listen: true).tags,(Provider.of<SelectTag>(context,listen: true).delete)),),
-            Container(height : 100,child: SelectOrCreateTagWidget(Provider.of<SelectTag>(context,listen: false)),),
             Row(
-                                                                                                                                                                                                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 
                 Text(_file == null ? "Selectionner un fichier" : _file.path.substring(_file.path.lastIndexOf("/")+1)),
                 IconButton(onPressed: (){
                   getDocument();
+
                   setState(() {
 
                   });
                 }, icon: Icon(Icons.insert_drive_file),),
 
               ],),
+
+            Container(
+              color: Colors.white,
+              child: Column(
+                children: [
+                  Align(alignment: AlignmentDirectional.centerStart,child :Text("Selectionner des tags à appliquer")),
+                  Container(height : 100,child: SelectOrCreateTagWidget(Provider.of<SelectTag>(context,listen: false)),),
+                  Container(height : 60,child: TagWidget(Provider.of<SelectTag>(context,listen: true).tags,(Provider.of<SelectTag>(context,listen: true).delete)),),
+                ],
+              ),
+            ),
+
             IconButton(icon :Icon(Icons.add),onPressed: () async {
               detectExtension(_file,context);
+              Provider.of<SelectItem>(context,listen: false).indexSelected = 3;
+              Provider.of<SelectItem>(context,listen: false).appBarKey.currentState.animateTo(3);
 //                if ()
 //                var placesList =await GpxKml().fromGeojson(_file.path,(Provider.of<PlaceModel>(context,listen: false) ));
 //                Provider.of<PlaceList>(context,listen: false).addAllPlaces(placesList);
@@ -95,7 +109,7 @@ class ImportFileState extends State<ImportFile> {
           content: Text( "Format non supporté"),
         ),
       );
-      throw new Exception("format non suporté");
+      throw new Exception("Format non suporté");
 
     }
 

@@ -19,9 +19,11 @@ import 'package:provider/provider.dart';
 
 class AddTagWidget extends StatefulWidget {
   final tag;
+  final callback;
+  final Function delete;
 
 
-  AddTagWidget(this.tag);
+  AddTagWidget(this.tag, this.callback, this.delete);
 
   @override
   State<StatefulWidget> createState() {
@@ -43,7 +45,9 @@ class AddTagWidgetState extends State<AddTagWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Modifier le nom du tag"),),
+      appBar: AppBar(title: Text("Modifier le nom du tag"),
+
+      ),
       body:  Form(
         key: keyForm,
         child: Container(
@@ -91,6 +95,7 @@ class AddTagWidgetState extends State<AddTagWidget> {
   void submit() {
     if (saveAndValidate()) {
       widget.tag.name = tagController.text;
+      widget.callback();
       Navigator.pop(context);
     }
   }

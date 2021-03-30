@@ -10,6 +10,8 @@ import 'package:geojson/geojson.dart';
 import 'package:latlong/latlong.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:share/share.dart';
+
+import 'export_collection_link.dart';
 final String PATH =  "assets/images";
 
 class ShareWidget extends StatelessWidget {
@@ -58,22 +60,11 @@ class ShareWidget extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(
-      height: 200,
+      height: 100,
+      margin: EdgeInsets.only(top: 20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          !isList ? InkWell(
-            onTap: _launchURL,
-//            onTap: () {
-//
-//              _launchURL(uriMaps);
-//            },
-            child: Column(
-              children: [
-                Image.asset("$PATH/maps.png", height: 50,),
-                Text("Maps"),
-              ],
-            ),) : Visibility(child: Container(), visible: false,),
 
            InkWell(
             onTap: () {
@@ -138,6 +129,32 @@ class ShareWidget extends StatelessWidget {
               ],
             )
           ),
+          InkWell(
+              onTap: () {
+                final RenderBox box = context.findRenderObject();
+                showModalBottomSheet(context: context, builder: (context) => ExportCollectionLink());
+
+              },
+              child: Column(
+                children: [
+                  Image.asset("$PATH/geojson.png", height: 50,),
+                  Text("Link"),
+                ],
+              )
+          ),
+          !isList ? InkWell(
+            onTap: _launchURL,
+//            onTap: () {
+//
+//              _launchURL(uriMaps);
+//            },
+            child: Column(
+              children: [
+                Image.asset("$PATH/maps.png", height: 50,),
+                Text("Maps"),
+              ],
+            ),) : Visibility(child: Container(), visible: false,),
+
         ],
       ),
     );
@@ -185,4 +202,8 @@ class ShareWidget extends StatelessWidget {
    var _url = 'https://flutter.dev';
   void _launchURL1() async =>
       await canLaunch(_url) ? await launch(_url) : throw 'Could not launch $_url';
+
+
 }
+
+

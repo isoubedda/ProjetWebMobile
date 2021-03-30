@@ -8,6 +8,7 @@ import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/metier/TagModel.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
+import 'package:flutter_app_fac/models/metier/marker/temporary_marker.dart';
 import 'package:flutter_app_fac/models/metier/simu.dart';
 
 import 'package:flutter_app_fac/services/location/get_location.dart';
@@ -55,6 +56,7 @@ class MapViewState extends State<MapView> {
   final popupController = PopupController();
   LocationData locationData;
   List<Marker> markers = [];
+  LatLng _point;
 //  ViewMarkers _markers = new ViewMarkers();
 
 
@@ -139,7 +141,7 @@ class MapViewState extends State<MapView> {
         ),
 
 
-        markers: buildMarkerList(Provider.of<PlaceList>(context,listen: true).getPlacesWithColor()),
+        markers: buildMarkerList(Provider.of<PlaceList>(context,listen: true).getPlacesWithColor(), _point),
 
 
         polygonOptions: PolygonOptions(
@@ -169,7 +171,7 @@ class MapViewState extends State<MapView> {
     );
   }
 
-  List<Marker>buildMarkerList(places) {
+  List<Marker>buildMarkerList(places,point) {
     print("***********************************************************");
     print(places.toString());
     print("***********************************************************");
@@ -195,14 +197,29 @@ class MapViewState extends State<MapView> {
 
       ));
     }
+    print("provider : " + Provider.of<TemporaryMarker>(context,listen: true).isActivate.toString());
+    if (Provider.of<TemporaryMarker>(context,listen: true).isActivate){
+      markers.add(Marker(
+          point : point,
+          height: 300,
+          builder: (context) => IconButton(color : Colors.blue,icon: Icon(Icons.more,size: 30,), onPressed: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context) => PlaceView(new PlaceModel(coords:point,))));
+          },)
+
+      ));
+    }
     return markers;
 
   }
 
   _handleTap(LatLng point)  {
-
+    Provider.of<TemporaryMarker>(context,listen: false).isActivate = true;
+    setState(() {
+      _point = point;
+    });
     var s = showModalBottomSheet(context: context, builder: (context) => ShowBottomSheet(coords: point,));
     s.then((value){
+      Provider.of<TemporaryMarker>(context,listen: false).isActivate = false;
       print('fermer');
 
       markers.remove(markers.last);
