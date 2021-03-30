@@ -1,17 +1,26 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 class UserModel extends ChangeNotifier{
   String _username;
   String _password;
   String _id;
+  String _basicAuth;
 
-  UserModel(this._username, this._password,);
+
+  UserModel(String username,String password){
+    this._username = username ;
+    this._password = password ; 
+    this._basicAuth = 'Basic' + base64Encode(utf8.encode('$username:$password'));
+
+  }
   UserModel.fromJson(json) {
     _id = json["id"];
     _username = json["username"];
   }
 
-
+  String get basicAuth => _basicAuth;
 
   String get password => _password;
 
@@ -26,6 +35,23 @@ class UserModel extends ChangeNotifier{
   }
 
   toJson() => {'username': _username, 'password': password};
+
+  Map<String, String> headers(){
+    return  {
+    'content-type': 'application/json; charset=UTF-8',
+    'authorization': basicAuth
+  };
+
+  }
+
+  Map<String, String> headersImage(){
+    return  {
+    'content-type': 'image/*',
+    'authorization': basicAuth
+  };
+
+  }
+
 
   @override
   String toString() {

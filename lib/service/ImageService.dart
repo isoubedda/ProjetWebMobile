@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:http/http.dart' as http;
@@ -13,8 +14,9 @@ class ImageService extends ChangeNotifier {
 
   ImageService(this.entryPoint);
 
-  Future<List<ImageModel>> getAll () async {
-    Response response = await http.get(entryPoint.urlImage);
+  Future<List<ImageModel>> getAll (UserModel user) async {
+    Response response = await http.get(entryPoint.urlImage,
+    headers: user.headers());
     if(response.statusCode == 200 ) {
       Iterable l = json.decode(response.body);
       return l.map((e) => ImageModel.fromJson(e)).toList();
@@ -23,8 +25,9 @@ class ImageService extends ChangeNotifier {
     }
   }
 
-  Future<void> removeImage(ImageModel image) async {
-    Response response = await http.delete(image.links.elementAt(0).href);
+  Future<void> removeImage(ImageModel image, UserModel user) async {
+    Response response = await http.delete(image.links.elementAt(0).href,
+    headers: user.headers());
     if(response.statusCode == 204 ) {
       print("Ok the image was remove");
     }else {
@@ -32,20 +35,18 @@ class ImageService extends ChangeNotifier {
     }
   }
 
-  Future<ImageModel> postImage (File file, ImageModel image) async {
+  Future<ImageModel> postImage (File file, ImageModel image, UserModel user) async {
     Response response = await http.post(entryPoint.urlImage,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+     headers: user.headers(),
       body: jsonEncode(image)
     );
     if(response.statusCode == 200 ) {
   
       var res = http.MultipartRequest('POST',Uri.parse(entryPoint.urlImage),);
 
-      Map<String,String> headers={
-      'Content-Type': "multipart/form-data",
-      };
+      //Map<String,String> headers={
+      //'Content-Type': "multipart/form-data",
+      //};
 
       res.files.add(
         http.MultipartFile(
@@ -55,7 +56,7 @@ class ImageService extends ChangeNotifier {
             contentType: MediaType('image','*'),
         ),
       );
-      res.headers.addAll(headers);
+      res.headers.addAll(user.headersImage());
       var result = await res.send();
       if (result.statusCode == 200) {
         return ImageModel.fromJson(json.decode(response.body));
@@ -67,11 +68,9 @@ class ImageService extends ChangeNotifier {
     }
   }
 
-  Future<ImageModel> patchImage (File file,ImageModel image) async {
+  Future<ImageModel> patchImage (File file,ImageModel image, UserModel user) async {
     Response response = await http.patch(image.links.elementAt(0).href,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
+      headers: user.headers(),
       body: jsonEncode(image)
     );
     if(response.statusCode == 200 ) {
@@ -89,7 +88,7 @@ class ImageService extends ChangeNotifier {
             contentType: MediaType('image','*'),
         ),
       );
-      res.headers.addAll(headers);
+      res.headers.addAll(user.headersImage());
       var result = await res.send();
       if (result.statusCode == 200) {
         return ImageModel.fromJson(json.decode(response.body));

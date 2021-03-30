@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
@@ -20,15 +21,17 @@ class PlaceServices extends ChangeNotifier{
 
   PlaceServices(this.entryPoint);
 
-  Future<List<PlaceModel>> getAll () async {
+  Future<List<PlaceModel>> getAll (UserModel user) async {
     placeBox = await Hive.openBox<PlaceModel>("place");
     Response response;
     print("la lal : " + entryPoint.getUrl2(urlName));
     print("pas la");
-    response = await http.get(entryPoint.getUrl2(urlName));
+    response = await http.get(entryPoint.getUrl2(urlName),
+    headers: user.headers());
     print(response.statusCode);
     try{
-      response = await http.get(entryPoint.getUrl2(urlName));
+      response = await http.get(entryPoint.getUrl2(urlName),
+      headers: user.headers());
       if(response.statusCode == 200 ) {
         Iterable l = json.decode(response.body);
         print("200 ok");
@@ -73,8 +76,9 @@ class PlaceServices extends ChangeNotifier{
     await placeBox.add(place);
   }
 
-  Future<void> removePlace(PlaceModel place) async {
-    Response response = await http.delete(place.links.elementAt(0).href);
+  Future<void> removePlace(PlaceModel place, UserModel user) async {
+    Response response = await http.delete(place.links.elementAt(0).href,
+    headers: user.headers());
     if(response.statusCode == 204 ) {
       print("Ok the place was remove");
     }else {
@@ -82,11 +86,9 @@ class PlaceServices extends ChangeNotifier{
     }
   }
 
-  Future<PlaceModel> postPlace (PlaceModel place) async {
+  Future<PlaceModel> postPlace (PlaceModel place, UserModel user) async {
     Response response = await http.post(entryPoint.getUrl(urlName),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
+    headers: user.headers(),
     body: jsonEncode(place)
   );
     if(response.statusCode == 200 ) {
@@ -98,11 +100,9 @@ class PlaceServices extends ChangeNotifier{
     }
   }
 
-  Future<PlaceModel> patchPlace (PlaceModel place) async {
+  Future<PlaceModel> patchPlace (PlaceModel place, UserModel user) async {
     Response response = await http.patch(entryPoint.getUrl(urlName),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
+    headers: user.headers(),
     body: place.toJson()
   );
     if(response.statusCode == 200 ) {
