@@ -28,6 +28,7 @@ final entryPoint;
     }
   }
 
+
   Future<void> removeTag(Tag tag, UserModel user) async {
     Response response = await http.delete(tag.links.elementAt(0).href,
     headers: user.headers());
