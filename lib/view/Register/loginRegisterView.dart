@@ -121,6 +121,7 @@ class UpdateUserViewState extends State<UpdateUserView>{
 
   Widget formUsernameUpdate (mediaquery) {
     return Form (
+      key: keyFormUser,
       child: Row(
         children: [
           Container(
@@ -133,7 +134,7 @@ class UpdateUserViewState extends State<UpdateUserView>{
         child: new GenericForm( controller: pseudoController, keyForm: keyFormUser,errorMessage: "Pseudo invalide" , hindText: "pseudo",icon:Icon(Icons.person_outline), textInputType: TextInputType.text, validate: FormValidator.isNotEmpty,obscureText: false,),),
 
         ),
-        IconButton(icon: Icon(Icons.update), onPressed: (){})
+        IconButton(icon: Icon(Icons.update), onPressed: submitUsername)
         ],
       ),
 
@@ -142,6 +143,7 @@ class UpdateUserViewState extends State<UpdateUserView>{
 
   Widget formPasswordUpdate (mediaquery) {
     return Form (
+      key: keyFormPwd,
       child: Row(
         children: [
           Container(
@@ -173,7 +175,7 @@ class UpdateUserViewState extends State<UpdateUserView>{
 
             ),
           ),
-          IconButton(icon: Icon(Icons.update), onPressed: (){})
+          IconButton(icon: Icon(Icons.update), onPressed:submitPwd)
         ],
       )
 

@@ -36,7 +36,7 @@ class SettingsPage extends StatefulWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Localisation"),
+        Text("Partager ma localisation"),
         Switch(value: Provider.of<SettingsModel>(context,listen: true).locationOnOff, onChanged: (value){
           Provider.of<SettingsModel>(context,listen: false).locationOnOff = value;
         }),

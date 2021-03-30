@@ -24,19 +24,26 @@ class PlaceServices extends ChangeNotifier{
     placeBox = await Hive.openBox<PlaceModel>("place");
     Response response;
     print("la lal : " + entryPoint.getUrl2(urlName));
+    print("pas la");
+    response = await http.get(entryPoint.getUrl2(urlName));
+    print(response.statusCode);
     try{
-      response = await http.get(entryPoint.getUrl(urlName));
+      response = await http.get(entryPoint.getUrl2(urlName));
       if(response.statusCode == 200 ) {
         Iterable l = json.decode(response.body);
+        print("200 ok");
         if(placeBox.values.isNotEmpty){
           //verfier si il n'y pas de changement
           if(!IterableEquality().equals(l,placeBox.values)){
             print("1");
             //si oui supprimer l'old base 
             await placeBox.clear();
+
+            l.map((e) => print(e));
             l.map((e) => putDataPlaceToHive(PlaceModel.fromJson(e)));
             return placeBox.values.toList();
           }else{
+            print("2");
             return placeBox.values.toList();
           }
         }else{
@@ -44,7 +51,7 @@ class PlaceServices extends ChangeNotifier{
           return placeBox.values.toList();
         }
       }else {
-        print("Faile to getAll places code "+ response.statusCode.toString() );
+        print("Failed to getAll places code "+ response.statusCode.toString() + " status : " + response.statusCode.toString());
         if(placeBox.values.isNotEmpty){
           return placeBox.values.toList();
         }else{
