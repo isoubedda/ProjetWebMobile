@@ -8,6 +8,7 @@ class LoginService extends ChangeNotifier{
   UserModel _user;
   EntryPoint entryPoint;
   static String urlName = "users";
+  bool _isConnected;
 
   LoginService(this.entryPoint);
 
@@ -37,8 +38,10 @@ class LoginService extends ChangeNotifier{
     }
   }
 
-  bool isConnected(bool co){
+  bool get isConnected => _isConnected;
+
+  set isConnected(bool value) {
+    _isConnected = value;
     notifyListeners();
-    return co;
   }
 }

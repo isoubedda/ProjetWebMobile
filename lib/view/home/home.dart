@@ -3,9 +3,11 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/fonctionnal/selectItem.dart';
+import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
 import 'package:flutter_app_fac/models/metier/simu.dart';
 import 'package:flutter_app_fac/services/location/get_location.dart';
+import 'package:flutter_app_fac/services/login/loginService.dart';
 import 'package:flutter_app_fac/view/Register/loginRegisterView.dart';
 import 'package:flutter_app_fac/view/collection_page/collectionPage.dart';
 import 'package:flutter_app_fac/view/map/floatingBar.dart';
@@ -51,7 +53,14 @@ class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     Simu simu = new Simu();
-
+    if(Provider.of<LoginService>(context,listen: false).isConnected == true) {
+      listWidgets[0] = Center(
+        child :Container(
+          height: 400,
+          margin: EdgeInsets.only(left: 15.0, right: 15.0),
+          child:UpdateUserView(new UserModel("bob", "alice")),),
+      );
+    }
     return Scaffold(
       bottomNavigationBar: ConvexAppBar(
         key:  Provider.of<SelectItem>(context,listen: false).appBarKey,

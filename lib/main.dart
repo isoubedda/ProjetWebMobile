@@ -13,6 +13,7 @@ import 'package:flutter_app_fac/service/EntryPointService.dart';
 import 'package:flutter_app_fac/service/ImageService.dart';
 import 'package:flutter_app_fac/service/PlaceServices.dart';
 import 'package:flutter_app_fac/services/location/get_location.dart';
+import 'package:flutter_app_fac/services/login/loginService.dart';
 import 'package:flutter_app_fac/view/Register/LoginRegisterWidgetASUPPRIMER.dart';
 import 'package:flutter_app_fac/view/example/exaemple.dart';
 import 'package:flutter_app_fac/view/example/test_service.dart';
@@ -69,6 +70,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider<SelectTag>(create: (context) => new SelectTag()),
             ChangeNotifierProvider<ImageService>(create: (context) => new ImageService(entryPoint)),
             ChangeNotifierProvider<PlaceServices>(create: (context) => new PlaceServices(entryPoint)),
+            ChangeNotifierProvider<LoginService>(create: (context) => new LoginService(entryPoint)),
             Provider<MapController>(create: (context) => new MapController()),
             ChangeNotifierProvider<MapControllerCustom>(create: (context) => MapControllerCustom() ),
             ChangeNotifierProvider<PlaceList>(create: (context) => PlaceList(context) ),

@@ -103,7 +103,7 @@ class ConnexionState extends State<Connexion> {
       showModalWidget();
       Provider.of<SelectItem>(context,listen: false).indexSelected = 2;
       Provider.of<SelectItem>(context,listen: false).appBarKey.currentState.animateTo(2);
-      Provider.of<LoginService>(context, listen: false).isConnected(true);
+      Provider.of<LoginService>(context, listen: false).isConnected = true;
 
 
     }

@@ -18,6 +18,11 @@ import 'package:flutter_app_fac/view/tag/tag_widget.dart';
 import 'package:provider/provider.dart';
 
 class AddTagWidget extends StatefulWidget {
+  final tag;
+
+
+  AddTagWidget(this.tag);
+
   @override
   State<StatefulWidget> createState() {
     return AddTagWidgetState();
@@ -32,42 +37,45 @@ class AddTagWidgetState extends State<AddTagWidget> {
 
   @override
   void initState() {
-    tagController.text = "";
+    tagController.text = widget.tag.name;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: keyForm,
-      child: Container(
-        padding: EdgeInsets.only(left: 7, right: 7, top: 25, bottom: 25),
+    return Scaffold(
+      appBar: AppBar(title: Text("Modifier le nom du tag"),),
+      body:  Form(
+        key: keyForm,
+        child: Container(
+          padding: EdgeInsets.only(left: 7, right: 7, top: 25, bottom: 25),
 
-        height: 300,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
+          height: 300,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
 
-            ShadoxBoxCustom(
-              shadowColor: Colors.grey,
-              backgroundColors: Colors.white,
-              child: new GenericForm(controller: tagController,
-                keyForm: keyForm,
-                errorMessage: "Tag ne doit pas être vide",
-                hindText: "Tag",
-                icon: Icon(Icons.person_outline),
-                textInputType: TextInputType.text,
-                validate: FormValidator.isNotEmpty,
-                obscureText: false,),
+              ShadoxBoxCustom(
+                shadowColor: Colors.grey,
+                backgroundColors: Colors.white,
+                child: new GenericForm(controller: tagController,
+                  keyForm: keyForm,
+                  errorMessage: "Tag ne doit pas être vide",
+                  hindText: "Tag",
+                  icon: Icon(Icons.person_outline),
+                  textInputType: TextInputType.text,
+                  validate: FormValidator.isNotEmpty,
+                  obscureText: false,),
 
-            ),
+              ),
 
 
-            SimpleFlatButton(text: "Ajouter", onPressed: submit,)
-          ],
+              SimpleFlatButton(text: "Modifier", onPressed: submit,)
+            ],
+          ),
         ),
+
+
       ),
-
-
     );
   }
 
@@ -82,7 +90,8 @@ class AddTagWidgetState extends State<AddTagWidget> {
 
   void submit() {
     if (saveAndValidate()) {
-
+      widget.tag.name = tagController.text;
+      Navigator.pop(context);
     }
   }
 

@@ -75,7 +75,7 @@ class ImportWidgetState extends State<ImportWidget> {
                   secondaryAnimation: secondaryAnimation,
                 );
               },
-              child: onFirstPage ?ImportByUrl() : Container(color: Colors.red,child: new ImportFile(),),
+              child: onFirstPage ?ImportByUrl() : Container(child: new ImportFile(),),
 
             ),)
         ],

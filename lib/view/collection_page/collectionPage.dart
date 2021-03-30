@@ -8,6 +8,7 @@ import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/TagList.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
 import 'package:flutter_app_fac/view/share/share_widget.dart';
+import 'package:flutter_app_fac/view/tag/add_tag.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'dart:math' as math;
@@ -60,6 +61,9 @@ class CollectionPageState extends State<CollectionPage>{
   Widget buildListTile(tag,index) {
     print(indexSelected);
     return InkWell(
+      onLongPress: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AddTagWidget(tag)) );
+      },
       onTap: (){
         indexSelected[index] = !indexSelected[index];
         if(indexSelected[index]){
@@ -85,56 +89,5 @@ class CollectionPageState extends State<CollectionPage>{
     );
   }
 
-//  Widget SlidableWidget (tag,index){
-//  return Slidable(
-//    actionPane: SlidableDrawerActionPane(),
-//    actionExtentRatio: 0.25,
-//    child: Container(
-//      color: Colors.white,
-//      child: InkWell(splashColor : Colors.grey,onTap: () {print("on pressed");},child :ListTile(
-//        leading: CircleAvatar(
-//          backgroundColor:Colors.primaries[index%Colors.primaries.length],
-//
-//          child: Text(''),
-//          foregroundColor: Colors.white,
-//        ),
-//
-//        title: Text(tag.name),
-//
-//      )),
-//    ),
-//    actions: <Widget>[
-//      IconSlideAction(
-//        caption: 'Delete',
-//        color: Colors.red,
-//        icon: Icons.delete,
-//        onTap: () => null,
-//      ),
-//      IconSlideAction(
-//        caption: 'Share',
-//        color: Colors.indigo,
-//        icon: Icons.share,
-//        onTap: () => null,
-//      ),
-//    ],
-//    secondaryActions: <Widget>[
-//      IconSlideAction(
-//        caption: 'Carte',
-//        color: Colors.black45,
-//        icon: Icons.map,
-//        onTap: () {
-//          Provider.of<PlaceList>(context,listen: false).addTags(context, tag);
-//          Provider.of<SelectItem>(context,listen: false).appBarKey.currentState.animateTo(2);
-//          Provider.of<SelectItem>(context,listen: false).indexSelected = 2;
-//        },
-//      ),
-//      IconSlideAction(
-//        caption: 'lieux',
-//        color: Colors.blue,
-//        icon: Icons.list,
-//        onTap: () => null,
-//      ),
-//    ],
-//  );
-//}
+
 }
