@@ -21,6 +21,7 @@ import 'package:flutter_map_marker_cluster/flutter_map_marker_cluster.dart';
 import 'package:latlong/latlong.dart';
 import 'package:location/location.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 
@@ -128,9 +129,10 @@ class MapViewState extends State<MapView> {
 
         new TileLayerOptions(
 
-
             urlTemplate: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-            subdomains: ['a', 'b', 'c']
+            subdomains: ['a', 'b', 'c'],
+            tileProvider: const CachedTileProvider(),
+
         ),
 
         MarkerClusterLayerOptions(
@@ -242,4 +244,22 @@ class MapViewState extends State<MapView> {
   }
 }
 
+// class CachedTileProvider extends TileProvider {
+//   const CachedTileProvider();
+//   @override
+//   ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
+//     return NetworkImage(getTileUrl(coords, options));
+//   }
+// }
 
+
+class CachedTileProvider extends TileProvider {
+  const CachedTileProvider();
+  @override
+  ImageProvider getImage(Coords<num> coords, TileLayerOptions options) {
+    return CachedNetworkImageProvider(
+      getTileUrl(coords, options),
+      //Now you can set options that determine how the image gets cached via whichever plugin you use.
+    );
+  }
+}

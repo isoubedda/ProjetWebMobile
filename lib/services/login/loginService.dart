@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
@@ -13,17 +15,22 @@ class LoginService extends ChangeNotifier{
   LoginService(this.entryPoint);
 
   Future<void> postUser(UserModel user) async {
-    Response response = await post(entryPoint.getUrl(urlName),body: user.toJson(), headers: <String, String>{
-    'Content-Type': 'application/json; charset=UTF-8'});
-    if(response.statusCode != 200 ) {
-      throw new Exception("User non crée");
+    print(entryPoint.getUrl2(urlName));
+    print(user.toJson());
+    Response response = await post(entryPoint.getUrl2(urlName),body: json.encode(user), );
+    if(response.statusCode != 201 ) {
+      throw new Exception("User non crée : " + response.statusCode.toString());
+    }
+    else {
+      _user = new UserModel.fromJson(response.body);
     }
   }
 
-  Future<UserModel> getUser(id) async {
-    Response response = await get(entryPoint.getUrl(urlName)+"id");
+  Future<UserModel> getUser(UserModel user) async {
+    print("user header " + user.headers().toString());
+    Response response = await get(entryPoint.getUrl2(urlName), headers: user.headers());
     if(response.statusCode == 200) {
-      return new UserModel.fromJson(response.body);
+
     }
     else {
       throw new Exception("erreur getUser " + response.statusCode.toString());
@@ -32,9 +39,9 @@ class LoginService extends ChangeNotifier{
 
 
   Future<void> updateUser(UserModel userModel) async {
-    Response response = await patch(entryPoint.getUrl(urlName)+"id",body : userModel.toJson(),);
+    Response response = await patch(entryPoint.getUrl2(urlName)+"id",body : userModel.toJson(),);
     if(response.statusCode != 200) {
-
+      throw new Exception("erreur mise à jour utilisateur " + response.statusCode.toString());
     }
   }
 

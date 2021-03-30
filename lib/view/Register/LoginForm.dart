@@ -10,6 +10,7 @@ import 'package:flutter_app_fac/generic_view/form/generic_form.dart';
 import 'package:flutter_app_fac/generic_view/form/shadow_box.dart';
 import 'package:flutter_app_fac/models/fonctionnal/TestLoginAnimation.dart';
 import 'package:flutter_app_fac/models/fonctionnal/selectItem.dart';
+import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:flutter_app_fac/services/login/loginService.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
 import 'package:provider/provider.dart';
@@ -100,6 +101,10 @@ class ConnexionState extends State<Connexion> {
 
   void submit () {
     if(saveAndValidate()){
+      Provider.of<LoginService>(context, listen: false).getUser(new UserModel(pseudoController.text, pwdController.text));
+      Provider.of<UserModel>(context, listen: false).username = pseudoController.text ;
+      Provider.of<UserModel>(context, listen: false).username = pwdController.text ;
+
       showModalWidget();
       Provider.of<SelectItem>(context,listen: false).indexSelected = 2;
       Provider.of<SelectItem>(context,listen: false).appBarKey.currentState.animateTo(2);

@@ -121,7 +121,7 @@ packages:
     source: hosted
     version: "8.0.0-nullsafety.0"
   cached_network_image:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: cached_network_image
       url: "https://pub.dartlang.org"
@@ -996,7 +996,7 @@ packages:
     source: hosted
     version: "0.0.1+3"
   uuid:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: uuid
       url: "https://pub.dartlang.org"

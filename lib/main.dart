@@ -5,6 +5,7 @@ import 'package:flutter_app_fac/generic_view/circularProgress/circularBar.dart';
 import 'package:flutter_app_fac/models/fonctionnal/MapControllerCustom.dart';
 import 'package:flutter_app_fac/models/fonctionnal/select_tag.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
+import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:flutter_app_fac/models/metier/collectionModel.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
@@ -79,9 +80,11 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider<Counter>(create: (context) => Counter()),
             ChangeNotifierProvider<Simu>(create: (context) => new Simu()),
             ChangeNotifierProvider<SelectTag>(create: (context) => new SelectTag()),
+            ChangeNotifierProvider<UserModel>(create: (context) => null),
             ChangeNotifierProvider<ImageService>(create: (context) => new ImageService(entryPoint)),
             ChangeNotifierProvider<PlaceServices>(create: (context) => new PlaceServices(entryPoint)),
             ChangeNotifierProvider<LoginService>(create: (context) => new LoginService(entryPoint)),
+            // ChangeNotifierProvider<TagService>(create: (context) => new LoginService(entryPoint)),
             ChangeNotifierProvider<TemporaryMarker>(create: (context) => new TemporaryMarker()),
             Provider<MapController>(create: (context) => new MapController()),
             ChangeNotifierProvider<MapControllerCustom>(create: (context) => MapControllerCustom() ),

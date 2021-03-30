@@ -5,6 +5,8 @@ import 'package:flutter_app_fac/generic_view/form/SimpleFlatButton.dart';
 import 'package:flutter_app_fac/generic_view/form/generic_form.dart';
 import 'package:flutter_app_fac/generic_view/form/shadow_box.dart';
 import 'package:flutter_app_fac/models/fonctionnal/selectItem.dart';
+import 'package:flutter_app_fac/models/metier/UserModel.dart';
+import 'package:flutter_app_fac/services/login/loginService.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +26,8 @@ class RegisterState extends State<Register> {
   @override
   void initState() {
     //todo init
-//    pseudoController.text = "salut";
+   pseudoController.text = "bob";
+   pwdController.text = "Alice123";
 
   }
 
@@ -94,8 +97,10 @@ class RegisterState extends State<Register> {
 
   void submit () {
     if(saveAndValidate()){
+
+      Provider.of<LoginService>(context,listen: false).postUser(new UserModel(pseudoController.text, pwdController.text));
       Provider.of<SelectItem>(context,listen: false).indexSelected = 2;
-      //Todo call create account service
+      Provider.of<SelectItem>(context,listen: false).appBarKey.currentState.animateTo(2);
     }
   }
 

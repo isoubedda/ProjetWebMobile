@@ -1,22 +1,23 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class UserModel extends ChangeNotifier{
   String _username;
   String _password;
-  String _id;
+  Uuid _id;
   String _basicAuth;
 
 
   UserModel(String username,String password){
     this._username = username ;
     this._password = password ; 
-    this._basicAuth = 'Basic' + base64Encode(utf8.encode('$username:$password'));
+    this._basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
 
   }
   UserModel.fromJson(json) {
-    _id = json["id"];
+    // _id = json["id"];
     _username = json["username"];
   }
 
@@ -34,7 +35,7 @@ class UserModel extends ChangeNotifier{
     _username = value;
   }
 
-  toJson() => {'username': _username, 'password': password};
+  toJson() => {'username': _username, 'password': _password};
 
   Map<String, String> headers(){
     return  {
