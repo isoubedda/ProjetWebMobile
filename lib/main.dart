@@ -27,9 +27,13 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
 
 import 'models/counter.dart';
+import 'models/metier/ImageModel.dart';
+import 'models/metier/Links.dart';
+import 'models/metier/Resources.dart';
 import 'models/metier/TagList.dart';
 import 'models/metier/PlaceModel.dart';
 import 'models/metier/TagModel.dart';
+import 'models/metier/entrypoint.dart';
 import 'models/metier/simu.dart';
 import 'view/map/maps.dart';
 
@@ -37,8 +41,14 @@ void main() async{
   //Initialization for Have DataBase
   WidgetsFlutterBinding.ensureInitialized();
   final appDir = await path_provider.getApplicationDocumentsDirectory();
-  Hive.init(appDir.path);
-  Hive.registerAdapter<PlaceModel>(PlaceModelAdapter());
+  Hive
+      ..init(appDir.path)
+      ..registerAdapter<PlaceModel>(PlaceModelAdapter())
+      ..registerAdapter<Tag>(TagAdapter())
+      ..registerAdapter<ImageModel>(ImageModelAdapter())
+      ..registerAdapter<Links>(LinksAdapter())
+      ..registerAdapter<EntryPoint>(EntryPointAdapter())
+      ..registerAdapter<Resources>(ResourcesAdapter());
 
   runApp(MyApp());
 }

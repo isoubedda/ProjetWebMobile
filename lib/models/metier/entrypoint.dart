@@ -1,5 +1,10 @@
+import 'package:hive/hive.dart';
 
+import 'Resources.dart';
 
+part 'entrypoint.g.dart';
+
+@HiveType(typeId: 4)
 class EntryPoint {
 //  static String url = "http:/0.0.0.0/";
 //   static String url = "http://mobile-server.armion.space:8085/";
@@ -11,6 +16,7 @@ class EntryPoint {
 //     urlUser = url+"users";
 //     urlImage = url+"images";
 //   }
+  @HiveField(0)
   List<Resources> resources;
 
   EntryPoint({this.resources});
@@ -63,39 +69,3 @@ class EntryPoint {
   }
 }
 
-class Resources {
-  String name;
-  String path;
-  int port;
-  String scheme;
-  String hostname;
-  String url;
-
-  Resources(
-      {this.name, this.path, this.port, this.scheme, this.hostname, this.url});
-
-  Resources.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
-    path = json['path'];
-    port = json['port'];
-    scheme = json['scheme'];
-    hostname = json['hostname'];
-    url = json['url'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['path'] = this.path;
-    data['port'] = this.port;
-    data['scheme'] = this.scheme;
-    data['hostname'] = this.hostname;
-    data['url'] = this.url;
-    return data;
-  }
-
-  @override
-  String toString() {
-    return 'Resources{name: $name, path: $path, port: $port, scheme: $scheme, hostname: $hostname, url: $url}';
-  }
-}
