@@ -87,7 +87,7 @@ class PlaceServices extends ChangeNotifier{
   }
 
   Future<PlaceModel> postPlace (PlaceModel place, UserModel user) async {
-    Response response = await http.post(entryPoint.getUrl(urlName),
+    Response response = await http.post(entryPoint.getUrl2(urlName),
     headers: user.headers(),
     body: jsonEncode(place)
   );
@@ -101,7 +101,7 @@ class PlaceServices extends ChangeNotifier{
   }
 
   Future<PlaceModel> patchPlace (PlaceModel place, UserModel user) async {
-    Response response = await http.patch(entryPoint.getUrl(urlName),
+    Response response = await http.patch(entryPoint.getUrl2(urlName),
     headers: user.headers(),
     body: place.toJson()
   );
