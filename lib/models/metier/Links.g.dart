@@ -19,23 +19,17 @@ class LinksAdapter extends TypeAdapter<Links> {
     return Links(
       fields[0] as String,
       fields[1] as String,
-      fields[2] as String,
-      fields[3] as TargetHints,
     );
   }
 
   @override
   void write(BinaryWriter writer, Links obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj._rel)
       ..writeByte(1)
-      ..write(obj._href)
-      ..writeByte(2)
-      ..write(obj._targetMediaType)
-      ..writeByte(3)
-      ..write(obj._targetHints);
+      ..write(obj._href);
   }
 
   @override

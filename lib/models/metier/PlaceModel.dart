@@ -15,26 +15,26 @@ part 'PlaceModel.g.dart';
 class PlaceModel extends ChangeNotifier {
   @HiveField(0)
   String id;
-  @HiveField(2)
-  String ownerId;
-  @HiveField(3)
-  String ownerUrl;
-  @HiveField(4)
-  String label;
-  @HiveField(5)
+  //@HiveField(2)
+  //String ownerId;
+  //@HiveField(3)
+  //String ownerUrl;
+  @HiveField(1)
   String description;
-  @HiveField(6)
+  @HiveField(2)
+  String label;
+  @HiveField(3)
   List<Tag> tags = [];
-  @HiveField(7)
+  @HiveField(4)
   LatLng coords;
-  @HiveField(8)
-  ImageModel image;
-  @HiveField(9)
+  @HiveField(5)
   String creationDate;
-  @HiveField(10)
+  @HiveField(6)
   String lastUpdate;
-  @HiveField(11)
-  Links links;
+  @HiveField(7)
+  ImageModel image;
+  @HiveField(8)
+  List<Links> links;
 
 
   @override
@@ -42,39 +42,41 @@ class PlaceModel extends ChangeNotifier {
     return 'PlaceModel{label: $label, description: $description, coords: $coords}';
   }
 
-  PlaceModel({this.id, this.ownerId, this.ownerUrl, this.label,
-      this.description, this.tags, this.coords, this.image, 
-      this.creationDate, this.lastUpdate, this.links});
+  PlaceModel({this.id, this.description, this.label, this.tags, this.coords, this.image, 
+              this.creationDate, this.lastUpdate, this.links});
 
-  factory PlaceModel.fromJson(Map<String, dynamic> document) {
-    var list = document['tags'] as List;
-    List<Tag> tagList = list.map((i) => Tag.fromJson(i)).toList();
-    
-    return PlaceModel(
-    id: document['id'],
-    ownerId: document['owner'],
-    ownerUrl: document['owner_url'],
-    label: document['label'],
-    description: document['description'],
-    tags: tagList,
-    coords: document['coordinates'],
-    image: ImageModel.fromJson(document['picture']),
-    creationDate: document['creation_date'],
-    lastUpdate: document['last_update'],
-    links: Links.fromJson(document["_links"])
-    );
+  PlaceModel.fromJson(Map<String, dynamic> document) {
+    id = document['id'];
+    description = document['description'];
+    label = document['label'];
+    if (document['tags'] != null) {
+      tags = new List<Tag>();
+      document['tags'].forEach((v) {
+        tags.add(new Tag.fromJson(v));
+      });
+    }
+    coords = new LatLng(document['lat'], document['lng']) ;
+    creationDate = document['created_at'];
+    lastUpdate = document['updated_at'];
+    if (document['links'] != null) {
+      links = new List<Links>();
+      document['links'].forEach((v) {
+        links.add(new Links.fromJson(v));
+      });
+    }
   }
     
-
-
-  Map<String, dynamic> toJson() =>
-    {
-      'label': label,
-      'description': description,
-      'tags': tags,
-      'coordinates': coords,
-    };
-
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> document = new Map<String, dynamic>();
+    document['label'] = this.label;
+    document['description'] = this.description;
+    if (this.tags != null) {
+      document['tags'] = this.tags.map((v) => v.toJson()).toList();
+    }
+    // forma de LatLng
+    document['coordinates'] = this.coords;
+    return document;
+  }
 
   void addTag (tag) {
     tags.add(tag);

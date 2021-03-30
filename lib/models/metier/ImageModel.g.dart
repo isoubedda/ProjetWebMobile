@@ -18,10 +18,10 @@ class ImageModelAdapter extends TypeAdapter<ImageModel> {
     };
     return ImageModel(
       id: fields[0] as String,
-      placeUrl: fields[1] as String,
+      place: fields[1] as PlaceModel,
       creationDate: fields[2] as String,
       lastUpdate: fields[3] as String,
-      links: fields[4] as Links,
+      links: (fields[4] as List)?.cast<Links>(),
     );
   }
 
@@ -32,7 +32,7 @@ class ImageModelAdapter extends TypeAdapter<ImageModel> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.placeUrl)
+      ..write(obj.place)
       ..writeByte(2)
       ..write(obj.creationDate)
       ..writeByte(3)

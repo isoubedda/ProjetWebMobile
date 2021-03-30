@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'Links.dart';
 import 'package:hive/hive.dart';
 
+import 'PlaceModel.dart';
+
 part 'ImageModel.g.dart';
 
 @HiveType(typeId: 2)
@@ -14,32 +16,36 @@ class ImageModel extends ChangeNotifier {
   @HiveField(0)
   String id;
   @HiveField(1)
-  String placeUrl;
+  PlaceModel place;
   @HiveField(2)
   String creationDate;
   @HiveField(3)
   String lastUpdate;
   @HiveField(4)
-  Links links;
+  List<Links> links;
   File file;
   
-  ImageModel({this.id, this.placeUrl, this.creationDate, this.lastUpdate,
+  ImageModel({this.id, this.place, this.creationDate, this.lastUpdate,
    this.links, this.file});
 
-  ImageModel.fromJson(Map<String, dynamic> document) 
-    :   id = document['id'],
-        placeUrl = document['place'],
-        creationDate = document['creation_date'],
-        lastUpdate = document['last_update'],
-        links = Links.fromJson(document["_links"]);
-
-  Map<String, dynamic> toJson() =>
-    {
-      'id': id,
-      'place': placeUrl,
-    };
-
-
-
+  ImageModel.fromJson(Map<String, dynamic> json) {
+    creationDate = json['created_at'];
+    lastUpdate = json['updated_at'];
+    id = json['id'];
+    place = json['place'] != null ? new PlaceModel.fromJson(json['place']) : null;
+    if (json['links'] != null) {
+      links = new List<Links>();
+      json['links'].forEach((v) {
+        links.add(new Links.fromJson(v));
+      });
+    }
+  }
+  
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['place'] = this.place.links.elementAt(0).href;
+    return data;
+  }
 
 }

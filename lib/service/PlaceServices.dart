@@ -15,38 +15,44 @@ import 'package:hive/hive.dart';
 
 class PlaceServices extends ChangeNotifier{
   final EntryPoint entryPoint;
+  static String urlName = "places";
   Box<PlaceModel> placeBox;
 
   PlaceServices(this.entryPoint);
 
   Future<List<PlaceModel>> getAll () async {
     placeBox = await Hive.openBox<PlaceModel>("place");
-    
     Response response;
-    print(entryPoint.urlPlace);
-    response = await http.get(entryPoint.urlPlace);
-    print(response.statusCode);
+    print(entryPoint.getUrl(urlName));
     try{
-      response = await http.get(entryPoint.urlPlace);
-      print(response.statusCode);
+      response = await http.get(entryPoint.getUrl(urlName));
       if(response.statusCode == 200 ) {
         Iterable l = json.decode(response.body);
-        if(!IterableEquality().equals(l,placeBox.values)){
-          placeBox.clear();
-          l.map((e) => putDataPlaceToHave(PlaceModel.fromJson(e)));
-          //return l.map((e) => PlaceModel.fromJson(e)).toList();
+        if(placeBox.values.isNotEmpty){
+          //verfier si il n'y pas de changement
+          if(!IterableEquality().equals(l,placeBox.values)){
+            print("1");
+            //si oui supprimer l'old base 
+            await placeBox.clear();
+            l.map((e) => putDataPlaceToHive(PlaceModel.fromJson(e)));
+            return placeBox.values.toList();
+          }else{
+            return placeBox.values.toList();
+          }
+        }else{
+          l.map((e) => putDataPlaceToHive(PlaceModel.fromJson(e)));
+          return placeBox.values.toList();
         }
-        return placeBox.values.toList();
       }else {
-        print("Faile to getAll places");
+        print("Faile to getAll places code "+ response.statusCode.toString() );
         if(placeBox.values.isNotEmpty){
           return placeBox.values.toList();
         }else{
           print("cache place is Empty");
         }
       }
-    }catch(SocketException){
-        print("Non internet");
+    } on SocketException catch (e){
+        print("non internet");
         if(placeBox.values.isNotEmpty){
           return placeBox.values.toList(); 
         }else{
@@ -56,13 +62,12 @@ class PlaceServices extends ChangeNotifier{
 
   }
 
-  Future putDataPlaceToHave(PlaceModel place) async {
-    //inser data to have
+  Future putDataPlaceToHive(PlaceModel place) async {
     await placeBox.add(place);
   }
 
   Future<void> removePlace(PlaceModel place) async {
-    Response response = await http.delete(place.links.href);
+    Response response = await http.delete(place.links.elementAt(0).href);
     if(response.statusCode == 204 ) {
       print("Ok the place was remove");
     }else {
@@ -71,7 +76,7 @@ class PlaceServices extends ChangeNotifier{
   }
 
   Future<PlaceModel> postPlace (PlaceModel place) async {
-    Response response = await http.post(entryPoint.urlPlace,
+    Response response = await http.post(entryPoint.getUrl(urlName),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },
@@ -87,7 +92,7 @@ class PlaceServices extends ChangeNotifier{
   }
 
   Future<PlaceModel> patchPlace (PlaceModel place) async {
-    Response response = await http.patch(entryPoint.urlPlace,
+    Response response = await http.patch(entryPoint.getUrl(urlName),
     headers: <String, String>{
       'Content-Type': 'application/json; charset=UTF-8',
     },

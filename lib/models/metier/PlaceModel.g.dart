@@ -18,44 +18,38 @@ class PlaceModelAdapter extends TypeAdapter<PlaceModel> {
     };
     return PlaceModel(
       id: fields[0] as String,
-      ownerId: fields[2] as String,
-      ownerUrl: fields[3] as String,
-      label: fields[4] as String,
-      description: fields[5] as String,
-      tags: (fields[6] as List)?.cast<Tag>(),
-      coords: fields[7] as LatLng,
-      image: fields[8] as ImageModel,
-      creationDate: fields[9] as String,
-      lastUpdate: fields[10] as String,
-      links: fields[11] as Links,
+      description: fields[1] as String,
+      label: fields[2] as String,
+      tags: (fields[3] as List)?.cast<Tag>(),
+      coords: fields[4] as LatLng,
+      image: fields[7] as ImageModel,
+      creationDate: fields[5] as String,
+      lastUpdate: fields[6] as String,
+      links: (fields[8] as List)?.cast<Links>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, PlaceModel obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
-      ..writeByte(2)
-      ..write(obj.ownerId)
-      ..writeByte(3)
-      ..write(obj.ownerUrl)
-      ..writeByte(4)
-      ..write(obj.label)
-      ..writeByte(5)
+      ..writeByte(1)
       ..write(obj.description)
-      ..writeByte(6)
+      ..writeByte(2)
+      ..write(obj.label)
+      ..writeByte(3)
       ..write(obj.tags)
-      ..writeByte(7)
+      ..writeByte(4)
       ..write(obj.coords)
-      ..writeByte(8)
-      ..write(obj.image)
-      ..writeByte(9)
+      ..writeByte(5)
       ..write(obj.creationDate)
-      ..writeByte(10)
+      ..writeByte(6)
       ..write(obj.lastUpdate)
-      ..writeByte(11)
+      ..writeByte(7)
+      ..write(obj.image)
+      ..writeByte(8)
       ..write(obj.links);
   }
 

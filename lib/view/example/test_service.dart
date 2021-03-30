@@ -24,7 +24,8 @@ class TestServiceState extends State<TestService> {
             children: [
               Text(_text),
               TextButton(onPressed: () {
-                var places =  Provider.of<PlaceServices>(context,listen: false).getAll();
+                var places = Provider.of<PlaceServices>(context,listen: false).getAll();
+                print("places");
                 print(places);
                 if(places != null) {
                   setState() {

@@ -24,7 +24,7 @@ class ImageService extends ChangeNotifier {
   }
 
   Future<void> removeImage(ImageModel image) async {
-    Response response = await http.delete(image.links.href);
+    Response response = await http.delete(image.links.elementAt(0).href);
     if(response.statusCode == 204 ) {
       print("Ok the image was remove");
     }else {
@@ -68,7 +68,7 @@ class ImageService extends ChangeNotifier {
   }
 
   Future<ImageModel> patchImage (File file,ImageModel image) async {
-    Response response = await http.patch(image.links.href,
+    Response response = await http.patch(image.links.elementAt(0).href,
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

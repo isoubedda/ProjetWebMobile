@@ -2,21 +2,25 @@
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'Links.dart';
 
 part 'TagModel.g.dart';
 
 @HiveType(typeId: 1)
 class Tag extends ChangeNotifier{
+  @HiveField(0)
   String _name;
+  @HiveField(1)
   String _id;
-  String _tagUrl;
+  @HiveField(2)
+  List<Links> _links;
 
   
 
-  Tag( {String name, String id, String tagUrl}) {
+  Tag( {String name, String id, List<Links> links}) {
     this._name = name;
     this._id = id;
-    this._tagUrl = tagUrl;
+    this._links = links;
   }
 
   String get name => _name;
@@ -24,11 +28,10 @@ class Tag extends ChangeNotifier{
   set name(String value) {
     _name = value;
   }
-
   String get id => _id;
   set id(String id) => _id = id;
-  String get tagUrl => _tagUrl;
-  set tagUrl(String tagUrl) => _tagUrl = tagUrl;
+  List<Links> get links => _links;
+  set links(List<Links> links) => _links = links;
 
   @override
   String toString() {
@@ -44,16 +47,21 @@ class Tag extends ChangeNotifier{
   @override
   int get hashCode => _name.hashCode;
 
-  Tag.fromJson(Map<String, dynamic> document) :
-        _name = document['label'],
-        _id = document['id'],
-        _tagUrl = document['tag_url'];
+  Tag.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['label'];
+    if (json['links'] != null) {
+      links = new List<Links>();
+      json['links'].forEach((v) {
+        links.add(new Links.fromJson(v));
+      });
+    }
+  }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['label'] = this._name;
     data['id'] = this._id;
-    data['tag_url'] = this._tagUrl;
     return data;
   }
 
