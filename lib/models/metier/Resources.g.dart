@@ -1,37 +1,47 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'TagModel.dart';
+part of 'Resources.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class TagAdapter extends TypeAdapter<Tag> {
+class ResourcesAdapter extends TypeAdapter<Resources> {
   @override
-  final int typeId = 1;
+  final int typeId = 5;
 
   @override
-  Tag read(BinaryReader reader) {
+  Resources read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Tag()
-      .._name = fields[0] as String
-      .._id = fields[1] as String
-      .._links = (fields[2] as List)?.cast<Links>();
+    return Resources(
+      name: fields[0] as String,
+      path: fields[1] as String,
+      port: fields[2] as int,
+      scheme: fields[3] as String,
+      hostname: fields[4] as String,
+      url: fields[5] as String,
+    );
   }
 
   @override
-  void write(BinaryWriter writer, Tag obj) {
+  void write(BinaryWriter writer, Resources obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(6)
       ..writeByte(0)
-      ..write(obj._name)
+      ..write(obj.name)
       ..writeByte(1)
-      ..write(obj._id)
+      ..write(obj.path)
       ..writeByte(2)
-      ..write(obj._links);
+      ..write(obj.port)
+      ..writeByte(3)
+      ..write(obj.scheme)
+      ..writeByte(4)
+      ..write(obj.hostname)
+      ..writeByte(5)
+      ..write(obj.url);
   }
 
   @override
@@ -40,7 +50,7 @@ class TagAdapter extends TypeAdapter<Tag> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TagAdapter &&
+      other is ResourcesAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
