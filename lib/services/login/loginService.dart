@@ -7,11 +7,12 @@ import 'package:http/http.dart';
 class LoginService extends ChangeNotifier{
   UserModel _user;
   EntryPoint entryPoint;
+  static String urlName = "users";
 
   LoginService(this.entryPoint);
 
   Future<void> postUser(UserModel user) async {
-    Response response = await post(entryPoint.urlUser,body: user.toJson(), headers: <String, String>{
+    Response response = await post(entryPoint.getUrl(urlName),body: user.toJson(), headers: <String, String>{
     'Content-Type': 'application/json; charset=UTF-8'});
     if(response.statusCode != 200 ) {
       throw new Exception("User non crée");
@@ -19,7 +20,7 @@ class LoginService extends ChangeNotifier{
   }
 
   Future<UserModel> getUser(id) async {
-    Response response = await get(entryPoint.urlUser+"id");
+    Response response = await get(entryPoint.getUrl(urlName)+"id");
     if(response.statusCode == 200) {
       return new UserModel.fromJson(response.body);
     }
@@ -30,7 +31,7 @@ class LoginService extends ChangeNotifier{
 
 
   Future<void> updateUser(UserModel userModel) async {
-    Response response = await patch(entryPoint.urlUser+"id",body : userModel.toJson(),);
+    Response response = await patch(entryPoint.getUrl(urlName)+"id",body : userModel.toJson(),);
     if(response.statusCode != 200) {
 
     }
