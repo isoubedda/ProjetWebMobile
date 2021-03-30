@@ -30,14 +30,15 @@ class ImportFileState extends State<ImportFile> {
   Widget build(BuildContext context) {
     return  Container(
         color: Colors.white24,
+
         margin: EdgeInsets.only(top: 20, left: 10, right: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Container(height: 100,child: TagWidget(Provider.of<SelectTag>(context,listen: true).tags,null),),
-            Container(child: SelectOrCreateTagWidget(Provider.of<SelectTag>(context,listen: false)),),
+            Container(height : 60,child: TagWidget(Provider.of<SelectTag>(context,listen: true).tags,(Provider.of<SelectTag>(context,listen: true).delete)),),
+            Container(height : 100,child: SelectOrCreateTagWidget(Provider.of<SelectTag>(context,listen: false)),),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                                                                                                                                                                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
 
                 Text(_file == null ? "Selectionner un fichier" : _file.path.substring(_file.path.lastIndexOf("/")+1)),
@@ -77,15 +78,18 @@ class ImportFileState extends State<ImportFile> {
 
 
   Future<void> detectExtension (File file, context) async{
-    if(file.path.substring(file.path.lastIndexOf(".")) == "json") {
-      var placesList =await GpxKml().fromGeojson(file.path,(Provider.of<PlaceModel>(context,listen: false) ));
+    print(file.path.substring(file.path.lastIndexOf(".")+1));
+    if(file.path.substring(file.path.lastIndexOf(".")+1) == "json") {
+      List<PlaceModel> placesList =await GpxKml().fromGeojson(file.path,(Provider.of<SelectTag>(context,listen: false).tags ));
+      print(placesList.toString());
       Provider.of<PlaceList>(context,listen: false).addAllPlaces(placesList);
     }
-    if(file.path.substring(file.path.lastIndexOf(".")) == "gpx") {
-      var placesList =await GpxKml().fromGeojson(file.path,(Provider.of<PlaceModel>(context,listen: false) ));
+    else if(file.path.substring(file.path.lastIndexOf(".")+1) == "gpx") {
+      var placesList =await GpxKml().fromGPx(file.path,(Provider.of<SelectTag>(context,listen: false).tags ));
       Provider.of<PlaceList>(context,listen: false).addAllPlaces(placesList);
     }
     else {
+      print(file.path.substring(file.path.lastIndexOf(".")+1));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text( "Format non supporté"),

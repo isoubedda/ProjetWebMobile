@@ -17,5 +17,8 @@ class FormValidator  {
   static bool isNotEmpty (String value) {
     return value.isNotEmpty;
   }
+  static bool NoValidation (String value) {
+    return true;
+  }
 
 }

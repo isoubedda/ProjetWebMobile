@@ -14,6 +14,7 @@ import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/services/share/GPX_share.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
 import 'package:flutter_app_fac/view/share/import_file.dart';
+import 'package:flutter_app_fac/view/share/importByUrl.dart';
 
 import 'package:provider/provider.dart';
 
@@ -25,8 +26,6 @@ class ImportWidget extends StatefulWidget {
 }
 class ImportWidgetState extends State<ImportWidget> {
 
-  final pseudoController = TextEditingController();
-  final  keyForm = new GlobalKey<FormState>();
   bool onFirstPage;
   @override
   void initState() {
@@ -76,7 +75,7 @@ class ImportWidgetState extends State<ImportWidget> {
                   secondaryAnimation: secondaryAnimation,
                 );
               },
-              child: onFirstPage ?importUrl() : Container(height: 300, width: 200,child: Builder(builder: (context) => ImportWidgetProvider(),),),
+              child: onFirstPage ?ImportByUrl() : Container(color: Colors.red,child: new ImportFile(),),
 
             ),)
         ],
@@ -84,44 +83,7 @@ class ImportWidgetState extends State<ImportWidget> {
     );
   }
 
-  Widget importUrl() {
 
-    return Container(
-      color: Colors.white24,
-      margin: EdgeInsets.only(top: 20, left: 10, right: 10),
-      child: Form(
-        key: keyForm,
-        child:  Column(
-          children: [
-
-            ShadoxBoxCustom(
-              shadowColor: Colors.grey,
-              backgroundColors: Colors.white,
-              child: new GenericForm( controller: pseudoController, keyForm: keyForm,errorMessage: " Lien invalide" , hindText: " Lien de la collection",icon:Icon(Icons.person_outline), textInputType: TextInputType.text, validate: FormValidator.isNotEmpty,obscureText: false,),
-
-            ),
-            Container(height: 30,),
-            ShadoxBoxCustom(
-              shadowColor: Colors.grey,
-              backgroundColors: Colors.white,
-              child: new GenericForm( controller: pseudoController, keyForm: keyForm,errorMessage: " Token Invalide" , hindText: " Token",icon:Icon(Icons.person_outline), textInputType: TextInputType.text, validate: FormValidator.isNotEmpty,obscureText: false,),
-
-            ),
-            Container(
-              margin: cu.EdgeInsets.only(top: 20, bottom: 20),
-              color: Colors.white,
-                child:ShadoxBoxCustom(
-                  shadowColor: Colors.grey,
-                  backgroundColors: Colors.white,
-                  child:  SelectFormat(),
-                )),
-            IconButton(icon: Icon(Icons.add), onPressed: null)
-
-          ],
-        ),
-      ),
-    );
-  }
 
 
   Widget SelectFormat () {
@@ -156,6 +118,7 @@ class ImportWidgetState extends State<ImportWidget> {
 
 
 }
+
 
 
 class ImportWidgetProvider extends StatelessWidget {

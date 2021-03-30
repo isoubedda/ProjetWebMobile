@@ -4,6 +4,7 @@ import 'dart:ffi';
 import 'dart:io';
 
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
+import 'package:flutter_app_fac/models/metier/TagModel.dart';
 import 'package:flutter_app_fac/models/place.dart';
 import 'package:flutter_app_fac/services/share/fileService.dart';
 import 'package:geojson/geojson.dart';
@@ -90,7 +91,7 @@ class  GpxKml {
   }
 
   Future <String> ConvertToJson(List<PlaceModel> list) async {
-    String name = "exportGeoJSON.geojson";
+    String name = "exportGeoJSON.json";
     final path = await file.localPath();
     final featureCollection = GeoJSONFeatureCollection([]);
 
@@ -112,7 +113,7 @@ class  GpxKml {
 
 
 
-  Future <List<PlaceModel>>  fromGPx (String path, PlaceModel place) async {
+  Future <List<PlaceModel>>  fromGPx (String path, List<Tag> tags) async {
     final List<PlaceModel> places = [];
     final f =  File(path);
 
@@ -125,13 +126,14 @@ class  GpxKml {
         coords: new LatLng(element.lat, element.lon),
         description: element.desc,
         label :element.name,
-        tags: place.tags
+        tags: tags
       )); }
 
       );
+    return places;
   }
 
-  Future <List<PlaceModel>>  fromGeojson (String path, PlaceModel place) async {
+  Future <List<PlaceModel>>  fromGeojson (String path, List<Tag> tags) async {
     final List<PlaceModel> places = [];
     final f =  File(path);
 
@@ -143,12 +145,16 @@ class  GpxKml {
     for (var feature in features.collection) {
       
       if (feature.type == GeoJsonFeatureType.point) {
+        print("bug : " + feature.properties.toString());
         places.add(new PlaceModel(
-          label: feature.properties[""],
+          label: feature.properties["name"],
+          coords: new LatLng(feature.properties["latitude"], feature.properties["longitude"]),
+          tags: tags
         ));
 
       }
     }
+    return places;
   }
 
 

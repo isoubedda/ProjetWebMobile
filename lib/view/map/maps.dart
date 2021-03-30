@@ -184,6 +184,17 @@ class MapViewState extends State<MapView> {
 
       ));
     }
+    locationData = Provider.of<LocationData>(context, listen: true);
+    if (locationData != null) {
+      markers.add(Marker(
+          point : new LatLng(locationData.latitude, locationData.longitude),
+          height: 300,
+          builder: (context) => IconButton(color : Colors.blue,icon: Icon(Icons.person,size: 30,), onPressed: (){
+            Navigator.push(context,MaterialPageRoute(builder: (context) => PlaceView(new PlaceModel(label : "position actuelle", description: "La position de votre téléphone",coords: LatLng(locationData.latitude, locationData.longitude),tags: [new Tag(name :"Ma position")],))));
+          },)
+
+      ));
+    }
     return markers;
 
   }

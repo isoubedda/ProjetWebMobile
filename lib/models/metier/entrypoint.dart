@@ -16,28 +16,38 @@ class EntryPoint {
   EntryPoint({this.resources});
 
   String getUrl(String name){
+    print("name : $name");
     switch(name) { 
-      case "places": { resources.forEach((e) {if(e.name == name) return e.url; }); } 
+      case "places": { resources.forEach((e) {if(e.name == name){print("palces : " + e.url); return e.url;} }); }
       break; 
      
-      case "users": { resources.forEach((e) {if(e.name == name) return e.url; }); } 
+      case "users": { resources.forEach((e) {if(e.name == name) {print("user : " + e.url); return e.url;}  }); }
       break; 
      
-      case "images": { resources.forEach((e) {if(e.name == name) return e.url; }); } 
+      case "images": { resources.forEach((e) {if(e.name == name) {print("image : " + e.url); return e.url;}  }); }
       break; 
      
-      case "tags": { resources.forEach((e) {if(e.name == name) return e.url; }); } 
+      case "tags": { resources.forEach((e) {if(e.name == name) {print("tag : " + e.url); return e.url;} } ); }
       break; 
      
-      default: { print("Invalid choice"); } 
+      default: { print("Invalid choice"); return "nulldd"; }
       break; 
    } 
 
   }
+  String getUrl2 (name) {
+    for (var r in resources) {
+      if(r.name ==  name) {
+        return r.url;
+      }
+    }
+    return null;
+  }
+
 
   EntryPoint.fromJson(Map<String, dynamic> json) {
     if (json['resources'] != null) {
-      resources = new List<Resources>();
+      resources = [];
       json['resources'].forEach((v) {
         resources.add(new Resources.fromJson(v));
       });
@@ -82,5 +92,10 @@ class Resources {
     data['hostname'] = this.hostname;
     data['url'] = this.url;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'Resources{name: $name, path: $path, port: $port, scheme: $scheme, hostname: $hostname, url: $url}';
   }
 }

@@ -16,6 +16,7 @@ class EntryPointService extends ChangeNotifier{
 
   Future<EntryPoint> getEntryPoint () async {
     Response response = await http.get(url);
+    print("response entry point : " + response.statusCode.toString());
     if(response.statusCode == 200 ) {
       return EntryPoint.fromJson(json.decode(response.body));
     }else {

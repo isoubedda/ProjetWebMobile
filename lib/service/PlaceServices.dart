@@ -23,7 +23,7 @@ class PlaceServices extends ChangeNotifier{
   Future<List<PlaceModel>> getAll () async {
     placeBox = await Hive.openBox<PlaceModel>("place");
     Response response;
-    print(entryPoint.getUrl(urlName));
+    print("la lal : " + entryPoint.getUrl2(urlName));
     try{
       response = await http.get(entryPoint.getUrl(urlName));
       if(response.statusCode == 200 ) {

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/TagModel.dart';
 
 class SelectTag extends ChangeNotifier {
-  List<Tag> _tags;
+  List<Tag> _tags = [];
 
-  add(Tag tag) {
+  addTag(Tag tag) {
     if (tag != null) {
       _tags.add(tag);
       notifyListeners();

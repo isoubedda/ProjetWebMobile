@@ -37,6 +37,16 @@ class _SelectOrCreateTagWidgetState extends State<SelectOrCreateTagWidget> {
                   width: mediaQuery.size.height * 0.35,
                   child: TextField(
                     controller: _textController,
+                    decoration:  new InputDecoration(
+
+
+                    focusColor: Colors.red,
+                    labelText: "nom du tag",
+                    labelStyle: TextStyle(
+                        color: Colors.black
+                    ),
+                    alignLabelWithHint: true,
+                  ),
                     onChanged: (text) {
                       text = text.toLowerCase();
                       setState(() {
