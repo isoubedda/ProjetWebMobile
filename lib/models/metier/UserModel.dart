@@ -24,7 +24,7 @@ class UserModel extends ChangeNotifier{
     _username = json["username"];
   }
 
-  String get basicAuth => _basicAuth;
+  String get basicAuth =>  'Basic ' + base64Encode(utf8.encode('$username:$password'));
 
   String get password => _password;
 
@@ -42,7 +42,7 @@ class UserModel extends ChangeNotifier{
 
   Map<String, String> headers(){
     return  {
-    'content-type': 'application/json; charset=UTF-8',
+    // 'content-type': 'application/json; charset=UTF-8',
     'authorization': basicAuth
   };
 
@@ -50,8 +50,9 @@ class UserModel extends ChangeNotifier{
 
   Map<String, String> headersImage(){
     return  {
-    'content-type': 'image/*',
-    'authorization': basicAuth
+      'Accept' : "application/json" ,
+    'Content-Type': 'image/jpeg',
+    'Authorization': basicAuth
   };
 
   }

@@ -34,7 +34,7 @@ class ImageModel extends ChangeNotifier {
     id = json['id'];
     place = json['place'] != null ? new PlaceModel.fromJson(json['place']) : null;
     if (json['links'] != null) {
-      links = new List<Links>();
+      links = [];
       json['links'].forEach((v) {
         links.add(new Links.fromJson(v));
       });
@@ -43,8 +43,9 @@ class ImageModel extends ChangeNotifier {
   
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['place'] = this.place.links.elementAt(0).href;
+    print("erre encode 2");
+    data['place'] = place.id;
+    print("erre encode 3");
     return data;
   }
 

@@ -20,6 +20,7 @@ final entryPoint;
   Future<List<Tag>> getAll(UserModel user) async {
     Response response = await http.get(entryPoint.getUrl2(urlName),
     headers: user.headers());
+    print(response.statusCode.toString() + "Header ; "+ user.headers().toString() );
     if(response.statusCode == 200 ) {
       Iterable l = json.decode(response.body);
       return l.map((e) => Tag.fromJson(e)).toList();

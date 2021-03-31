@@ -36,29 +36,41 @@ class ImageService extends ChangeNotifier {
   }
 
   Future<ImageModel> postImage (File file, ImageModel image, UserModel user) async {
-    Response response = await http.post(entryPoint.urlImage,
+    print("dans post image");
+    Response response = await http.post(entryPoint.getUrl2("images"),
      headers: user.headers(),
       body: jsonEncode(image)
     );
-    if(response.statusCode == 200 ) {
-  
-      var res = http.MultipartRequest('POST',Uri.parse(entryPoint.urlImage),);
+    print("response image post : " + response.statusCode.toString());
+    if(response.statusCode == 201 ) {
+      print(response.body);
 
-      //Map<String,String> headers={
-      //'Content-Type': "multipart/form-data",
-      //};
+      ImageModel im = ImageModel.fromJson(json.decode(response.body));
+      var res = http.MultipartRequest('POST',Uri.parse(entryPoint.getUrl2("images")+ "/" + im.id));
 
+      Map<String,String> headers=user.headersImage();
       res.files.add(
         http.MultipartFile(
            'file',
-            file.readAsBytes().asStream(),
+            await file.readAsBytes().asStream(),
             file.lengthSync(),
-            contentType: MediaType('image','*'),
+          contentType: MediaType('image','jpeg'),
         ),
       );
+      print(file.readAsBytes());
       res.headers.addAll(user.headersImage());
+      res.headers.addAll(headers);
+      print(res.url);
+      print("header " + headers.toString());
+
+
+
+      print(res.headers);
       var result = await res.send();
-      if (result.statusCode == 200) {
+      print(result.statusCode);
+      print(result.stream.last.toString());
+      if (result.statusCode == 201) {
+
         return ImageModel.fromJson(json.decode(response.body));
       }else {
       throw new Exception('Faile to load the image file');
@@ -85,7 +97,7 @@ class ImageService extends ChangeNotifier {
            'file',
             file.readAsBytes().asStream(),
             file.lengthSync(),
-            contentType: MediaType('image','*'),
+            contentType: MediaType('image/jpg','*'),
         ),
       );
       res.headers.addAll(user.headersImage());

@@ -50,7 +50,7 @@ class PlaceModel extends ChangeNotifier {
     description = document['description'];
     label = document['label'];
     if (document['tags'] != null) {
-      tags = new List<Tag>();
+      tags = [];
       document['tags'].forEach((v) {
         tags.add(new Tag.fromJson(v));
       });
@@ -59,10 +59,11 @@ class PlaceModel extends ChangeNotifier {
     creationDate = document['created_at'];
     lastUpdate = document['updated_at'];
     if (document['links'] != null) {
-      links = new List<Links>();
+      links = [];
       document['links'].forEach((v) {
         links.add(new Links.fromJson(v));
       });
+      print(links.toString());
     }
   }
     
@@ -74,7 +75,7 @@ class PlaceModel extends ChangeNotifier {
       document['tags'] = this.tags.map((v) => v.toJson()).toList();
     }
     // forma de LatLng
-    document['coordinates'] = this.coords;
+    document['coordinates'] = {"X" : this.coords.latitude, "Y" : this.coords.longitude};
     return document;
   }
 

@@ -46,6 +46,7 @@ class PlaceList extends ChangeNotifier {
   }
 
   void addAllPlaces (List places){
+    _places = [];
     places.forEach((element) {
       _places.add(element);
     });
@@ -96,7 +97,7 @@ class PlaceList extends ChangeNotifier {
         }
       }
     }
-    return places;
+    return _places;
 
   }
   getPlacesWithColor() {

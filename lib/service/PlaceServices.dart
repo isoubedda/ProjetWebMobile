@@ -5,9 +5,11 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fac/models/metier/ImageModel.dart';
 import 'package:flutter_app_fac/models/metier/TagModel.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
+import 'package:flutter_app_fac/service/ImageService.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:http/http.dart';
@@ -122,24 +124,43 @@ class PlaceServices extends ChangeNotifier{
   }
 
   Future<PlaceModel> postPlace (PlaceModel place, UserModel user) async {
+
+
+    print("encodage " + jsonEncode([place]));
+    print("999999999999999999");
     Response response = await http.post(entryPoint.getUrl2(urlName),
     headers: user.headers(),
-    body: jsonEncode(place)
+    body: jsonEncode([place])
   );
-    if(response.statusCode == 200 ) {
-      //Iterable l = json.decode(response.body);
-      //return l.map((e) => PlaceModel.fromJson(e)).toList();
-      return PlaceModel.fromJson(json.decode(response.body));
+    print(user.headers());
+    print(response.statusCode.toString() + "yolo");
+    if(response.statusCode == 201 ) {
+      print("erreur");
+      Iterable l = json.decode(response.body);
+      var p = l.map((e) => PlaceModel.fromJson(e)).toList();
+
+      if(place.image != null) {
+        place.image = await ImageService(entryPoint).postImage(place.image.file ,new ImageModel(place: p[0]), user);
+      }
+
+      return p[0];
     }else {
-      throw new Exception('Faile to load the place');
+      throw new Exception('Faile to create the place');
     }
   }
 
   Future<PlaceModel> patchPlace (PlaceModel place, UserModel user) async {
+    print(place.toJson());
+
+    if(place.image != null) {
+      place.image = await ImageService(entryPoint).postImage(place.image.file, place.image, user);
+    }
+
     Response response = await http.patch(entryPoint.getUrl2(urlName),
     headers: user.headers(),
     body: place.toJson()
   );
+
     if(response.statusCode == 200 ) {
       //Iterable l = json.decode(response.body);
       //return l.map((e) => PlaceModel.fromJson(e)).toList();

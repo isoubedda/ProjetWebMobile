@@ -12,7 +12,9 @@ import 'package:flutter_app_fac/models/metier/Picture.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';
+import 'package:flutter_app_fac/models/place.dart';
 import 'package:flutter_app_fac/service/PlaceServices.dart';
+import 'package:flutter_app_fac/services/login/loginService.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
 import 'package:flutter_app_fac/view/tag/tag_grid_view.dart';
 import 'package:flutter_app_fac/view/tag/tag_widget.dart';
@@ -77,6 +79,7 @@ class AddPlaceViewState extends State<AddPlaceView> {
           actions: [
             IconButton(icon : Icon(Icons.delete), onPressed : Provider.of<PlaceList>(context,listen: false).places.contains(placeModel) == true ? () {
               Provider.of<PlaceList>(context,listen: false).remove(placeModel);
+              Provider.of<PlaceServices>(context,listen: false).removePlace(placeModel, Provider.of<UserModel>(context,listen: false));
               Navigator.pop(context);
               Navigator.pop(context);
             } : null, disabledColor: Colors.transparent,)
@@ -139,6 +142,7 @@ class AddPlaceViewState extends State<AddPlaceView> {
         placeModel.coords = new LatLng(double.parse(latController.text),double.parse(longController.text));
         placeModel.label = LabelController.text;
         placeModel.description = descriptionController.text;
+        Provider.of<PlaceServices>(context, listen: false).patchPlace(placeModel, Provider.of<UserModel>(context, listen: false));
         Navigator.pop(context);
         Navigator.pop(context);
       }

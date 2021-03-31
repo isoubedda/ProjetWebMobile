@@ -61,7 +61,7 @@ class Tag extends ChangeNotifier{
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['label'] = this._name;
-    data['id'] = this._id;
+    // data['id'] = this._id;
     return data;
   }
 

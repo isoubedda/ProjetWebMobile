@@ -103,8 +103,8 @@ class ConnexionState extends State<Connexion> {
     if(saveAndValidate()){
       Provider.of<LoginService>(context, listen: false).getUser(new UserModel(pseudoController.text, pwdController.text));
       Provider.of<UserModel>(context, listen: false).username = pseudoController.text ;
-      Provider.of<UserModel>(context, listen: false).username = pwdController.text ;
-
+      Provider.of<UserModel>(context, listen: false).password = pwdController.text ;
+      print(Provider.of<UserModel>(context, listen: false).password);
       showModalWidget();
       Provider.of<SelectItem>(context,listen: false).indexSelected = 2;
       Provider.of<SelectItem>(context,listen: false).appBarKey.currentState.animateTo(2);
