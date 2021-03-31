@@ -1,11 +1,9 @@
 import 'Links.dart';
 
 class ShareModel {
-  //dans les spec pas dans postman
   bool write;
   bool read;
   String value;
-  //dans les spec pas dans postman
   List<Links> lLinks;
 
   ShareModel({this.write, this.read});

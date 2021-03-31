@@ -44,24 +44,3 @@ class SearchModel extends ChangeNotifier {
   }
 }
 List<Place> history = [];
-
-// [
-//   Place(
-//     name: 'San Fracisco',
-//     country: 'United States of America',
-//     state: 'California',
-//   ),
-//   Place(
-//     name: 'Singapore',
-//     country: 'Singapore',
-//   ),
-//   Place(
-//     name: 'Munich',
-//     state: 'Bavaria',
-//     country: 'Germany',
-//   ),
-//   Place(
-//     name: 'London',
-//     country: 'United Kingdom',
-//   ),
-// ];

@@ -7,17 +7,13 @@ import 'package:flutter_app_fac/generic_view/circularProgress/circularBar.dart';
 import 'package:flutter_app_fac/models/fonctionnal/selectItem.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
-import 'package:flutter_app_fac/models/metier/TagList.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';
-import 'package:flutter_app_fac/models/metier/marker/marker.dart';
 import 'package:flutter_app_fac/service/PlaceServices.dart';
 import 'package:flutter_app_fac/service/TagService.dart';
 import 'package:flutter_app_fac/view/share/share_widget.dart';
 import 'package:flutter_app_fac/view/tag/add_tag.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
-import 'dart:math' as math;
 
 class CollectionPage extends StatefulWidget {
   @override
@@ -47,7 +43,6 @@ class CollectionPageState extends State<CollectionPage>{
               Provider.of<MapController>(context, listen: false).move(Provider.of<PlaceList>(context,listen: false).places.last.coords, 8);
             }),
             IconButton(icon: Icon(Icons.share), onPressed: (){
-              print(Provider.of<PlaceList>(context,listen : false).getPlaces().toString());
               showModalBottomSheet(context: context, builder: (context) => ShareWidget(Provider.of<PlaceList>(context,listen : false).getPlaces(), true));
             })
           ],
@@ -60,14 +55,8 @@ class CollectionPageState extends State<CollectionPage>{
           future: Provider.of<TagService>(context,listen:  true).getAll(Provider.of<UserModel>(context,listen: false)),
           builder: (context,snap) {
             if (snap.hasData) {
-              print(snap.data.length.toString() + "dddddddddddddddddddddddddddddddddd");
               int i = snap.data.length;
               indexSelected = new List.generate( i, (int ind) =>   Provider.of<PlaceList>(context,listen : false).tags.contains(snap.data[ind]));
-              print(Provider.of<UserModel>(context, listen: false).password);
-              print(Provider.of<UserModel>(context, listen: false).username);
-              print(snap.data.toString() + "dddddddddddddddddddddddddddddddddd");
-
-              print(snap.data);
               return ListView.builder(
                   itemCount: snap.data.length,
                   itemBuilder: (context, index){
@@ -82,7 +71,6 @@ class CollectionPageState extends State<CollectionPage>{
     );
   }
   Widget buildListTile(tag,index) {
-    print(tag);
     return InkWell(
       onLongPress: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) => AddTagWidget(tag,callback,Provider.of<PlaceList>(context,listen : false).removeTag)) );
@@ -105,7 +93,6 @@ class CollectionPageState extends State<CollectionPage>{
       },
       child: ListTile(
         selected: indexSelected[index],
-//        focusColor: Colors.red,
         selectedTileColor: Colors.white24,
 
         title : Text(tag.name),

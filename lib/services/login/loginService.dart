@@ -15,8 +15,6 @@ class LoginService extends ChangeNotifier{
   LoginService(this.entryPoint);
 
   Future<void> postUser(UserModel user) async {
-    print(entryPoint.getUrl2(urlName));
-    print(user.toJson());
     Response response = await post(entryPoint.getUrl2(urlName),body: json.encode(user), );
     if(response.statusCode != 201 ) {
       throw new Exception("User non crée : " + response.statusCode.toString());
@@ -27,7 +25,6 @@ class LoginService extends ChangeNotifier{
   }
 
   Future<UserModel> getUser(UserModel user) async {
-    print("user header " + user.headers().toString());
     Response response = await get(entryPoint.getUrl2(urlName), headers: user.headers());
     if(response.statusCode == 200) {
 

@@ -13,14 +13,13 @@ import 'package:http/http.dart';
 
 class TagService extends ChangeNotifier{
 static String urlName = "tags";
-final entryPoint;
+final EntryPoint entryPoint;
 
   TagService(this.entryPoint);
 
   Future<List<Tag>> getAll(UserModel user) async {
     Response response = await http.get(entryPoint.getUrl2(urlName),
     headers: user.headers());
-    print(response.statusCode.toString() + "Header ; "+ user.headers().toString() );
     if(response.statusCode == 200 ) {
       Iterable l = json.decode(response.body);
       return l.map((e) => Tag.fromJson(e)).toList();
@@ -34,7 +33,6 @@ final entryPoint;
     Response response = await http.delete(tag.links.elementAt(0).href,
     headers: user.headers());
     if(response.statusCode == 204 ) {
-      print("Ok the image was remove");
     }else {
       throw new Exception('Faile to remove image');
     }
@@ -46,8 +44,6 @@ final entryPoint;
       body: jsonEncode(tag)
     );
     if(response.statusCode == 200 ) {
-      //Iterable l = json.decode(response.body);
-      //return l.map((e) => PlaceModel.fromJson(e)).toList();
       return Tag.fromJson(json.decode(response.body));
     }else {
       throw new Exception('Faile to load the tag');
@@ -59,7 +55,6 @@ final entryPoint;
     headers: user.headers(),
     body: json.encode(tag.toJson())
   );
-    print(response.statusCode);
     if(response.statusCode == 200 ) {
       return Tag.fromJson(json.decode(response.body));
     }else {

@@ -1,7 +1,6 @@
 
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +12,6 @@ import 'package:flutter_app_fac/service/ImageService.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:http/http.dart';
-import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:hive/hive.dart';
 
 class PlaceServices extends ChangeNotifier{
@@ -27,29 +24,21 @@ class PlaceServices extends ChangeNotifier{
   Future<List<PlaceModel>> getAll (UserModel user) async {
     placeBox = await Hive.openBox<PlaceModel>("place");
     Response response;
-    print("la lal : " + entryPoint.getUrl2(urlName));
-    print("pas la");
     response = await http.get(entryPoint.getUrl2(urlName),
     headers: user.headers());
-    print(response.statusCode);
     try{
       response = await http.get(entryPoint.getUrl2(urlName),
       headers: user.headers());
       if(response.statusCode == 200 ) {
         Iterable l = json.decode(response.body);
-        print("200 ok");
         if(placeBox.values.isNotEmpty){
-          //verfier si il n'y pas de changement
           if(!IterableEquality().equals(l,placeBox.values)){
-            print("1");
-            //si oui supprimer l'old base 
             await placeBox.clear();
 
             l.map((e) => print(e));
             l.map((e) => putDataPlaceToHive(PlaceModel.fromJson(e)));
             return placeBox.values.toList();
           }else{
-            print("2");
             return placeBox.values.toList();
           }
         }else{
@@ -57,7 +46,6 @@ class PlaceServices extends ChangeNotifier{
           return placeBox.values.toList();
         }
       }else {
-        print("Failed to getAll places code "+ response.statusCode.toString() + " status : " + response.statusCode.toString());
         if(placeBox.values.isNotEmpty){
           return placeBox.values.toList();
         }else{
@@ -92,7 +80,6 @@ class PlaceServices extends ChangeNotifier{
 
   Future<List<PlaceModel>> getPlaceByListOfTag(UserModel user, List<Tag> tags) async {
     final uriParse = Uri.parse(entryPoint.getUrl2(urlName));
-    //var mapTag = Map.fromIterable(tags, key: (e) => "tags[]", value: (e) => e.id);
     var idList = tags.map((e) => e.id).toList();
      var queryP = {
                 'tag[]': idList
@@ -103,8 +90,6 @@ class PlaceServices extends ChangeNotifier{
     
     Response response = await http.get(uri,
     headers: user.headers());
-    print(response.statusCode);
-    print(uri);
     if(response.statusCode == 200 ) {
       Iterable l = json.decode(response.body);
       return l.map((e) => PlaceModel.fromJson(e)).toList();
@@ -129,7 +114,6 @@ class PlaceServices extends ChangeNotifier{
     body: jsonEncode([place])
   );
     if(response.statusCode == 201 ) {
-      print(response.body);
       Iterable l = json.decode(response.body);
       List<PlaceModel> list = l.map((e) => PlaceModel.fromJson(e)).toList();
       ImageService(entryPoint).postImage(place.image.file, new ImageModel(place: list[0]), user);

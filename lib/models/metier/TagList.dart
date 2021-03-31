@@ -8,8 +8,6 @@ class TagList extends ChangeNotifier {
   List<Tag> _tags = [];
   BuildContext context;
 
-//  TagList(this.context);
-
   TagList(this.context){
     var simu = Provider.of<Simu>(context,listen: false);
     tags.add(simu.tagAll);

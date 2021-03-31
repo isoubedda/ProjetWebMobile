@@ -8,7 +8,6 @@ import 'package:flutter_app_fac/generic_view/form/SimpleFlatButton.dart';
 import 'package:flutter_app_fac/generic_view/form/shadow_box.dart';
 import 'package:flutter_app_fac/generic_view/form/generic_form.dart';
 import 'package:flutter_app_fac/models/metier/ImageModel.dart';
-import 'package:flutter_app_fac/models/metier/Picture.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';

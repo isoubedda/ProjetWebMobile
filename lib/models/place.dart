@@ -27,12 +27,8 @@ class Place {
   factory Place.fromJson(Map<String, dynamic> map) {
     double lat = 0.0;
     double long = 0.0;
-    print("jebug2");
     final props = map['properties'];
     final geometry = map['geometry'];
-    print("je bug ********:  " + geometry["coordinates"].toString());
-    print("je bug ********:  " + geometry["coordinates"][0].toString());
-    print("je bug ********:  " + geometry["coordinates"][1].toString());
     var place = new Place(
       name: props['name'] ?? '',
       region: props['region'] ?? '',
@@ -44,7 +40,6 @@ class Place {
       long :  geometry['coordinates'][1],
       latLng: LatLng((geometry['coordinates'][1]).toDouble(),(geometry['coordinates'][0]).toDouble()),
     );
-//    print(lat);
     return place;
   }
 

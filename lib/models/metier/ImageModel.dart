@@ -1,11 +1,9 @@
 
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'Links.dart';
 import 'package:hive/hive.dart';
-
 import 'PlaceModel.dart';
 
 part 'ImageModel.g.dart';
@@ -43,9 +41,7 @@ class ImageModel extends ChangeNotifier {
   
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    print("erre encode 2");
     data['place'] = place.id;
-    print("erre encode 3");
     return data;
   }
 

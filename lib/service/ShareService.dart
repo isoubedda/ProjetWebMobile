@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:flutter_app_fac/models/metier/share_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:http/http.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';
 

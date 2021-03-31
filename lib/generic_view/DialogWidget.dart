@@ -1,9 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart' as cu;
-import 'package:flutter_app_fac/models/metier/TagList.dart';
-import 'package:flutter_app_fac/models/metier/TagModel.dart';
-import 'package:provider/provider.dart';
 
 class DialogWidget extends StatefulWidget {
   @override

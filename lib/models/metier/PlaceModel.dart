@@ -15,10 +15,6 @@ part 'PlaceModel.g.dart';
 class PlaceModel extends ChangeNotifier {
   @HiveField(0)
   String id;
-  //@HiveField(2)
-  //String ownerId;
-  //@HiveField(3)
-  //String ownerUrl;
   @HiveField(1)
   String description;
   @HiveField(2)
@@ -77,7 +73,6 @@ class PlaceModel extends ChangeNotifier {
     if (this.tags != null) {
       document['tags'] = this.tags.map((v) => v.toJson()).toList();
     }
-    // forma de LatLng
     document['coordinates'] = {"X" : this.coords.latitude, "Y" : this.coords.longitude};
     return document;
   }

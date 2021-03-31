@@ -5,7 +5,6 @@ import 'dart:io';
 
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/metier/TagModel.dart';
-import 'package:flutter_app_fac/models/place.dart';
 import 'package:flutter_app_fac/services/share/fileService.dart';
 import 'package:geojson/geojson.dart';
 import 'package:geojson_vi/geojson_vi.dart';
@@ -20,7 +19,6 @@ class  GpxKml {
 
 
   void Serializer (PlaceModel place) {
-//    gpx.creator = "dart-gpx library";
     if (place != null) {
       gpx.wpts.add(
         Wpt(
@@ -35,19 +33,14 @@ class  GpxKml {
 
     Future<String> placekmlConvert (PlaceModel place) async {
       File f;
-      print("bug kml 1");
       String name = "kmlExport1.kml";
       final path = await file.localPath();
       if (place != null){
         Serializer(place);
         var kmlString = KmlWriter().asString(gpx, pretty: true);
-        print(kmlString);
         file.writeFile(kmlString,name);
-//        File f = await file.localFile(name);
-        print("path " + '$path/$name');
         return "$path/$name";
       }
-      print("bug kml");
 
    }
 
@@ -57,11 +50,9 @@ class  GpxKml {
     if (places != null) {
       places.forEach((element) {Serializer(element);});
       var kmlString = KmlWriter().asString(gpx, pretty: true);
-      print(kmlString);
       file.writeFile(kmlString, name);
 
     }
-    print("path retour : " + "$path/$name" );
     return "$path/$name";
    }
 
@@ -104,8 +95,6 @@ class  GpxKml {
      featureCollection.features.add(feature);
     });
     file.writeFile(featureCollection.toJSON(), name);
-
-//    file.writeFile(geoSerie.toMap().toString(), name);
     return "$path/$name";
 
 
@@ -119,7 +108,6 @@ class  GpxKml {
 
     print("bug");
     String r = await f.readAsStringSync();
-    print(r);
     var xmlgpx = GpxReader().fromString(r);
     xmlgpx.wpts.forEach((element) {
       places.add(new PlaceModel(
@@ -136,16 +124,11 @@ class  GpxKml {
   Future <List<PlaceModel>>  fromGeojson (String path, List<Tag> tags) async {
     final List<PlaceModel> places = [];
     final f =  File(path);
-
-    print("bug");
     String r = await f.readAsStringSync();
     final features = await featuresFromGeoJson(r);
-    print(features.collection.toString());
-    print(GeoJsonFeatureType.point);
     for (var feature in features.collection) {
       
       if (feature.type == GeoJsonFeatureType.point) {
-        print("bug : " + feature.properties.toString());
         places.add(new PlaceModel(
           label: feature.properties["name"],
           coords: new LatLng(feature.properties["latitude"], feature.properties["longitude"]),

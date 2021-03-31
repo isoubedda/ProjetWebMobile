@@ -26,13 +26,11 @@ class ImageService extends ChangeNotifier {
 Future<File> getimage (PlaceModel place,UserModel user) async {
     Response response = await http.get(place.image.links[0].href,
     headers: user.headersImage());
-    print("get image response status " + response.statusCode.toString());
     if(response.statusCode == 200 ) {
 
       final decodedBytes = base64Decode(response.body);
       var file = Io.File(place.label+".jpeg");
       file.writeAsBytesSync(decodedBytes);
-      print(file.path);
       return file;
     }else {
       throw new Exception('Faile to get All images json');
@@ -50,13 +48,10 @@ Future<File> getimage (PlaceModel place,UserModel user) async {
   }
 
   Future<ImageModel> postImage (File file, ImageModel image, UserModel user) async {
-    // print("dans post image " + image.id);
     Response response = await http.post(entryPoint.getUrl2("images"),
      headers: user.headers(),
       body: jsonEncode(image)
     );
-    print("response image post : " + response.statusCode.toString());
-    print("response image post : " + response.body.toString());
     if(response.statusCode == 201 ) {
       print(response.body);
 
@@ -66,11 +61,9 @@ Future<File> getimage (PlaceModel place,UserModel user) async {
 
       Response res = await http.post(Uri.parse(entryPoint.getUrl2("images")+ "/" + im.id), headers:user.headersImage(), body:bytes);
 
-      print(res.statusCode);
-
       if (res.statusCode == 201) {
 
-        return ImageModel.fromJson(json.decode(response.body));
+      return ImageModel.fromJson(json.decode(response.body));
       }else {
       throw new Exception('Faile to load the image file');
       }  
@@ -90,9 +83,6 @@ Future<File> getimage (PlaceModel place,UserModel user) async {
       final bytes = await Io.File(file.path).readAsBytes();
 
       Response res = await http.post(Uri.parse(entryPoint.getUrl2("images")+ "/" + im.id), headers:user.headersImage(), body:bytes);
-
-      print(res.statusCode);
-
       if (res.statusCode == 200) {
         return ImageModel.fromJson(json.decode(response.body));
       }else {
