@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:io' as Io;
+import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
@@ -20,6 +22,21 @@ class ImageService extends ChangeNotifier {
     if(response.statusCode == 200 ) {
       Iterable l = json.decode(response.body);
       return l.map((e) => ImageModel.fromJson(e)).toList();
+    }else {
+      throw new Exception('Faile to get All images json');
+    }
+  }
+Future<File> getimage (PlaceModel place,UserModel user) async {
+    Response response = await http.get(place.image.links[0].href,
+    headers: user.headersImage());
+    print("get image response status " + response.statusCode.toString());
+    if(response.statusCode == 200 ) {
+
+      final decodedBytes = base64Decode(response.body);
+      var file = Io.File(place.label+".jpeg");
+      file.writeAsBytesSync(decodedBytes);
+      print(file.path);
+      return file;
     }else {
       throw new Exception('Faile to get All images json');
     }

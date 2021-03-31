@@ -58,7 +58,9 @@ class PlaceModel extends ChangeNotifier {
     coords = new LatLng(document['lat'], document['lng']) ;
     creationDate = document['created_at'];
     lastUpdate = document['updated_at'];
-    // image = ImageModel.fromJson(document["image"]) ?? null;
+    if (document["image"] != null) {
+      image = ImageModel.fromJson(document["image"]);
+    }
     if (document['links'] != null) {
       links = [];
       document['links'].forEach((v) {
