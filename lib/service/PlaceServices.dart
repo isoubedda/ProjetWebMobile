@@ -162,16 +162,20 @@ class PlaceServices extends ChangeNotifier{
   }
 
   Future<void> removePlace(PlaceModel place, UserModel user) async {
+    placeBox = await Hive.openBox<PlaceModel>("place");
     Response response = await http.delete(place.links.elementAt(0).href,
     headers: user.headers());
     if(response.statusCode == 204 ) {
+      placeBox.values.forEachIndexed((index, element) {if(place.id == element.id) placeBox.deleteAt(index);});
       print("Ok the place was remove");
     }else {
       throw new Exception('Faile to remove places');
     }
+    placeBox.close();
   }
 
   Future<PlaceModel> postPlace (PlaceModel place, UserModel user) async {
+    placeBox = await Hive.openBox<PlaceModel>("place");
     Response response = await http.post(entryPoint.getUrl2(urlName),
     headers: user.headers(),
     body: jsonEncode(place)
@@ -179,17 +183,23 @@ class PlaceServices extends ChangeNotifier{
     if(response.statusCode == 200 ) {
       //Iterable l = json.decode(response.body);
       //return l.map((e) => PlaceModel.fromJson(e)).toList();
-      return PlaceModel.fromJson(json.decode(response.body));
+      PlaceModel pl = PlaceModel.fromJson(json.decode(response.body));
+      placeBox.add(pl);
+      placeBox.close();
+      return pl;
     }else {
+      placeBox.close();
       throw new Exception('Faile to load the place');
     }
+    
   }
 
   Future<PlaceModel> patchPlace (PlaceModel place, UserModel user) async {
+    placeBox = await Hive.openBox<PlaceModel>("place");
     Response response = await http.patch(entryPoint.getUrl2(urlName),
     headers: user.headers(),
     body: place.toJson()
-  );
+    );
     if(response.statusCode == 200 ) {
       //Iterable l = json.decode(response.body);
       //return l.map((e) => PlaceModel.fromJson(e)).toList();
@@ -197,6 +207,8 @@ class PlaceServices extends ChangeNotifier{
     }else {
       throw new Exception('Faile to load the place');
     }
+
+    placeBox.close();
   }
 
 
