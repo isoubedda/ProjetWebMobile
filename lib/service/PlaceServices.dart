@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fac/models/metier/TagModel.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:http/http.dart' as http;
@@ -74,6 +75,38 @@ class PlaceServices extends ChangeNotifier{
 
   Future putDataPlaceToHive(PlaceModel place) async {
     await placeBox.add(place);
+  }
+
+  Future<List<PlaceModel>> getPlaceByTag(UserModel user, Tag tag) async {
+    Response response = await http.get(entryPoint.getUrl2(urlName)+"?tag="+tag.id,
+    headers: user.headers());
+    if(response.statusCode == 200 ) {
+      Iterable l = json.decode(response.body);
+      return l.map((e) => PlaceModel.fromJson(e)).toList();
+    }else {
+      throw new Exception('Faile to get All tag json');
+    }
+  }
+
+  Future<List<PlaceModel>> getPlaceByListOfTag(UserModel user, List<Tag> tags) async {
+    final uriParse = Uri.parse(entryPoint.getUrl2(urlName));
+    //var mapTag = Map.fromIterable(tags, key: (e) => "tags[]", value: (e) => e.id);
+    var idList = tags.map((e) => e.id).toList();
+     var queryP = {
+                'tag[]': idList
+              };
+    var uri = Uri(scheme: uriParse.scheme , host: uriParse.host , 
+    path: uriParse.path, port: uriParse.port ,
+    queryParameters: queryP ).replace(queryParameters: queryP).toString().replaceAll("%5B%5D", "[]");
+    
+    Response response = await http.get(uri,
+    headers: user.headers());
+    if(response.statusCode == 200 ) {
+      Iterable l = json.decode(response.body);
+      return l.map((e) => PlaceModel.fromJson(e)).toList();
+    }else {
+      throw new Exception('Faile to get All place json');
+    }
   }
 
   Future<void> removePlace(PlaceModel place, UserModel user) async {
