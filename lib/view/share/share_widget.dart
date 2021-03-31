@@ -115,9 +115,7 @@ class ShareWidget extends StatelessWidget {
               var f = gpxKml.ConvertToJson(data);
               List<String> l = [];
               f.then((value) {
-                print("valeur de value : $value");
                 l.add(value);
-                print("lalalal ! " + l.toString());
                 Share.shareFiles(l, subject: "test"); //
                 print("ok");
               });
@@ -132,7 +130,7 @@ class ShareWidget extends StatelessWidget {
           InkWell(
               onTap: () {
                 final RenderBox box = context.findRenderObject();
-                showModalBottomSheet(context: context, builder: (context) => ExportCollectionLink());
+                showModalBottomSheet(context: context, builder: (context) => ExportCollectionLink(data));
 
               },
               child: Column(

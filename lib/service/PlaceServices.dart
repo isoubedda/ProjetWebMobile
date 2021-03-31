@@ -131,11 +131,8 @@ class PlaceServices extends ChangeNotifier{
     if(response.statusCode == 201 ) {
       print(response.body);
       Iterable l = json.decode(response.body);
-      print("db");
       List<PlaceModel> list = l.map((e) => PlaceModel.fromJson(e)).toList();
-      print("dr");
       ImageService(entryPoint).postImage(place.image.file, new ImageModel(place: list[0]), user);
-      print("er");
       return list[0];
     }else {
       throw new Exception('Faile to load the place');
@@ -148,8 +145,11 @@ class PlaceServices extends ChangeNotifier{
     body: place.toJson()
   );
     if(response.statusCode == 200 ) {
-      //Iterable l = json.decode(response.body);
-      //return l.map((e) => PlaceModel.fromJson(e)).toList();
+      Iterable l = json.decode(response.body);
+      List<PlaceModel> lp  =  l.map((e) => PlaceModel.fromJson(e)).toList();
+      if(place.image != null)
+        ImageService(entryPoint).patchImage(place.image.file, place.image, user);
+
       return PlaceModel.fromJson(json.decode(response.body));
     }else {
       throw new Exception('Faile to load the place');

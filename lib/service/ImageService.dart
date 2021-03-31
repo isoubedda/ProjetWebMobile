@@ -1,12 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:io' as Io;
-import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';
-import 'package:http_parser/http_parser.dart';
-import 'package:flutter_app_fac/models/metier/entrypoint.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_app_fac/models/metier/ImageModel.dart';
 import 'package:http/http.dart';
@@ -69,25 +66,6 @@ Future<File> getimage (PlaceModel place,UserModel user) async {
 
       Response res = await http.post(Uri.parse(entryPoint.getUrl2("images")+ "/" + im.id), headers:user.headersImage(), body:bytes);
 
-      // Map<String,String> headers=user.headersImage();
-      // // res.files.add(
-      // //   http.MultipartFile(
-      // //      'file',
-      // //       await file.readAsBytes().asStream(),
-      // //       file.lengthSync(),
-      // //     contentType: MediaType('image','jpeg'),
-      // //   ),
-      // // );
-      // print(file.readAsBytes());
-      // res.headers.addAll(user.headersImage());
-      // res.headers.addAll(headers);
-      // print(res.url);
-      // print("header " + headers.toString());
-      //
-      //
-      //
-      // print(res.headers);
-      // var result = await res.send();
       print(res.statusCode);
 
       if (res.statusCode == 201) {
@@ -107,23 +85,15 @@ Future<File> getimage (PlaceModel place,UserModel user) async {
       body: jsonEncode(image)
     );
     if(response.statusCode == 200 ) {
-      var res = http.MultipartRequest('PATCH',Uri.parse(entryPoint.urlImage+"/"+image.id),);
+      ImageModel im = ImageModel.fromJson(json.decode(response.body));
 
-      Map<String,String> headers={
-      'Content-Type': "multipart/form-data",
-      };
+      final bytes = await Io.File(file.path).readAsBytes();
 
-      res.files.add(
-        http.MultipartFile(
-           'file',
-            file.readAsBytes().asStream(),
-            file.lengthSync(),
-            contentType: MediaType('image/jpg','*'),
-        ),
-      );
-      res.headers.addAll(user.headersImage());
-      var result = await res.send();
-      if (result.statusCode == 200) {
+      Response res = await http.post(Uri.parse(entryPoint.getUrl2("images")+ "/" + im.id), headers:user.headersImage(), body:bytes);
+
+      print(res.statusCode);
+
+      if (res.statusCode == 200) {
         return ImageModel.fromJson(json.decode(response.body));
       }else {
       throw new Exception('Faile to patch the image file');

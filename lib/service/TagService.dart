@@ -55,10 +55,11 @@ final entryPoint;
   }
 
   Future<Tag> patchPlace (Tag tag, UserModel user) async {
-    Response response = await http.patch(entryPoint.getUrl2(urlName),
+    Response response = await http.patch(tag.links[0].href,
     headers: user.headers(),
-    body: tag.toJson()
+    body: json.encode(tag.toJson())
   );
+    print(response.statusCode);
     if(response.statusCode == 200 ) {
       return Tag.fromJson(json.decode(response.body));
     }else {

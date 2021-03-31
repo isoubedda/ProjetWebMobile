@@ -12,6 +12,8 @@ import 'package:flutter_app_fac/models/fonctionnal/TestLoginAnimation.dart';
 import 'package:flutter_app_fac/models/fonctionnal/selectItem.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
+import 'package:flutter_app_fac/models/metier/UserModel.dart';
+import 'package:flutter_app_fac/service/TagService.dart';
 import 'package:flutter_app_fac/services/login/loginService.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
 import 'package:flutter_app_fac/view/tag/tag_widget.dart';
@@ -95,6 +97,7 @@ class AddTagWidgetState extends State<AddTagWidget> {
   void submit() {
     if (saveAndValidate()) {
       widget.tag.name = tagController.text;
+      Provider.of<TagService>(context,listen : false).patchPlace(widget.tag, Provider.of<UserModel>(context,listen: false));
       widget.callback();
       Navigator.pop(context);
     }

@@ -49,7 +49,7 @@ class Tag extends ChangeNotifier{
 
   Tag.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['label'];
+    _name = json['label'];
     if (json['links'] != null) {
       links = [];
       json['links'].forEach((v) {

@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fac/models/metier/share_model.dart';
+import 'package:flutter_app_fac/service/ShareService.dart';
+import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 
 class ExportCollectionLink extends StatefulWidget {
+  final element;
+
+  ExportCollectionLink(this.element);
   @override
   State<StatefulWidget> createState() {
     return ExportCollectionLinkState();
@@ -16,6 +22,7 @@ class ExportCollectionLinkState extends State<ExportCollectionLink> {
   }
   @override
   Widget build(BuildContext context) {
+    Provider.of<ShareServices>(context,listen : false).postPlace(widget.element, Provider.of(context), new ShareModel(read: true, write: selected == 1));
     return Container(
       height: 150,
       child: Column(

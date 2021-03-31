@@ -95,7 +95,7 @@ class AddPlaceViewState extends State<AddPlaceView> {
 
 //            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              MenuImageView(image: image,),
+              MenuImageView(),
               GenericForm( controller: LabelController, keyForm: keyForm,errorMessage: "no empty" , hindText: "name",icon:Icon(Icons.person_outline), textInputType: TextInputType.text, validate: FormValidator.isNotEmpty,obscureText: false,border: OutlineInputBorder(),),
               Container(height: 30,),
               GenericForm(controller: descriptionController, keyForm: keyForm,errorMessage: "no empty" , hindText: "decription ",icon:Icon(Icons.lock), textInputType: TextInputType.text, validate: FormValidator.isNotEmpty,obscureText: false, maxlines: 6,border:  OutlineInputBorder(),),
@@ -192,8 +192,8 @@ class MenuImageViewState extends State<MenuImageView> {
 
       child: Column(
         children: [
-          Provider.of<PlaceModel>(context, listen : true).image == null ?
-          Container() :
+          Provider.of<PlaceModel>(context, listen : true).image.file == null ?
+          Image.network(Provider.of<PlaceModel>(context, listen : true).image.links[0].href,headers: Provider.of<UserModel>(context,listen: false).headersImage(),fit: BoxFit.cover,) :
           Image.file(Provider.of<PlaceModel>(context, listen : true).image.file,height: 400 ,fit: BoxFit.fitWidth,),
           IconButton(icon: Icon(Icons.add_a_photo), onPressed: getImage),
         ],

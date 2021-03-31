@@ -14,6 +14,7 @@ import 'package:flutter_app_fac/routes.dart';
 import 'package:flutter_app_fac/service/EntryPointService.dart';
 import 'package:flutter_app_fac/service/ImageService.dart';
 import 'package:flutter_app_fac/service/PlaceServices.dart';
+import 'package:flutter_app_fac/service/ShareService.dart';
 import 'package:flutter_app_fac/service/TagService.dart';
 import 'package:flutter_app_fac/services/location/get_location.dart';
 import 'package:flutter_app_fac/services/login/loginService.dart';
@@ -86,6 +87,7 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider<PlaceServices>(create: (context) => new PlaceServices(entryPoint)),
             ChangeNotifierProvider<LoginService>(create: (context) => new LoginService(entryPoint)),
             ChangeNotifierProvider<TagService>(create: (context) => new TagService(entryPoint)),
+            ChangeNotifierProvider<ShareServices>(create: (context) => new ShareServices(entryPoint)),
             // ChangeNotifierProvider<TagService>(create: (context) => new LoginService(entryPoint)),
             ChangeNotifierProvider<TemporaryMarker>(create: (context) => new TemporaryMarker()),
             Provider<MapController>(create: (context) => new MapController()),
