@@ -3,7 +3,9 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
+import 'package:flutter_app_fac/service/ImageService.dart';
 import 'package:flutter_app_fac/view/map/heroAnimation/heroAnimation.dart';
 import 'package:flutter_app_fac/view/share/share_widget.dart';
 import 'package:flutter_app_fac/view/tag/tag_grid_view.dart';
@@ -38,9 +40,10 @@ class PlaceView extends StatelessWidget {
   }
 
   Widget buildCarousel () {
+    print("palce image " + place.image.links[0].href);
     return Container(child :CarouselSlider(
       options: CarouselOptions(),
-      items: [1,2,3,4,5].map((i) {
+      items: [1].map((i) {
         return Builder(
           builder: (BuildContext context) {
             return Container(
@@ -49,7 +52,7 @@ class PlaceView extends StatelessWidget {
                 decoration: BoxDecoration(
 
                 ),
-                child: place.image!= null ? Image.file(place.image.file,fit: BoxFit.cover,): Image.asset("assets/images/testImage.jpeg")
+                child: place.image != null ? Image.network(place.image.links[0].href,headers: Provider.of<UserModel>(context,listen: false).headersImage(),fit: BoxFit.cover,): Container()
             );
           },
         );

@@ -57,6 +57,7 @@ dependencies:
   dart_jsonwebtoken: any
   cached_network_image: ^2.0.0
   uuid: ^2.2.2
+  io: ^0.3.5
 
 
 

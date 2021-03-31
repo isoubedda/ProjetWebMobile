@@ -50,7 +50,7 @@ class UserModel extends ChangeNotifier{
 
   Map<String, String> headersImage(){
     return  {
-      'Accept' : "application/json" ,
+      'Accept' : "image/jpeg" ,
     'Content-Type': 'image/jpeg',
     'Authorization': basicAuth
   };

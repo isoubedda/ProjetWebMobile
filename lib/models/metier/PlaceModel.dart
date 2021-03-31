@@ -39,7 +39,7 @@ class PlaceModel extends ChangeNotifier {
 
   @override
   String toString() {
-    return 'PlaceModel{label: $label, description: $description, coords: $coords}';
+    return 'PlaceModel{label: $label, description: $description, coords: $coords, image : $image}';
   }
 
   PlaceModel({this.id, this.description, this.label, this.tags, this.coords, this.image, 
@@ -58,6 +58,9 @@ class PlaceModel extends ChangeNotifier {
     coords = new LatLng(document['lat'], document['lng']) ;
     creationDate = document['created_at'];
     lastUpdate = document['updated_at'];
+    if (document["image"] != null) {
+      image = ImageModel.fromJson(document["image"]);
+    }
     if (document['links'] != null) {
       links = [];
       document['links'].forEach((v) {
