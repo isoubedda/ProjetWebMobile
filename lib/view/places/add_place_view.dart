@@ -27,7 +27,6 @@ class AddPlaceViewProvider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var placeModel = ModalRoute.of(context).settings.arguments;
-    print(placeModel.toString());
     if (placeModel !=  null)
       return ChangeNotifierProvider<PlaceModel>.value(value: placeModel,child:  AddPlaceView(), );
     else
@@ -59,7 +58,6 @@ class AddPlaceViewState extends State<AddPlaceView> {
   @override
   void initState() {
     placeModel = Provider.of<PlaceModel>(context,listen: false);
-    print("placemodel *** : $placeModel");
     latController.text = placeModel != null ? placeModel.coords.latitude.toString() : "0.0000";
     longController.text = placeModel != null ? placeModel.coords.longitude.toString() : "0.0000";
     LabelController.text = placeModel != null ? placeModel.label : "Label";
@@ -70,8 +68,6 @@ class AddPlaceViewState extends State<AddPlaceView> {
 
   @override
   Widget build(BuildContext context) {
-
-//    print(args.toString() + "    5555555555555");
     return Scaffold(
       appBar: AppBar(
 
@@ -137,7 +133,6 @@ class AddPlaceViewState extends State<AddPlaceView> {
   void submit () {
     if(saveAndValidate()){
       if(Provider.of<PlaceList>(context,listen: false).places.contains(placeModel)){
-        print("mise à jour");
         placeModel.coords = new LatLng(double.parse(latController.text),double.parse(longController.text));
         placeModel.label = LabelController.text;
         placeModel.description = descriptionController.text;
@@ -186,7 +181,6 @@ class MenuImageViewState extends State<MenuImageView> {
   Size size = MediaQueryData().size;
   @override
   Widget build(BuildContext context) {
-    print("size : " + size.height.toString());
     return Container(
 
       child: Column(

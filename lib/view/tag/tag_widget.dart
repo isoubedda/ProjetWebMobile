@@ -81,7 +81,7 @@ class _SelectOrCreateTagWidgetState extends State<SelectOrCreateTagWidget> {
                     itemCount: filteredList.length,
                     itemBuilder: (BuildContext context, index) {
                       return InkWell(
-                        onTap: () {print("add");widget.model.addTag(filteredList[index]);},
+                        onTap: () {widget.model.addTag(filteredList[index]);},
                         child: Container(
                           height: 30,
                           child: Align(alignment : AlignmentDirectional.centerStart,child: Text(filteredList[index].name)),

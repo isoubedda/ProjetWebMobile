@@ -60,7 +60,6 @@ class CollectionPageState extends State<CollectionPage>{
               return ListView.builder(
                   itemCount: snap.data.length,
                   itemBuilder: (context, index){
-                    print("erreur : $index");
                     return buildListTile(snap.data[index],index);
                   });
             }

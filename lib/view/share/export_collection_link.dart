@@ -50,7 +50,6 @@ class ExportCollectionLinkState extends State<ExportCollectionLink> {
 
             setState(() {
               selected = v;
-              print(selected);
             });
                 }),
                 Text(names[i]+ "  ")

@@ -106,7 +106,6 @@ class  GpxKml {
     final List<PlaceModel> places = [];
     final f =  File(path);
 
-    print("bug");
     String r = await f.readAsStringSync();
     var xmlgpx = GpxReader().fromString(r);
     xmlgpx.wpts.forEach((element) {

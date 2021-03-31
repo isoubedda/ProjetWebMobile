@@ -62,7 +62,6 @@ class PlaceModel extends ChangeNotifier {
       document['links'].forEach((v) {
         links.add(new Links.fromJson(v));
       });
-      print(links.toString());
     }
   }
     

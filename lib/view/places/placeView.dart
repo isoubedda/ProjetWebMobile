@@ -40,7 +40,6 @@ class PlaceView extends StatelessWidget {
   }
 
   Widget buildCarousel () {
-    // print("palce image " + place.image.links[0].href);
     return Container(child :CarouselSlider(
       options: CarouselOptions(),
       items: [1].map((i) {

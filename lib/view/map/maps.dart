@@ -158,7 +158,6 @@ class MapViewState extends State<MapView> {
 
       setState(() {
         popupController.hidePopup();
-        print("japp");
 
       });
 
@@ -174,9 +173,6 @@ class MapViewState extends State<MapView> {
   }
 
   List<Marker>buildMarkerList(places,point) {
-    print("***********************************************************");
-    print(places.toString());
-    print("***********************************************************");
     List<Marker> markers = [];
     for (var place in places) {
       markers.add(Marker(
@@ -199,7 +195,6 @@ class MapViewState extends State<MapView> {
 
       ));
     }
-    print("provider : " + Provider.of<TemporaryMarker>(context,listen: true).isActivate.toString());
     if (Provider.of<TemporaryMarker>(context,listen: true).isActivate){
       markers.add(Marker(
           point : point,
@@ -222,7 +217,6 @@ class MapViewState extends State<MapView> {
     var s = showModalBottomSheet(context: context, builder: (context) => ShowBottomSheet(coords: point,));
     s.then((value){
       Provider.of<TemporaryMarker>(context,listen: false).isActivate = false;
-      print('fermer');
 
       markers.remove(markers.last);
       setState(() {
@@ -230,8 +224,6 @@ class MapViewState extends State<MapView> {
       });
     });
     setState(() {
-      print("lalalal $point");
-      print(markers);
       markers.add(Marker(
         width: 40.0,
         height: 40.0,

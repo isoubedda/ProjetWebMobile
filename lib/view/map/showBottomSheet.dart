@@ -26,7 +26,6 @@ class ShowBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
-    print("$coords");
 
     return Container(
       padding: EdgeInsets.all(10),

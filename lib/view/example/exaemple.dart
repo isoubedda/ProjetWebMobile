@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app_fac/generic_view/SimpleText.dart';
-import 'package:flutter_app_fac/generic_view/simple_icon_button.dart';
 import 'package:flutter_app_fac/models/counter.dart';
 import 'package:flutter_app_fac/view/example/counter_view.dart';
 import 'package:flutter_app_fac/view/example/view_list.dart';

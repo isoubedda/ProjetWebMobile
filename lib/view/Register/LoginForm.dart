@@ -104,7 +104,6 @@ class ConnexionState extends State<Connexion> {
       Provider.of<LoginService>(context, listen: false).getUser(new UserModel(pseudoController.text, pwdController.text));
       Provider.of<UserModel>(context, listen: false).username = pseudoController.text ;
       Provider.of<UserModel>(context, listen: false).password = pwdController.text ;
-      print(Provider.of<UserModel>(context, listen: false).password);
       showModalWidget();
       Provider.of<SelectItem>(context,listen: false).indexSelected = 2;
       Provider.of<SelectItem>(context,listen: false).appBarKey.currentState.animateTo(2);
@@ -158,7 +157,6 @@ Widget AlertDialogWidget () {
           child: ColorizeAnimatedTextKit(
             pause: Duration(milliseconds: 0),
             onTap: () {
-              print("Tap Event");
             },
             text: [
               "Welcome",

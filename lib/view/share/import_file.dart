@@ -87,15 +87,12 @@ class ImportFileState extends State<ImportFile> {
       } else {
 
       }
-      print("File path " + _file.absolute.toString());
     }
 
 
   Future<void> detectExtension (File file, context) async{
-    print(file.path.substring(file.path.lastIndexOf(".")+1));
     if(file.path.substring(file.path.lastIndexOf(".")+1) == "json") {
       List<PlaceModel> placesList =await GpxKml().fromGeojson(file.path,(Provider.of<SelectTag>(context,listen: false).tags ));
-      print(placesList.toString());
       Provider.of<PlaceList>(context,listen: false).addAllPlaces(placesList);
     }
     else if(file.path.substring(file.path.lastIndexOf(".")+1) == "gpx") {
@@ -103,7 +100,6 @@ class ImportFileState extends State<ImportFile> {
       Provider.of<PlaceList>(context,listen: false).addAllPlaces(placesList);
     }
     else {
-      print(file.path.substring(file.path.lastIndexOf(".")+1));
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text( "Format non supporté"),

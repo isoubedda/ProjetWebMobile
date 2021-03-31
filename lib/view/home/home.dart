@@ -100,7 +100,6 @@ class HomeState extends State<Home> {
 
   void onItemTapped (int index) {
     Provider.of<SelectItem>(context,listen: false).indexSelected = index;
-//    Provider.of<SelectItem>(context,listen: false).appBarKey.currentState.animateTo(Provider.of<SelectItem>(context,listen: true).indexSelected);
   }
 
 

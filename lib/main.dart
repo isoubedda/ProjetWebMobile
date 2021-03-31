@@ -71,9 +71,6 @@ class MyApp extends StatelessWidget {
         builder: (context, snap){
       if(snap.hasData ) {
         entryPoint = snap.data;
-
-        print('entrypoint value : '+ entryPoint.resources.toString()  );
-        print(entryPoint.getUrl2("places"));
         return MultiProvider(
           providers: [
             FutureProvider<LocationData>(
@@ -109,34 +106,25 @@ class MyApp extends StatelessWidget {
             initialRoute: Routes.rootpage,
             onGenerateRoute: (RouteSettings settings){
               return Routes.fadeThrough(settings, (context) {
-                print("Route name : " + settings.name);
                 switch(settings.name){
 
                   case Routes.rootpage :
-                    print("la");
                     return RootPage();
                     break;
                   case Routes.maps :
-                    print("la");
                     return HomeProvider();
                     break;
                   case Routes.exemple :
-                    print("la");
                     return TestService();
                     break;
                   case Routes.register :
-                    print("la");
                     return TestingSharedAxis();
                     break;
                   case Routes.addplace :
-                    print("la add placce");
+
                     return AddPlaceViewProvider();
                     break;
 
-                // case Routes.location :
-                //   print("la");
-                //   return ListenLocationWidget();
-                //   break;
                   default :
                     return Exemple();
                 }

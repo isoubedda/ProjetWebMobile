@@ -77,11 +77,8 @@ class ShareWidget extends StatelessWidget {
               }
               List<String> l = [];
               gpxData.then((value) {
-                print("valeur de value : $value");
                 l.add(value);
-                print(l.toString());
                 Share.shareFiles(l, subject: "test"); //
-                print("ok");
               });
             },
             child: Column(
@@ -96,11 +93,8 @@ class ShareWidget extends StatelessWidget {
                 var f = gpxKml.listplacekmlConvert([a1, a2, a3]);
                 List<String> l = [];
                 f.then((value) {
-                  print("valeur de value : $value");
                   l.add(value);
-                  print(l.toString());
                   Share.shareFiles(l, subject: "test"); //
-                  print("ok");
                 });
               },
               child: Column(
@@ -117,7 +111,6 @@ class ShareWidget extends StatelessWidget {
               f.then((value) {
                 l.add(value);
                 Share.shareFiles(l, subject: "test"); //
-                print("ok");
               });
             },
             child: Column(
@@ -169,7 +162,6 @@ class ShareWidget extends StatelessWidget {
             final RenderBox box = context.findRenderObject();
             String path = await gpxKml.placeGpxConvert(place);
             List<String> l = [];
-            print("v llllllll : $path");
             l.add(path);
             Share.shareFiles(l);
           },
@@ -191,7 +183,6 @@ class ShareWidget extends StatelessWidget {
               };
               final uri = Uri.parse('https://www.google.com/maps/search/').replace(queryParameters: queryP).toString().replaceFirst("%2C", ",");
 
-              print(uri.toString());
     if (await canLaunch("https://www.google.com/maps/search/?api=1&query=47.5951518,-122.3316393")) {
       await launch(uri);
     } else {

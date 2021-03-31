@@ -20,7 +20,6 @@ class TagWidgetState extends State<TagWidget> {
 
 
   Widget buildHorizontalList () {
-    print("wigded tag : " + widget.tags.toString());
     return GridView.count(
         childAspectRatio: 1.8,
         padding: EdgeInsets.all(0),

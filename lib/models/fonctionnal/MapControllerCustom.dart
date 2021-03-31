@@ -10,7 +10,6 @@ class MapControllerCustom extends ChangeNotifier {
 
 
   void move (LatLng latLng, double zoom) {
-    print(_ready);
     if(_ready){
 
       _mapController.move(latLng, zoom);
@@ -21,7 +20,6 @@ class MapControllerCustom extends ChangeNotifier {
 
   Future<void> onReady ()  async{
     _mapController.onReady.then((value) => _ready = true);
-    print("ready ok : $_ready");
   }
 
   MapController get mapController => _mapController;

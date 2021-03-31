@@ -25,8 +25,6 @@ class TestServiceState extends State<TestService> {
               Text(_text),
               TextButton(onPressed: () {
                 var places;
-                print("places");
-                print(places);
                 if(places != null) {
                   setState() {
                     _text = places.toString();

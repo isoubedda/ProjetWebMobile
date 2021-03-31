@@ -34,8 +34,6 @@ class PlaceServices extends ChangeNotifier{
         if(placeBox.values.isNotEmpty){
           if(!IterableEquality().equals(l,placeBox.values)){
             await placeBox.clear();
-
-            l.map((e) => print(e));
             l.map((e) => putDataPlaceToHive(PlaceModel.fromJson(e)));
             return placeBox.values.toList();
           }else{
