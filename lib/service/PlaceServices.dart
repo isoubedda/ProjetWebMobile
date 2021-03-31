@@ -78,17 +78,46 @@ class PlaceServices extends ChangeNotifier{
   }
 
   Future<List<PlaceModel>> getPlaceByTag(UserModel user, Tag tag) async {
-    Response response = await http.get(entryPoint.getUrl2(urlName)+"?tag="+tag.id,
-    headers: user.headers());
-    if(response.statusCode == 200 ) {
-      Iterable l = json.decode(response.body);
-      return l.map((e) => PlaceModel.fromJson(e)).toList();
-    }else {
-      throw new Exception('Faile to get All tag json');
+    placeBox = await Hive.openBox<PlaceModel>("place");
+    List<PlaceModel> placeList = [];
+    try{
+      Response response = await http.get(entryPoint.getUrl2(urlName)+"?tag="+tag.id,
+      headers: user.headers());
+      if(response.statusCode == 200 ) {
+        Iterable l = json.decode(response.body);
+        return l.map((e) => PlaceModel.fromJson(e)).toList();
+      }else {
+        print("statu code != 200");
+        if(placeBox.values.isNotEmpty){
+          placeBox.values.toList().forEach((element) {
+            if(element.tags.contains(tag)){
+              placeList.add(element);
+            }
+           });
+          return placeList; 
+        }else{
+          print("cache place is Empty");
+        }
+      }
+    } on SocketException catch (e){
+        print("non internet");
+        if(placeBox.values.isNotEmpty){
+          placeBox.values.toList().forEach((element) {
+            if(element.tags.contains(tag)){
+              placeList.add(element);
+            }
+           });
+          return placeList; 
+        }else{
+          print("cache place is Empty");
+        }
     }
+    placeBox.close();
   }
 
   Future<List<PlaceModel>> getPlaceByListOfTag(UserModel user, List<Tag> tags) async {
+    placeBox = await Hive.openBox<PlaceModel>("place");
+    List<PlaceModel> placeList = [];
     final uriParse = Uri.parse(entryPoint.getUrl2(urlName));
     //var mapTag = Map.fromIterable(tags, key: (e) => "tags[]", value: (e) => e.id);
     var idList = tags.map((e) => e.id).toList();
@@ -99,16 +128,37 @@ class PlaceServices extends ChangeNotifier{
     path: uriParse.path, port: uriParse.port ,
     queryParameters: queryP ).replace(queryParameters: queryP).toString().replaceAll("%5B%5D", "[]");
     
-    Response response = await http.get(uri,
-    headers: user.headers());
-    print(response.statusCode);
-    print(uri);
-    if(response.statusCode == 200 ) {
+    try{
+      Response response = await http.get(uri,
+      headers: user.headers());
+      print(response.statusCode);
+      print(uri);
+      if(response.statusCode == 200 ) {
       Iterable l = json.decode(response.body);
       return l.map((e) => PlaceModel.fromJson(e)).toList();
-    }else {
-      throw new Exception('Faile to get All place json');
+      }else {
+        print("statu code != 200");
+        if(placeBox.values.isNotEmpty){
+          placeBox.values.toList().forEach((element) {
+            if(tags.any((e) => element.tags.contains(e))){placeList.add(element);}
+           });
+          return placeList; 
+        }else{
+          print("cache place is Empty");
+        }
+      }
+    } on SocketException catch (e){
+        print("non internet");
+        if(placeBox.values.isNotEmpty){
+          placeBox.values.toList().forEach((element) {
+            if(tags.any((e) => element.tags.contains(e))){placeList.add(element);}
+           });
+          return placeList; 
+        }else{
+          print("cache place is Empty");
+        }
     }
+    placeBox.close();
   }
 
   Future<void> removePlace(PlaceModel place, UserModel user) async {
