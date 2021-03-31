@@ -80,17 +80,46 @@ class PlaceServices extends ChangeNotifier{
   }
 
   Future<List<PlaceModel>> getPlaceByTag(UserModel user, Tag tag) async {
-    Response response = await http.get(entryPoint.getUrl2(urlName)+"?tag="+tag.id,
-    headers: user.headers());
-    if(response.statusCode == 200 ) {
-      Iterable l = json.decode(response.body);
-      return l.map((e) => PlaceModel.fromJson(e)).toList();
-    }else {
-      throw new Exception('Faile to get All tag json');
+    placeBox = await Hive.openBox<PlaceModel>("place");
+    List<PlaceModel> placeList = [];
+    try{
+      Response response = await http.get(entryPoint.getUrl2(urlName)+"?tag="+tag.id,
+      headers: user.headers());
+      if(response.statusCode == 200 ) {
+        Iterable l = json.decode(response.body);
+        return l.map((e) => PlaceModel.fromJson(e)).toList();
+      }else {
+        print("statu code != 200");
+        if(placeBox.values.isNotEmpty){
+          placeBox.values.toList().forEach((element) {
+            if(element.tags.contains(tag)){
+              placeList.add(element);
+            }
+           });
+          return placeList;
+        }else{
+          print("cache place is Empty");
+        }
+      }
+    } on SocketException catch (e){
+        print("non internet");
+        if(placeBox.values.isNotEmpty){
+          placeBox.values.toList().forEach((element) {
+            if(element.tags.contains(tag)){
+              placeList.add(element);
+            }
+           });
+          return placeList;
+        }else{
+          print("cache place is Empty");
+        }
     }
+    placeBox.close();
   }
 
   Future<List<PlaceModel>> getPlaceByListOfTag(UserModel user, List<Tag> tags) async {
+    placeBox = await Hive.openBox<PlaceModel>("place");
+    List<PlaceModel> placeList = [];
     final uriParse = Uri.parse(entryPoint.getUrl2(urlName));
     //var mapTag = Map.fromIterable(tags, key: (e) => "tags[]", value: (e) => e.id);
     var idList = tags.map((e) => e.id).toList();
@@ -101,66 +130,78 @@ class PlaceServices extends ChangeNotifier{
     path: uriParse.path, port: uriParse.port ,
     queryParameters: queryP ).replace(queryParameters: queryP).toString().replaceAll("%5B%5D", "[]");
     
-    Response response = await http.get(uri,
-    headers: user.headers());
-    print(response.statusCode);
-    print(uri);
-    if(response.statusCode == 200 ) {
+    try{
+      Response response = await http.get(uri,
+      headers: user.headers());
+      print(response.statusCode);
+      print(uri);
+      if(response.statusCode == 200 ) {
       Iterable l = json.decode(response.body);
       return l.map((e) => PlaceModel.fromJson(e)).toList();
-    }else {
-      throw new Exception('Faile to get All place json');
+      }else {
+        print("statu code != 200");
+        if(placeBox.values.isNotEmpty){
+          placeBox.values.toList().forEach((element) {
+            if(tags.any((e) => element.tags.contains(e))){placeList.add(element);}
+           });
+          return placeList;
+        }else{
+          print("cache place is Empty");
+        }
+      }
+    } on SocketException catch (e){
+        print("non internet");
+        if(placeBox.values.isNotEmpty){
+          placeBox.values.toList().forEach((element) {
+            if(tags.any((e) => element.tags.contains(e))){placeList.add(element);}
+           });
+          return placeList;
+        }else{
+          print("cache place is Empty");
+        }
     }
+    placeBox.close();
   }
 
   Future<void> removePlace(PlaceModel place, UserModel user) async {
+    placeBox = await Hive.openBox<PlaceModel>("place");
     Response response = await http.delete(place.links.elementAt(0).href,
     headers: user.headers());
     if(response.statusCode == 204 ) {
+      placeBox.values.forEachIndexed((index, element) {if(place.id == element.id) placeBox.deleteAt(index);});
       print("Ok the place was remove");
     }else {
       throw new Exception('Faile to remove places');
     }
+    placeBox.close();
   }
 
   Future<PlaceModel> postPlace (PlaceModel place, UserModel user) async {
-
-
-    print("encodage " + jsonEncode([place]));
-    print("999999999999999999");
+    placeBox = await Hive.openBox<PlaceModel>("place");
     Response response = await http.post(entryPoint.getUrl2(urlName),
     headers: user.headers(),
-    body: jsonEncode([place])
+    body: jsonEncode(place)
   );
-    print(user.headers());
-    print(response.statusCode.toString() + "yolo");
-    if(response.statusCode == 201 ) {
-      print("erreur");
-      Iterable l = json.decode(response.body);
-      var p = l.map((e) => PlaceModel.fromJson(e)).toList();
-
-      if(place.image != null) {
-        place.image = await ImageService(entryPoint).postImage(place.image.file ,new ImageModel(place: p[0]), user);
-      }
-
-      return p[0];
+    if(response.statusCode == 200 ) {
+      //Iterable l = json.decode(response.body);
+      //return l.map((e) => PlaceModel.fromJson(e)).toList();
+      PlaceModel pl = PlaceModel.fromJson(json.decode(response.body));
+      placeBox.add(pl);
+      placeBox.close();
+      return pl;
     }else {
-      throw new Exception('Faile to create the place');
+      placeBox.close();
+      throw new Exception('Faile to load the place');
     }
+
   }
 
   Future<PlaceModel> patchPlace (PlaceModel place, UserModel user) async {
-    print(place.toJson());
-
-    if(place.image != null) {
-      place.image = await ImageService(entryPoint).postImage(place.image.file, place.image, user);
-    }
-
+    placeBox = await Hive.openBox<PlaceModel>("place");
     Response response = await http.patch(entryPoint.getUrl2(urlName),
     headers: user.headers(),
     body: place.toJson()
-  );
-
+    );
     if(response.statusCode == 200 ) {
       //Iterable l = json.decode(response.body);
       //return l.map((e) => PlaceModel.fromJson(e)).toList();
@@ -168,6 +209,8 @@ class PlaceServices extends ChangeNotifier{
     }else {
       throw new Exception('Faile to load the place');
     }
+
+    placeBox.close();
   }
 
 
