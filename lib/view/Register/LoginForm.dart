@@ -70,7 +70,7 @@ class ConnexionState extends State<Connexion> {
                   ),
                   alignLabelWithHint: true,
                 ),
-                validator : (value) => FormValidator.isNotEmpty(value)  == false ?  "erreur password" : null,
+                validator : (value) => FormValidator.validatePassword(value)  == false ?  "erreur password" : null,
                 onSaved: (value) => pwdController.text = value.trim(),
               )
 //              child: new GenericForm(controller: pwdController, keyForm: keyForm,errorMessage: "Mot de passe invalide" , hindText: "password ",icon:Icon(Icons.lock), textInputType: TextInputType.text, validate: FormValidator.isNotEmpty,obscureText: true,maxlines: null,),

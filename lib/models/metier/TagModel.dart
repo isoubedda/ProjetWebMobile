@@ -51,7 +51,7 @@ class Tag extends ChangeNotifier{
     id = json['id'];
     name = json['label'];
     if (json['links'] != null) {
-      links = new List<Links>();
+      links = [];
       json['links'].forEach((v) {
         links.add(new Links.fromJson(v));
       });

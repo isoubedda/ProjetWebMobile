@@ -73,7 +73,7 @@ class RegisterState extends State<Register> {
                   ),
                   alignLabelWithHint: true,
                 ),
-                validator : (value) => FormValidator.isNotEmpty(value)  == false ?  "erreur password" : null,
+                validator : (value) => FormValidator.validatePassword(value)  == false ?  "erreur password" : null,
                 onSaved: (value) => pwdController.text = value.trim(),
               )
 

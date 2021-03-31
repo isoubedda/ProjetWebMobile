@@ -16,6 +16,9 @@ class UserModel extends ChangeNotifier{
     this._basicAuth = 'Basic ' + base64Encode(utf8.encode('$username:$password'));
 
   }
+  UserModel.empty() {}
+
+
   UserModel.fromJson(json) {
     // _id = json["id"];
     _username = json["username"];

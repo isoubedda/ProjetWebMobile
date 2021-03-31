@@ -101,6 +101,8 @@ class PlaceServices extends ChangeNotifier{
     
     Response response = await http.get(uri,
     headers: user.headers());
+    print(response.statusCode);
+    print(uri);
     if(response.statusCode == 200 ) {
       Iterable l = json.decode(response.body);
       return l.map((e) => PlaceModel.fromJson(e)).toList();

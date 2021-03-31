@@ -3,10 +3,13 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app_fac/generic_view/circularProgress/circularBar.dart';
 import 'package:flutter_app_fac/models/fonctionnal/selectItem.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/TagList.dart';
+import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:flutter_app_fac/models/metier/marker/marker.dart';
+import 'package:flutter_app_fac/service/TagService.dart';
 import 'package:flutter_app_fac/view/share/share_widget.dart';
 import 'package:flutter_app_fac/view/tag/add_tag.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -53,11 +56,21 @@ class CollectionPageState extends State<CollectionPage>{
       ) : null,
 
 
-      body: ListView.builder(
-          itemCount: tags.length,
-          itemBuilder: (context, index){
-        return buildListTile(tags[index],index);
-      }),
+      body:   FutureBuilder(
+          future: Provider.of<TagService>(context,listen:  true).getAll(Provider.of<UserModel>(context,listen: false)),
+          builder: (context,snap) {
+            if (snap.hasData) {
+              print(snap.data);
+              return ListView.builder(
+                  itemCount: snap.data.length,
+                  itemBuilder: (context, index){
+                    return buildListTile(snap.data[index],index);
+                  });
+            }
+            else {
+              return CircularBarWidget();
+            }
+          })
     );
   }
   Widget buildListTile(tag,index) {

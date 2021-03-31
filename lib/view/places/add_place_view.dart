@@ -11,6 +11,8 @@ import 'package:flutter_app_fac/models/metier/ImageModel.dart';
 import 'package:flutter_app_fac/models/metier/Picture.dart';
 import 'package:flutter_app_fac/models/metier/PlaceList.dart';
 import 'package:flutter_app_fac/models/metier/PlaceModel.dart';
+import 'package:flutter_app_fac/models/metier/UserModel.dart';
+import 'package:flutter_app_fac/service/PlaceServices.dart';
 import 'package:flutter_app_fac/utils/form_validator/Form_Validator.dart';
 import 'package:flutter_app_fac/view/tag/tag_grid_view.dart';
 import 'package:flutter_app_fac/view/tag/tag_widget.dart';
@@ -70,7 +72,16 @@ class AddPlaceViewState extends State<AddPlaceView> {
 
 //    print(args.toString() + "    5555555555555");
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+
+          actions: [
+            IconButton(icon : Icon(Icons.delete), onPressed : Provider.of<PlaceList>(context,listen: false).places.contains(placeModel) == true ? () {
+              Provider.of<PlaceList>(context,listen: false).remove(placeModel);
+              Navigator.pop(context);
+              Navigator.pop(context);
+            } : null, disabledColor: Colors.transparent,)
+    ],
+      ),
 
       body: Form(
         key: keyForm,
@@ -99,7 +110,7 @@ class AddPlaceViewState extends State<AddPlaceView> {
 
 
 
-              SimpleFlatButton(text: "Ajouter le lieu",onPressed: submit,)
+              SimpleFlatButton(text: Provider.of<PlaceList>(context,listen: false).places.contains(placeModel) == true ? "Modifier" :" Ajouter" ,onPressed: submit,)
             ],
           ),
         ),
@@ -128,21 +139,26 @@ class AddPlaceViewState extends State<AddPlaceView> {
         placeModel.coords = new LatLng(double.parse(latController.text),double.parse(longController.text));
         placeModel.label = LabelController.text;
         placeModel.description = descriptionController.text;
+        Navigator.pop(context);
+        Navigator.pop(context);
       }
       else  {
-        Provider.of<PlaceList>(context,listen: false).add(
-            new PlaceModel(
-                label: LabelController.text,
-                tags :Provider.of<PlaceModel>(context, listen : false).tags,
-                description: descriptionController.text,
-                coords: new LatLng(double.parse(latController.text),double.parse(longController.text)),
-                image: Provider.of<PlaceModel>(context, listen : false).image
+        final places =new  PlaceModel(
+            label: LabelController.text,
+            tags :Provider.of<PlaceModel>(context, listen : false).tags,
+            description: descriptionController.text,
+            coords: new LatLng(double.parse(latController.text),double.parse(longController.text)),
+            image: Provider.of<PlaceModel>(context, listen : false).image
 
-            ));
+        );
+
+        Provider.of<PlaceList>(context,listen: false).add(places);
+        Provider.of<PlaceServices>(context, listen: false).postPlace(places, Provider.of<UserModel>(context, listen: false));
+        Navigator.pop(context);
       }
 
-      Navigator.pop(context);
-      Navigator.pop(context);
+
+
 
 
     }

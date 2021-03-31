@@ -32,13 +32,7 @@ class PlaceView extends StatelessWidget {
 
         ],
       )
-//        ListView(
-//          children: [
 
-//            Container(height: 900, color:  Colors.blue,)
-//
-//          ],
-//        ),
 
     );
   }

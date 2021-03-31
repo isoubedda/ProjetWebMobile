@@ -183,6 +183,7 @@ class ShareWidget extends StatelessWidget {
   }
 
   _launchURL() async {
+ 
     var coords = isList ? null : data.coords;
     var lat = coords.latitude.toString();
     var long = coords.longitude.toString();

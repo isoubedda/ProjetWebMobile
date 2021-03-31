@@ -14,6 +14,7 @@ import 'package:flutter_app_fac/routes.dart';
 import 'package:flutter_app_fac/service/EntryPointService.dart';
 import 'package:flutter_app_fac/service/ImageService.dart';
 import 'package:flutter_app_fac/service/PlaceServices.dart';
+import 'package:flutter_app_fac/service/TagService.dart';
 import 'package:flutter_app_fac/services/location/get_location.dart';
 import 'package:flutter_app_fac/services/login/loginService.dart';
 import 'package:flutter_app_fac/view/Register/LoginRegisterWidgetASUPPRIMER.dart';
@@ -80,10 +81,11 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider<Counter>(create: (context) => Counter()),
             ChangeNotifierProvider<Simu>(create: (context) => new Simu()),
             ChangeNotifierProvider<SelectTag>(create: (context) => new SelectTag()),
-            ChangeNotifierProvider<UserModel>(create: (context) => null),
+            ChangeNotifierProvider<UserModel>(create: (context) => UserModel.empty()),
             ChangeNotifierProvider<ImageService>(create: (context) => new ImageService(entryPoint)),
             ChangeNotifierProvider<PlaceServices>(create: (context) => new PlaceServices(entryPoint)),
             ChangeNotifierProvider<LoginService>(create: (context) => new LoginService(entryPoint)),
+            ChangeNotifierProvider<TagService>(create: (context) => new TagService(entryPoint)),
             // ChangeNotifierProvider<TagService>(create: (context) => new LoginService(entryPoint)),
             ChangeNotifierProvider<TemporaryMarker>(create: (context) => new TemporaryMarker()),
             Provider<MapController>(create: (context) => new MapController()),
