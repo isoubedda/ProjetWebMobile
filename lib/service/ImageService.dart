@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-
+import 'dart:io' as Io;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_app_fac/models/metier/UserModel.dart';
 import 'package:http_parser/http_parser.dart';
@@ -36,40 +36,44 @@ class ImageService extends ChangeNotifier {
   }
 
   Future<ImageModel> postImage (File file, ImageModel image, UserModel user) async {
-    print("dans post image");
+    // print("dans post image " + image.id);
     Response response = await http.post(entryPoint.getUrl2("images"),
      headers: user.headers(),
       body: jsonEncode(image)
     );
     print("response image post : " + response.statusCode.toString());
+    print("response image post : " + response.body.toString());
     if(response.statusCode == 201 ) {
       print(response.body);
 
       ImageModel im = ImageModel.fromJson(json.decode(response.body));
-      var res = http.MultipartRequest('POST',Uri.parse(entryPoint.getUrl2("images")+ "/" + im.id));
 
-      Map<String,String> headers=user.headersImage();
-      res.files.add(
-        http.MultipartFile(
-           'file',
-            await file.readAsBytes().asStream(),
-            file.lengthSync(),
-          contentType: MediaType('image','jpeg'),
-        ),
-      );
-      print(file.readAsBytes());
-      res.headers.addAll(user.headersImage());
-      res.headers.addAll(headers);
-      print(res.url);
-      print("header " + headers.toString());
+     final bytes = await Io.File(file.path).readAsBytes();
 
+      Response res = await http.post(Uri.parse(entryPoint.getUrl2("images")+ "/" + im.id), headers:user.headersImage(), body:bytes);
 
+      // Map<String,String> headers=user.headersImage();
+      // // res.files.add(
+      // //   http.MultipartFile(
+      // //      'file',
+      // //       await file.readAsBytes().asStream(),
+      // //       file.lengthSync(),
+      // //     contentType: MediaType('image','jpeg'),
+      // //   ),
+      // // );
+      // print(file.readAsBytes());
+      // res.headers.addAll(user.headersImage());
+      // res.headers.addAll(headers);
+      // print(res.url);
+      // print("header " + headers.toString());
+      //
+      //
+      //
+      // print(res.headers);
+      // var result = await res.send();
+      print(res.statusCode);
 
-      print(res.headers);
-      var result = await res.send();
-      print(result.statusCode);
-      print(result.stream.last.toString());
-      if (result.statusCode == 201) {
+      if (res.statusCode == 201) {
 
         return ImageModel.fromJson(json.decode(response.body));
       }else {
